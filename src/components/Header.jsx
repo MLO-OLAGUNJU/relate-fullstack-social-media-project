@@ -10,11 +10,12 @@ const Header = () => {
         <Image
           cursor={"pointer"}
           alt="Spacelogo"
-          w={"12"}
-          src="/spacelogo.svg"
+          w={"10"}
+          src="/relate-logo.svg"
         />
 
         <Button
+          bg={"transparent"}
           h={"fit-content"}
           w={"fit-content"}
           padding={"1"}
