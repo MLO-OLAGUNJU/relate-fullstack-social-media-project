@@ -6,7 +6,7 @@ const Header = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   return (
     <div>
-      <Flex justifyContent={"center"} mt={6} mb={12}>
+      <Flex justifyContent={"space-between"} mt={6} mb={12}>
         <Image
           cursor={"pointer"}
           alt="Spacelogo"
@@ -21,11 +21,12 @@ const Header = () => {
           justifySelf={"flex-end"}
           onClick={toggleColorMode}
         >
-          {colorMode === "dark" ? (
-            <CgDarkMode className="text-black" size={30} />
-          ) : (
-            <CgDarkMode className="text-white" size={30} />
-          )}
+          <CgDarkMode
+            className={`transition ${
+              colorMode === "dark" ? "text-black " : "text-white "
+            }`}
+            size={30}
+          />
         </Button>
       </Flex>
     </div>
