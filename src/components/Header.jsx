@@ -42,7 +42,7 @@ const Header = () => {
           />
         </Link>
 
-        <button onClick={handleClick}>
+        <button onClick={!isOpen1 && handleClick}>
           <CgMenuRight
             className={`transition opacity-30 hover:opacity-100 cursor-pointer ${
               colorMode === "dark" ? "text-white " : "text-black "
