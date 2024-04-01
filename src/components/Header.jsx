@@ -1,13 +1,23 @@
-import React from "react";
-import { Flex, Image, Button, useColorMode } from "@chakra-ui/react";
-import { CgDarkMode } from "react-icons/cg";
+import React, { useState } from "react";
+import { Flex, Image, VStack, Button, useColorMode } from "@chakra-ui/react";
+import { CgMenuRight } from "react-icons/cg";
 import { Link } from "react-router-dom";
 
 const Header = () => {
   const { colorMode, toggleColorMode } = useColorMode();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleClick = () => {
+    setIsOpen(!isOpen);
+  };
   return (
     <div>
-      <Flex justifyContent={"space-between"} mt={6} mb={12}>
+      <Flex
+        position={"relative"}
+        justifyContent={"space-between"}
+        mt={6}
+        mb={12}
+      >
         <Link to={"/"}>
           <Image
             cursor={"pointer"}
@@ -21,21 +31,22 @@ const Header = () => {
           />
         </Link>
 
-        <Button
-          bg={"transparent"}
-          h={"fit-content"}
-          w={"fit-content"}
-          padding={"1"}
-          justifySelf={"flex-end"}
-          onClick={toggleColorMode}
-        >
-          <CgDarkMode
-            className={`transition ${
+        <button onClick={handleClick}>
+          <CgMenuRight
+            className={`transition opacity-30 hover:opacity-100 cursor-pointer ${
               colorMode === "dark" ? "text-white " : "text-black "
             }`}
             size={30}
           />
-        </Button>
+        </button>
+        {isOpen && (
+          <VStack position={"absolute"} top={4} right={4}>
+            <Button bg={"transparent"}>Hello</Button>
+            <Button bg={"transparent"}>Hello</Button>
+            <Button bg={"transparent"}>Hello</Button>
+            <Button bg={"transparent"}>Hello</Button>
+          </VStack>
+        )}
       </Flex>
     </div>
   );
