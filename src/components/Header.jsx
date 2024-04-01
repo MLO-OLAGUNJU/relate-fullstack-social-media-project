@@ -12,8 +12,12 @@ const Header = () => {
           <Image
             cursor={"pointer"}
             alt="Spacelogo"
-            w={"10"}
-            src="/relate-logo.svg"
+            w={"7"}
+            src={
+              colorMode === "dark"
+                ? "/relate-logo.svg"
+                : "/relate-light-logo.svg"
+            }
           />
         </Link>
 
@@ -27,9 +31,9 @@ const Header = () => {
         >
           <CgDarkMode
             className={`transition ${
-              colorMode === "dark" ? "text-black " : "text-white "
+              colorMode === "dark" ? "text-white " : "text-black "
             }`}
-            size={35}
+            size={30}
           />
         </Button>
       </Flex>
