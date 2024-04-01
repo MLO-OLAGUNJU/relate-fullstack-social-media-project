@@ -10,7 +10,7 @@ const Header = () => {
         <Image
           cursor={"pointer"}
           alt="Spacelogo"
-          w={"10"}
+          w={"12"}
           src="/spacelogo.svg"
         />
 
@@ -25,7 +25,7 @@ const Header = () => {
             className={`transition ${
               colorMode === "dark" ? "text-black " : "text-white "
             }`}
-            size={30}
+            size={35}
           />
         </Button>
       </Flex>
