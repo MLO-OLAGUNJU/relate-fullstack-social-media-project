@@ -8,8 +8,10 @@ function App() {
   return (
     <>
       <div>
-        <Container maxW="620px">
+        <Container maxW={"90%"}>
           <Header />
+        </Container>
+        <Container maxW="620px">
           <Routes>
             <Route path="/:username" element={<UserPage />} />
             <Route path="/:username/post/:pid" element={<PostPage />} />

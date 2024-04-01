@@ -1,18 +1,21 @@
 import React from "react";
 import { Flex, Image, Button, useColorMode } from "@chakra-ui/react";
 import { CgDarkMode } from "react-icons/cg";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   return (
     <div>
       <Flex justifyContent={"space-between"} mt={6} mb={12}>
-        <Image
-          cursor={"pointer"}
-          alt="Spacelogo"
-          w={"10"}
-          src="/relate-logo.svg"
-        />
+        <Link to={"/"}>
+          <Image
+            cursor={"pointer"}
+            alt="Spacelogo"
+            w={"10"}
+            src="/relate-logo.svg"
+          />
+        </Link>
 
         <Button
           bg={"transparent"}
