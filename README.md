@@ -18,7 +18,7 @@ By focusing on real-world experiences and local connections, Relate offers a ref
 
 ## 🌟 Features
 
-- **Tech Stack**: MERN (MongoDB, Express.js, React.js, Node.js) + Socket.io + Chakra UI + TailwindCSS
+- **Tech Stack**: MERN (MongoDB, Express.js, React.js, Node.js) + Socket.io + Shadcn/UI + TailwindCSS
 - 🎃 Authentication & Authorization with JWT
 - 📝 Create Post
 - 🗑️ Delete Post
