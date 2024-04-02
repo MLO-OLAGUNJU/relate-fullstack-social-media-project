@@ -13,7 +13,7 @@ import {
   Link,
   useToast,
 } from "@chakra-ui/react";
-import { PiDotsThreeCircleDuotone } from "react-icons/pi";
+import { CgMoreO } from "react-icons/cg";
 import { Link as Linking, useLocation } from "react-router-dom";
 // import { toast } from "react-hot-toast";
 const UserHeader = () => {
@@ -39,16 +39,13 @@ const UserHeader = () => {
             Olagunju Oladele Emmanuel
           </Text>
           <Flex gap={2} alignItems={"center"}>
-            <Text fontSize={"sm"}>mlo-olagunju</Text>
+            <Text fontSize={"sm"}>mlolagunju</Text>
             <Text
               fontSize={"xs"}
               bg={"gray.dark"}
               color={"gray.light"}
               p={1}
               borderRadius={"full"}
-              // _light={{
-              //   bg: "gray.light",
-              // }}
             >
               <Linking to={"/"}>
                 <Link
@@ -66,7 +63,7 @@ const UserHeader = () => {
           <Avatar
             cursor={"pointer"}
             name="MLO Olagunju"
-            src="mlo.jpg"
+            src="/mlo.jpg"
             size={"xl"}
           />
         </Box>
@@ -92,7 +89,7 @@ const UserHeader = () => {
               }}
             >
               <MenuButton>
-                <PiDotsThreeCircleDuotone size={40} cursor={"pointer"} />
+                <CgMoreO size={24} cursor={"pointer"} />
               </MenuButton>
               <Portal>
                 <MenuList
@@ -125,11 +122,14 @@ const UserHeader = () => {
             pb={3}
             cursor={"pointer"}
             borderBottom={
-              location.pathname === "/username"
-                ? "2px solid white"
-                : "1px solid gray"
+              location.pathname === "/username" ? "2px solid white" : "none"
             }
             color={location.pathname === "/username" ? "white" : "gray.light"}
+            _light={{
+              color: location.pathname === "/username" ? "black" : "gray.light",
+              borderBottom:
+                location.pathname === "/username" ? "2px solid black" : "none",
+            }}
           >
             <Text fontWeight={"bold"}>Relates</Text>
           </Flex>
@@ -143,11 +143,21 @@ const UserHeader = () => {
             borderBottom={
               location.pathname === "/username/replies"
                 ? "2px solid white"
-                : "1px solid gray"
+                : "none"
             }
             color={
               location.pathname === "/username/replies" ? "white" : "gray.light"
             }
+            _light={{
+              color:
+                location.pathname === "/username/replies"
+                  ? "black"
+                  : "gray.light",
+              borderBottom:
+                location.pathname === "/username/replies"
+                  ? "2px solid black"
+                  : "none",
+            }}
           >
             <Text fontWeight={"bold"}>Replies</Text>
           </Flex>
