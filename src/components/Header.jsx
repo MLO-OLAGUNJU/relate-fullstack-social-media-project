@@ -23,16 +23,11 @@ const Header = () => {
   const handleClick = () => {
     setIsOpen(!isOpen);
   };
-  const handleClick1 = () => {
-    setIsOpen1(!isOpen1);
-    setIsOpen(!isOpen);
-  };
 
   const handleClickOutside = (event) => {
     if (!event.target.closest(".your-navbar-class")) {
       // Replace with your navbar class
       setIsOpen(false); // Close navbar if clicked outside
-      setIsOpen1(false); // Also close the Appearance submenu
     }
   };
 
@@ -45,8 +40,17 @@ const Header = () => {
   }, []); // Empty dependency array to run only once
 
   const combinedFunction1 = () => {
-    handleClick();
-    handleClick1();
+    if (colorMode === "dark") {
+      toggleColorMode();
+      handleClick();
+    }
+  };
+
+  const combinedFunction2 = () => {
+    if (colorMode === "light") {
+      toggleColorMode();
+      handleClick();
+    }
   };
 
   return (
@@ -88,7 +92,6 @@ const Header = () => {
               <Button onClick={combinedFunction1} bg={"transparent"}>
                 <CgArrowLeft size={25} />
               </Button>
-              {/* <span className=" text-lg">Appearance</span> */}
             </div>
             <button
               className={`w-full text-start pl-5 py-4  ${
@@ -119,37 +122,17 @@ const Header = () => {
               Log out
             </button>
 
-            <div className="grid grid-cols-2 w-full mt-10 gap-2">
-              <Button
-                padding={6}
-                rounded={"xl"}
-                onClick={colorMode === "dark" && toggleColorMode}
-              >
+            <div className="grid grid-cols-2 w-full mt-3 gap-2">
+              <Button padding={6} rounded={"xl"} onClick={combinedFunction1}>
                 <CgSun size={30} />
               </Button>
 
-              <Button
-                padding={6}
-                rounded={"xl"}
-                onClick={colorMode === "light" && toggleColorMode}
-              >
+              <Button padding={6} rounded={"xl"} onClick={combinedFunction2}>
                 <CgMoon size={30} />
               </Button>
             </div>
           </div>
         )}
-        {/* 
-        {isOpen1 && (
-          <>
-            <div
-              className={`z-50 flex items-start justify-start rounded-xl p-4 w-full md:py-8 md:px-3 flex-col absolute md:w-[350px] top-10 md:right-8 overflow-hidden ${
-                colorMode === "dark"
-                  ? " bg-[#181818]"
-                  : "shadow-md bg-[#f9f9f9]"
-              }`}
-            ></div>
-          </>
-        )} */}
       </Flex>
     </div>
   );
