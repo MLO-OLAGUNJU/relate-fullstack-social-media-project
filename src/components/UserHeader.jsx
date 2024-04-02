@@ -122,13 +122,17 @@ const UserHeader = () => {
             pb={3}
             cursor={"pointer"}
             borderBottom={
-              location.pathname === "/username" ? "2px solid white" : "none"
+              location.pathname === "/username"
+                ? "3px solid white"
+                : "1px solid #E5E5E5"
             }
             color={location.pathname === "/username" ? "white" : "gray.light"}
             _light={{
-              color: location.pathname === "/username" ? "black" : "gray.light",
+              color: location.pathname === "/username" ? "black" : "#a0a0a0",
               borderBottom:
-                location.pathname === "/username" ? "2px solid black" : "none",
+                location.pathname === "/username"
+                  ? "3px solid black"
+                  : "1px solid #E5E5E5",
             }}
           >
             <Text fontWeight={"bold"}>Relates</Text>
@@ -142,21 +146,19 @@ const UserHeader = () => {
             cursor={"pointer"}
             borderBottom={
               location.pathname === "/username/replies"
-                ? "2px solid white"
-                : "none"
+                ? "3px solid white"
+                : "1px solid #E5E5E5"
             }
             color={
               location.pathname === "/username/replies" ? "white" : "gray.light"
             }
             _light={{
               color:
-                location.pathname === "/username/replies"
-                  ? "black"
-                  : "gray.light",
+                location.pathname === "/username/replies" ? "black" : "#a0a0a0",
               borderBottom:
                 location.pathname === "/username/replies"
-                  ? "2px solid black"
-                  : "none",
+                  ? "3px solid black"
+                  : "1px solid #E5E5E5",
             }}
           >
             <Text fontWeight={"bold"}>Replies</Text>

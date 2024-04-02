@@ -11,7 +11,7 @@ const UserPost = () => {
         <Flex gap={3} marginBottom={4} py={5}>
           <Flex flexDirection={"column"} alignItems={"center"}>
             <Avatar size={"md"} name="Olagunju Emmanuel" src="/mlo.jpg" />
-            <Box w={"1px"} h={"full"} bg={"gray.light"} my={2}></Box>
+            <Box w={"1px"} h={"full"} bg={"#E5E5E5"} my={2}></Box>
             <Box position={"relative"} w={"full"}>
               <Avatar
                 size={"xs"}
@@ -59,6 +59,15 @@ const UserPost = () => {
                 <BsThreeDots />
               </Flex>
             </Flex>
+            <Text fontSize={"small"}>This is my first post</Text>
+            <Box
+              borderRadius={6}
+              overflow={"hidden"}
+              border={"1px solid "}
+              borderColor={"#E5E5E5"}
+            >
+              <Image src="./photo-1543248939-ff40856f65d4.avif" />
+            </Box>
           </Flex>
         </Flex>
       </Link>
