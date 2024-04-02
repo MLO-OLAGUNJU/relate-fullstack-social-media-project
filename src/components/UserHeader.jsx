@@ -30,7 +30,7 @@ const UserHeader = () => {
               p={1}
               borderRadius={"full"}
             >
-              relate.net
+              <Link>relate.net</Link>
             </Text>
           </Flex>
         </Box>
@@ -53,12 +53,9 @@ const UserHeader = () => {
         <Flex gap={2} alignItems={"center"}>
           <Text color={"gray.light"}>1.1M Followers</Text>
           <Box w={1} h={1} bg={"gray.light"} borderRadius={"full"}></Box>
-          <Link color={"gray.light"}>linkedin.com/in/mlo-olagunju</Link>
+          <Link color={"gray.light"}>mlo-olagunju-portfolio.vercel.app</Link>
         </Flex>
         <Flex>
-          {/* <Box className="icon-container">
-            <CgInstagram size={24} cursor={"pointer"} />
-          </Box> */}
           <Menu>
             <Box className="icon-container">
               <MenuButton>

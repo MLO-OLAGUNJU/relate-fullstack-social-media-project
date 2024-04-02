@@ -12,7 +12,13 @@ import {
   Button,
   useColorMode,
 } from "@chakra-ui/react";
-import { CgArrowLeft, CgMenuRight, CgMoon, CgSun } from "react-icons/cg";
+import {
+  CgArrowLeft,
+  CgClose,
+  CgMenuRight,
+  CgMoon,
+  CgSun,
+} from "react-icons/cg";
 import { Link } from "react-router-dom";
 
 const Header = () => {
@@ -89,8 +95,8 @@ const Header = () => {
             }`}
           >
             <div className="flex items-center gap-14 w-full">
-              <Button onClick={combinedFunction1} bg={"transparent"}>
-                <CgArrowLeft size={25} />
+              <Button onClick={handleClick} bg={"transparent"}>
+                <CgClose size={25} />
               </Button>
             </div>
             <button
