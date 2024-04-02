@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Flex,
@@ -11,9 +11,26 @@ import {
   MenuList,
   MenuItem,
   Link,
+  useToast,
 } from "@chakra-ui/react";
-import { CgInstagram, CgMore } from "react-icons/cg";
+import { CgMore } from "react-icons/cg";
+import { Link as Linking, useLocation } from "react-router-dom";
+// import { toast } from "react-hot-toast";
 const UserHeader = () => {
+  const location = useLocation();
+  const toast = useToast();
+  const copyUrl = () => {
+    const currentUrl = window.location.href;
+    navigator.clipboard.writeText(currentUrl).then(() => {
+      toast({
+        status: "success",
+        position: "top-center",
+        duration: 3000,
+        description: "Profile link has been copied to clipboard",
+      });
+    });
+  };
+
   return (
     <VStack gap={4} alignItems={"start"}>
       <Flex justifyContent={"space-between"} w={"full"}>
@@ -33,13 +50,15 @@ const UserHeader = () => {
                 bg: "gray.light",
               }}
             >
-              <Link
-                _light={{
-                  color: "#000",
-                }}
-              >
-                relate.net
-              </Link>
+              <Linking to={"/"}>
+                <Link
+                  _light={{
+                    color: "#000",
+                  }}
+                >
+                  relate.net
+                </Link>
+              </Linking>
             </Text>
           </Flex>
         </Box>
@@ -92,6 +111,7 @@ const UserHeader = () => {
                       color: "#fff",
                     }}
                     bg={"gray.dark"}
+                    onClick={copyUrl}
                   >
                     Copy link
                   </MenuItem>
@@ -100,6 +120,42 @@ const UserHeader = () => {
             </Box>
           </Menu>
         </Flex>
+      </Flex>
+      <Flex w={"full"}>
+        <Linking to="/username" className="flex-1">
+          <Flex
+            flex={1}
+            justifyContent={"center"}
+            pb={3}
+            cursor={"pointer"}
+            borderBottom={
+              location.pathname === "/username"
+                ? "2px solid white"
+                : "1px solid gray"
+            }
+            color={location.pathname === "/username" ? "white" : "gray.light"}
+          >
+            <Text fontWeight={"bold"}>Relates</Text>
+          </Flex>
+        </Linking>
+        <Linking to="/username/replies" className="flex-1">
+          <Flex
+            flex={1}
+            justifyContent={"center"}
+            pb={3}
+            cursor={"pointer"}
+            borderBottom={
+              location.pathname === "/username/replies"
+                ? "2px solid white"
+                : "1px solid gray"
+            }
+            color={
+              location.pathname === "/username/replies" ? "white" : "gray.light"
+            }
+          >
+            <Text fontWeight={"bold"}>Replies</Text>
+          </Flex>
+        </Linking>
       </Flex>
     </VStack>
   );
