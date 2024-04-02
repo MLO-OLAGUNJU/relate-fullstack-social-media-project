@@ -64,7 +64,10 @@ const UserHeader = () => {
             cursor={"pointer"}
             name="MLO Olagunju"
             src="/mlo.jpg"
-            size={"xl"}
+            size={{
+              base: "md",
+              md: "xl",
+            }}
           />
         </Box>
       </Flex>
@@ -124,7 +127,7 @@ const UserHeader = () => {
             borderBottom={
               location.pathname === "/username"
                 ? "3px solid white"
-                : "1px solid #E5E5E5"
+                : "1px solid #333638"
             }
             color={location.pathname === "/username" ? "white" : "gray.light"}
             _light={{
@@ -147,7 +150,7 @@ const UserHeader = () => {
             borderBottom={
               location.pathname === "/username/replies"
                 ? "3px solid white"
-                : "1px solid #E5E5E5"
+                : "1px solid #333638"
             }
             color={
               location.pathname === "/username/replies" ? "white" : "gray.light"

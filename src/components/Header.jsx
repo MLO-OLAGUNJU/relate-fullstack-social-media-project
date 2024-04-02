@@ -1,24 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {
-  Flex,
-  Image,
-  MenuButton,
-  Menu,
-  Portal,
-  MenuList,
-  MenuItem,
-  Text,
-  Box,
-  Button,
-  useColorMode,
-} from "@chakra-ui/react";
-import {
-  CgArrowLeft,
-  CgClose,
-  CgMenuRight,
-  CgMoon,
-  CgSun,
-} from "react-icons/cg";
+import { Flex, Image, Button, useColorMode } from "@chakra-ui/react";
+import { CgClose, CgMenuRight, CgMoon, CgSun } from "react-icons/cg";
 import { Link } from "react-router-dom";
 
 const Header = () => {
