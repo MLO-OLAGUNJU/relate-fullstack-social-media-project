@@ -11,7 +11,7 @@ function App() {
         <Container maxW={"90%"}>
           <Header />
         </Container>
-        <Container maxW="620px">
+        <Container maxW="680px">
           <Routes>
             <Route path="/:username" element={<UserPage />} />
             <Route path="/:username/post/:pid" element={<PostPage />} />

@@ -1,15 +1,28 @@
 import React from "react";
-import { Box, Flex, VStack, Text, Avatar } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  VStack,
+  Text,
+  Avatar,
+  MenuButton,
+  Menu,
+  Portal,
+  MenuList,
+  MenuItem,
+  Link,
+} from "@chakra-ui/react";
+import { CgInstagram, CgMore } from "react-icons/cg";
 const UserHeader = () => {
   return (
     <VStack gap={4} alignItems={"start"}>
       <Flex justifyContent={"space-between"} w={"full"}>
         <Box>
           <Text fontSize={"2xl"} fontWeight={"bold"}>
-            Olagunju Emmanuel
+            Olagunju Oladele Emmanuel
           </Text>
           <Flex gap={2} alignItems={"center"}>
-            <Text fontSize={"sm"}>olagunjuemmanuel</Text>
+            <Text fontSize={"sm"}>mlo-olagunju</Text>
             <Text
               fontSize={"xs"}
               bg={"gray.dark"}
@@ -36,7 +49,30 @@ const UserHeader = () => {
         Developer | SFC® | AGILE | Theology Scholar
       </Text>
 
-      <Flex w={"full"}></Flex>
+      <Flex w={"full"} justifyContent={"space-between"}>
+        <Flex gap={2} alignItems={"center"}>
+          <Text color={"gray.light"}>1.1M Followers</Text>
+          <Box w={1} h={1} bg={"gray.light"} borderRadius={"full"}></Box>
+          <Link color={"gray.light"}>linkedin.com/in/mlo-olagunju</Link>
+        </Flex>
+        <Flex>
+          {/* <Box className="icon-container">
+            <CgInstagram size={24} cursor={"pointer"} />
+          </Box> */}
+          <Menu>
+            <Box className="icon-container">
+              <MenuButton>
+                <CgMore size={24} cursor={"pointer"} />
+              </MenuButton>
+              <Portal>
+                <MenuList>
+                  <MenuItem>Copy link</MenuItem>
+                </MenuList>
+              </Portal>
+            </Box>
+          </Menu>
+        </Flex>
+      </Flex>
     </VStack>
   );
 };

@@ -1,5 +1,17 @@
-import React, { useState } from "react";
-import { Flex, Image, VStack, Button, useColorMode } from "@chakra-ui/react";
+import React, { useState, useEffect } from "react";
+import {
+  Flex,
+  Image,
+  MenuButton,
+  Menu,
+  Portal,
+  MenuList,
+  MenuItem,
+  Text,
+  Box,
+  Button,
+  useColorMode,
+} from "@chakra-ui/react";
 import { CgArrowLeft, CgMenuRight, CgMoon, CgSun } from "react-icons/cg";
 import { Link } from "react-router-dom";
 
@@ -12,9 +24,25 @@ const Header = () => {
     setIsOpen(!isOpen);
   };
   const handleClick1 = () => {
-    setIsOpen(!isOpen);
     setIsOpen1(!isOpen1);
+    setIsOpen(!isOpen);
   };
+
+  const handleClickOutside = (event) => {
+    if (!event.target.closest(".your-navbar-class")) {
+      // Replace with your navbar class
+      setIsOpen(false); // Close navbar if clicked outside
+      setIsOpen1(false); // Also close the Appearance submenu
+    }
+  };
+
+  useEffect(() => {
+    // Add event listener on component mount
+    document.addEventListener("click", handleClickOutside);
+
+    // Remove event listener on component unmount
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []); // Empty dependency array to run only once
 
   const combinedFunction1 = () => {
     handleClick();
@@ -22,7 +50,7 @@ const Header = () => {
   };
 
   return (
-    <div>
+    <div className="your-navbar-class">
       <Flex
         position={"relative"}
         justifyContent={"space-between"}
@@ -52,20 +80,16 @@ const Header = () => {
         </button>
         {isOpen && (
           <div
-            className={`flex items-start justify-start rounded-xl flex-col absolute w-[177px] top-8 right-8 overflow-hidden ${
-              colorMode === "light" && "shadow-md"
+            className={`z-50 flex items-start justify-start rounded-xl p-4 w-full md:py-8 md:px-3 flex-col absolute md:w-[350px] top-10 md:right-8 overflow-hidden ${
+              colorMode === "dark" ? " bg-[#181818]" : "shadow-md bg-[#f9f9f9]"
             }`}
           >
-            <button
-              className={`w-full text-start pl-5 py-4  ${
-                colorMode === "dark"
-                  ? " border-b-[#272727] border-b-[1px] border-solid bg-[#181818]"
-                  : " border-b-[#e8e8e8]  border-b-[1px] border-solid bg-[#f9f9f9]"
-              }`}
-              onClick={combinedFunction1}
-            >
-              Appearance
-            </button>
+            <div className="flex items-center gap-14 w-full">
+              <Button onClick={combinedFunction1} bg={"transparent"}>
+                <CgArrowLeft size={25} />
+              </Button>
+              {/* <span className=" text-lg">Appearance</span> */}
+            </div>
             <button
               className={`w-full text-start pl-5 py-4  ${
                 colorMode === "dark"
@@ -94,45 +118,38 @@ const Header = () => {
             >
               Log out
             </button>
+
+            <div className="grid grid-cols-2 w-full mt-10 gap-2">
+              <Button
+                padding={6}
+                rounded={"xl"}
+                onClick={colorMode === "dark" && toggleColorMode}
+              >
+                <CgSun size={30} />
+              </Button>
+
+              <Button
+                padding={6}
+                rounded={"xl"}
+                onClick={colorMode === "light" && toggleColorMode}
+              >
+                <CgMoon size={30} />
+              </Button>
+            </div>
           </div>
         )}
-
+        {/* 
         {isOpen1 && (
           <>
             <div
-              className={`flex items-start justify-start rounded-xl p-4 w-full md:py-8 md:px-3 flex-col absolute md:w-[350px] top-10 md:right-8 overflow-hidden ${
+              className={`z-50 flex items-start justify-start rounded-xl p-4 w-full md:py-8 md:px-3 flex-col absolute md:w-[350px] top-10 md:right-8 overflow-hidden ${
                 colorMode === "dark"
                   ? " bg-[#181818]"
                   : "shadow-md bg-[#f9f9f9]"
               }`}
-            >
-              <div className="flex items-center gap-14 w-full">
-                <Button onClick={handleClick1} bg={"transparent"}>
-                  <CgArrowLeft size={25} />
-                </Button>
-                <span className=" text-lg">Appearance</span>
-              </div>
-
-              <div className="grid grid-cols-2 w-full mt-10 gap-2">
-                <Button
-                  padding={6}
-                  rounded={"xl"}
-                  onClick={colorMode === "dark" && toggleColorMode}
-                >
-                  <CgSun size={30} />
-                </Button>
-
-                <Button
-                  padding={6}
-                  rounded={"xl"}
-                  onClick={colorMode === "light" && toggleColorMode}
-                >
-                  <CgMoon size={30} />
-                </Button>
-              </div>
-            </div>
+            ></div>
           </>
-        )}
+        )} */}
       </Flex>
     </div>
   );
