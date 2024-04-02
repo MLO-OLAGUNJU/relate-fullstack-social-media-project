@@ -29,8 +29,17 @@ const UserHeader = () => {
               color={"gray.light"}
               p={1}
               borderRadius={"full"}
+              _light={{
+                bg: "gray.light",
+              }}
             >
-              <Link>relate.net</Link>
+              <Link
+                _light={{
+                  color: "#000",
+                }}
+              >
+                relate.net
+              </Link>
             </Text>
           </Flex>
         </Box>
@@ -60,22 +69,27 @@ const UserHeader = () => {
             <Box
               className="icon-container"
               _hover={{
-                bg: "gray.300",
+                bg: "gray.light",
               }}
             >
               <MenuButton>
-                <CgMore size={24} cursor={"pointer"} />
+                <CgMore
+                  size={24}
+                  cursor={"pointer"}
+                  className="hover:text-white"
+                />
               </MenuButton>
               <Portal>
                 <MenuList
                   bg={"gray.dark"}
                   _light={{
-                    bg: "gray.100",
+                    bg: "gray.light",
                   }}
                 >
                   <MenuItem
                     _light={{
-                      bg: "gray.100",
+                      bg: "gray.light",
+                      color: "#fff",
                     }}
                     bg={"gray.dark"}
                   >
