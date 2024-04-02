@@ -57,13 +57,30 @@ const UserHeader = () => {
         </Flex>
         <Flex>
           <Menu>
-            <Box className="icon-container">
+            <Box
+              className="icon-container"
+              _hover={{
+                bg: "gray.300",
+              }}
+            >
               <MenuButton>
                 <CgMore size={24} cursor={"pointer"} />
               </MenuButton>
               <Portal>
-                <MenuList>
-                  <MenuItem>Copy link</MenuItem>
+                <MenuList
+                  bg={"gray.dark"}
+                  _light={{
+                    bg: "gray.100",
+                  }}
+                >
+                  <MenuItem
+                    _light={{
+                      bg: "gray.100",
+                    }}
+                    bg={"gray.dark"}
+                  >
+                    Copy link
+                  </MenuItem>
                 </MenuList>
               </Portal>
             </Box>
