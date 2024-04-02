@@ -13,7 +13,7 @@ import {
   Link,
   useToast,
 } from "@chakra-ui/react";
-import { CgMore } from "react-icons/cg";
+import { PiDotsThreeCircleDuotone } from "react-icons/pi";
 import { Link as Linking, useLocation } from "react-router-dom";
 // import { toast } from "react-hot-toast";
 const UserHeader = () => {
@@ -46,14 +46,14 @@ const UserHeader = () => {
               color={"gray.light"}
               p={1}
               borderRadius={"full"}
-              _light={{
-                bg: "gray.light",
-              }}
+              // _light={{
+              //   bg: "gray.light",
+              // }}
             >
               <Linking to={"/"}>
                 <Link
                   _light={{
-                    color: "#000",
+                    color: "#fff",
                   }}
                 >
                   relate.net
@@ -88,15 +88,11 @@ const UserHeader = () => {
             <Box
               className="icon-container"
               _hover={{
-                bg: "gray.light",
+                bg: "transparent",
               }}
             >
               <MenuButton>
-                <CgMore
-                  size={24}
-                  cursor={"pointer"}
-                  className="hover:text-white"
-                />
+                <PiDotsThreeCircleDuotone size={40} cursor={"pointer"} />
               </MenuButton>
               <Portal>
                 <MenuList
