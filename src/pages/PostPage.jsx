@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import {
   Flex,
@@ -16,6 +16,7 @@ import { BsThreeDots } from "react-icons/bs";
 import Actions from "../components/Actions";
 
 const PostPage = () => {
+  const [liked, setLiked] = useState(false);
   return (
     <div>
       <Flex justifyContent={"space-between"}>
@@ -99,7 +100,7 @@ const PostPage = () => {
       {/* )} */}
 
       <Flex gap={3} my={3}>
-        <Actions />
+        <Actions liked={liked} setLiked={setLiked} />
       </Flex>
     </div>
   );
