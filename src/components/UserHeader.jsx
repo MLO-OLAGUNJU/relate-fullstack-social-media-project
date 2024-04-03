@@ -24,7 +24,7 @@ const UserHeader = () => {
     navigator.clipboard.writeText(currentUrl).then(() => {
       toast({
         status: "success",
-        position: "top-center",
+        position: "bottom-center",
         duration: 3000,
         description: "Profile link has been copied to clipboard",
       });

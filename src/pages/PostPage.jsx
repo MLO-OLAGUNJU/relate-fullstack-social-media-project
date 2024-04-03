@@ -11,12 +11,27 @@ import {
   Box,
   MenuItem,
   Image,
+  useToast,
 } from "@chakra-ui/react";
 import { BsThreeDots } from "react-icons/bs";
 import Actions from "../components/Actions";
+// import { useLocation } from "react-router-dom";
 
 const PostPage = () => {
   const [liked, setLiked] = useState(false);
+  const toast = useToast();
+
+  const copyUrl = () => {
+    const currentUrl = window.location.href;
+    navigator.clipboard.writeText(currentUrl).then(() => {
+      toast({
+        status: "success",
+        position: "bottom-center",
+        duration: 3000,
+        description: "Post link has been copied to clipboard",
+      });
+    });
+  };
   return (
     <div>
       <Flex justifyContent={"space-between"}>
@@ -64,18 +79,16 @@ const PostPage = () => {
                     >
                       Unfollow
                     </MenuItem>
-                    {/* <MenuItem
+                    <MenuItem
                       _light={{
                         bg: "gray.light",
                         // color: "#fff",
                       }}
                       bg={"gray.dark"}
-                      color={"red"}
-
-                      // onClick={copyUrl}
+                      onClick={copyUrl}
                     >
-                      Report post
-                    </MenuItem> */}
+                      Copy post URL
+                    </MenuItem>
                   </MenuList>
                 </Portal>
               </Box>
@@ -84,7 +97,7 @@ const PostPage = () => {
         </Flex>
       </Flex>
 
-      <Text my={3}>Hehe everyone take a look at this </Text>
+      <Text my={3}>Be great always</Text>
       {/* {postImg && ( */}
       <Box
         borderRadius={6}
@@ -95,12 +108,22 @@ const PostPage = () => {
           borderColor: "#E5E5E5",
         }}
       >
-        <Image src={"/photo-1562038969-e85c13ecb2ac.avif"} w={"full"} />
+        <Image src={"/post1.avif"} w={"full"} />
       </Box>
       {/* )} */}
 
       <Flex gap={3} my={3}>
         <Actions liked={liked} setLiked={setLiked} />
+      </Flex>
+
+      <Flex gap={2} alignItems={"center"}>
+        <Text color={"gray.light"} fontSize={"sm"}>
+          238 replies
+        </Text>
+        <Box w={0.5} h={0.5} borderRadius={"full"} bg={"gray.light"}></Box>
+        <Text color={"gray.light"} fontSize={"sm"}>
+          {638 + (liked ? 1 : 0)} likes
+        </Text>
       </Flex>
     </div>
   );

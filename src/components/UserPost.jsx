@@ -111,10 +111,11 @@ const UserPost = ({ postImg, postTitle, likes, replies }) => {
                         <MenuItem
                           _light={{
                             bg: "gray.light",
-                            color: "#fff",
+                            // color: "#fff",
                           }}
                           bg={"gray.dark"}
                           // onClick={copyUrl}
+                          color={"red"}
                         >
                           Delete Post
                         </MenuItem>
