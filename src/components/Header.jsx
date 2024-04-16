@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 const Header = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const [isOpen, setIsOpen] = useState(false);
-  const [isOpen1, setIsOpen1] = useState(false);
 
   const handleClick = () => {
     setIsOpen(!isOpen);
@@ -62,7 +61,7 @@ const Header = () => {
           />
         </Link>
 
-        <button onClick={!isOpen1 && handleClick}>
+        <button onClick={handleClick}>
           <CgMenuRight
             className={`transition opacity-30 hover:opacity-100 cursor-pointer ${
               colorMode === "dark" ? "text-white " : "text-black "

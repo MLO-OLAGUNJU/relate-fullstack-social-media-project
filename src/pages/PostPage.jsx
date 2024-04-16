@@ -8,14 +8,17 @@ import {
   Menu,
   Portal,
   MenuList,
+  Button,
   Box,
   MenuItem,
   Image,
   useToast,
+  Divider,
 } from "@chakra-ui/react";
 import { BsThreeDots } from "react-icons/bs";
 import Actions from "../components/Actions";
-// import { useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
+import Comments from "../components/Comments";
 
 const PostPage = () => {
   const [liked, setLiked] = useState(false);
@@ -82,7 +85,7 @@ const PostPage = () => {
                     <MenuItem
                       _light={{
                         bg: "gray.light",
-                        // color: "#fff",
+                        color: "#fff",
                       }}
                       bg={"gray.dark"}
                       onClick={copyUrl}
@@ -125,6 +128,50 @@ const PostPage = () => {
           {638 + (liked ? 1 : 0)} likes
         </Text>
       </Flex>
+
+      <Divider my={4} />
+
+      <Flex justifyContent={"space-between"}>
+        <Flex gap={2} alignItems={"center"}>
+          <Text fontSize={"2xl"}>🔔</Text>
+          <Text color={"gray.light"}>
+            Hire me, Olagunju Emmanuel, a full-stack developer, to build your
+            product, click to send an email.
+          </Text>
+        </Flex>
+        <Link to={"mailto:oladeleemmanuelolagunju@gmail.com"}>
+          <Button>Send email</Button>
+        </Link>
+      </Flex>
+      <Divider my={4} />
+      <Comments
+        comment={"Hey this looks great!"}
+        createdAt={"2d"}
+        likes={100}
+        userAvatar={"/mlo.png"}
+        username={"backsmith"}
+      />
+      <Comments
+        comment={"Haha yeah"}
+        createdAt={"1d"}
+        likes={500}
+        userAvatar={"/mlo.png"}
+        username={"flipHim"}
+      />
+      <Comments
+        comment={"Affirmations.."}
+        createdAt={"2d"}
+        likes={189}
+        userAvatar={"/mlo.png"}
+        username={"jim_fish"}
+      />
+      <Comments
+        comment={"MLO our man"}
+        createdAt={"2d"}
+        likes={890}
+        userAvatar={"/mlo.png"}
+        username={"mlo_fc"}
+      />
     </div>
   );
 };
