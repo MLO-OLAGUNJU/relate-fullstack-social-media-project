@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 // import { v2 as cloudinary } from "cloudinary";
 import generateTokenAndSetCookie from "../utils/helpers/generateTokenAndSetCookie.js";
 
+//Signup User
 const signUpUser = async (req, res) => {
   try {
     const { name, email, username, password } = req.body;
@@ -42,4 +43,8 @@ const signUpUser = async (req, res) => {
   }
 };
 
-export { signUpUser };
+//Login User
+
+const loginUser = (async = (req, res) => {});
+
+export { signUpUser, loginUser };
