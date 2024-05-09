@@ -45,6 +45,13 @@ const signUpUser = async (req, res) => {
 
 //Login User
 
-const loginUser = (async = (req, res) => {});
+const loginUser = (async = (req, res) => {
+  try {
+    const { username, password } = req.body;
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+    console.log("Error in loginUser:", error.message);
+  }
+});
 
 export { signUpUser, loginUser };
