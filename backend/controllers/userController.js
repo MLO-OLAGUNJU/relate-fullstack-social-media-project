@@ -86,6 +86,7 @@ const followUser = async (req, res) => {
   try {
     const { id } = req.params;
     const userToFollow = await User.findById(id);
+    const currentUser = await User.find;
   } catch (error) {
     res.status(500).json({ message: error.message });
     console.log("Error in followUser:", error.message);
