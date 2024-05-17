@@ -1,6 +1,6 @@
 import express from "express";
 import {
-  followUser,
+  followUnfollowUser,
   loginUser,
   logoutUser,
   signUpUser,
@@ -12,7 +12,7 @@ const router = express.Router();
 router.post("/signup", signUpUser);
 router.post("/login", loginUser);
 router.post("/logout", logoutUser);
-router.post("/follow:id", protectRoute, followUser);
+router.post("/followunfollow:id", protectRoute, followUnfollowUser);
 // router.post("/unfollow:id", protectRoute, unfollowUser);
 
 export default router;
