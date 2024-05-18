@@ -105,10 +105,31 @@ const likeUnlikePost = async (req, res) => {
   }
 };
 
-//to reply
+//to reply to post/ comment
 const replyToPost = async (req, res) => {
   try {
-  } catch (err) {
+    const { text } = req.body;
+    const postId = req.params.id;
+    const userId = req.user._id;
+    const userProfilePIc = req.user.profilePic;
+    const username = req.user.username;
+
+    if (!text) {
+      return res.status(400).json({ message: "Text field is required" });
+    }
+
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    const reply = { userId, text, userProfilePIc, username };
+
+    post.replies.push(reply);
+    await post.save();
+
+    res.status(200).json({ massage: "Reply added succesfully", post });
+  } catch {
     res.status(500).json({ error: err.message });
     console.log("Error in replyToPost: ", err.message);
   }
