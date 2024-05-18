@@ -25,7 +25,7 @@ const createPost = async (req, res) => {
 
     if (text.length > maxLength) {
       return res.status(400).json({
-        message: "Text must be less than " + maxLength + " characters",
+        error: "Text must be less than " + maxLength + " characters",
       });
     }
 
@@ -45,7 +45,7 @@ const getPost = async (req, res) => {
     const post = await Post.findById(req.params.id);
 
     if (!post) {
-      return res.ststatus(400).json({ message: "Post not found" });
+      return res.ststatus(400).json({ error: "Post not found" });
     }
 
     res.status(200).json(post);
@@ -60,7 +60,7 @@ const deletePost = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
     if (!post) {
-      return res.status(404).json({ message: "Post not found" });
+      return res.status(404).json({ error: "Post not found" });
     }
 
     if (post.postedBy.toString() !== req.user._id.toString()) {
@@ -85,7 +85,7 @@ const likeUnlikePost = async (req, res) => {
     const post = await Post.findById(postId);
 
     if (!post) {
-      return res.status(404).json({ message: "Post not found" });
+      return res.status(404).json({ error: "Post not found" });
     }
 
     const userLikedPost = post.likes.includes(userId);
@@ -115,12 +115,12 @@ const replyToPost = async (req, res) => {
     const username = req.user.username;
 
     if (!text) {
-      return res.status(400).json({ message: "Text field is required" });
+      return res.status(400).json({ error: "Text field is required" });
     }
 
     const post = await Post.findById(postId);
     if (!post) {
-      return res.status(404).json({ message: "Post not found" });
+      return res.status(404).json({ error: "Post not found" });
     }
 
     const reply = { userId, text, userProfilePIc, username };
@@ -141,7 +141,7 @@ const getFeedsPosts = async (req, res) => {
     const userId = req.user._id;
     const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ error: "User not found" });
     }
 
     const following = user.following;
