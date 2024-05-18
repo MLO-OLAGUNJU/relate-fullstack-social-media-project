@@ -5,7 +5,6 @@ import {
   FormLabel,
   Input,
   InputGroup,
-  HStack,
   InputRightElement,
   Stack,
   Button,
@@ -19,22 +18,15 @@ import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useSetRecoilState } from "recoil";
 import authScreenAtom from "../atoms/authAtom";
 
-export default function SignupCard() {
+export default function LoginInCard() {
   const [showPassword, setShowPassword] = useState(false);
   const setAuthScreenState = useSetRecoilState(authScreenAtom);
-
-  const handleSignUp = async () => {
-    try {
-    } catch (error) {
-      console.log(error);
-    }
-  };
   return (
     <Flex align={"center"} justify={"center"}>
-      <Stack spacing={8} mx={"auto"} maxW={"lg"} px={6} pb={8}>
+      <Stack spacing={8} mx={"auto"} maxW={"lg"} px={6}>
         <Stack align={"center"}>
           <Heading fontSize={"4xl"} textAlign={"center"}>
-            Sign up
+            Log In
           </Heading>
         </Stack>
         <Box
@@ -42,32 +34,16 @@ export default function SignupCard() {
           bg={useColorModeValue("white", "gray.dark")}
           boxShadow={"lg"}
           p={8}
+          w={{
+            base: "full",
+            sm: "400px",
+          }}
         >
           <Stack spacing={4}>
-            <HStack>
-              <Box>
-                <FormControl isRequired>
-                  <FormLabel>Full Name</FormLabel>
-                  <Input
-                    type="text"
-                    outline={useColorModeValue("gray.600", "gray.700")}
-                  />
-                </FormControl>
-              </Box>
-              <Box>
-                <FormControl isRequired>
-                  <FormLabel>Username</FormLabel>
-                  <Input
-                    type="text"
-                    outline={useColorModeValue("gray.600", "gray.700")}
-                  />
-                </FormControl>
-              </Box>
-            </HStack>
             <FormControl isRequired>
-              <FormLabel>Email address</FormLabel>
+              <FormLabel>Username</FormLabel>
               <Input
-                type="email"
+                type="text"
                 outline={useColorModeValue("gray.600", "gray.700")}
               />
             </FormControl>
@@ -99,19 +75,18 @@ export default function SignupCard() {
                 _hover={{
                   bg: useColorModeValue("gray.700", "gray.800"),
                 }}
-                onClick={handleSignUp}
               >
-                Sign up
+                Log In
               </Button>
             </Stack>
             <Stack pt={6}>
               <Text align={"center"}>
-                Already a user?{" "}
+                Don&apos;t have an account?{" "}
                 <Link
-                  onClick={() => setAuthScreenState("login")}
+                  onClick={() => setAuthScreenState("signup")}
                   color={"blue.400"}
                 >
-                  Login
+                  Sign Up
                 </Link>
               </Text>
             </Stack>
