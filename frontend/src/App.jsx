@@ -5,6 +5,8 @@ import PostPage from "./pages/PostPage";
 import Header from "./components/Header";
 import { Toaster } from "react-hot-toast";
 import Replies from "./pages/Replies";
+import HomePage from "./pages/HomePage";
+import AuthPage from "./pages/AuthPage";
 
 function App() {
   return (
@@ -15,6 +17,9 @@ function App() {
         </Container>
         <Container maxW="680px">
           <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/auth" element={<AuthPage />} />
+
             <Route path="/:username" element={<UserPage />} />
             <Route path="/:username/post/:pid" element={<PostPage />} />
             <Route path="/:username/replies" element={<Replies />} />
