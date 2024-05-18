@@ -23,8 +23,25 @@ export default function SignupCard() {
   const [showPassword, setShowPassword] = useState(false);
   const setAuthScreenState = useSetRecoilState(authScreenAtom);
 
+  const [inputs, setInputs] = useState({
+    name: "",
+    username: "",
+    email: "",
+    password: "",
+  });
+
   const handleSignUp = async () => {
+    console.log(inputs);
     try {
+      const res = await fetch("/api/users/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(inputs),
+      });
+      const data = await res.json();
+      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -49,6 +66,10 @@ export default function SignupCard() {
                 <FormControl isRequired>
                   <FormLabel>Full Name</FormLabel>
                   <Input
+                    onChange={(e) =>
+                      setInputs({ ...inputs, name: e.target.value })
+                    }
+                    value={inputs.name}
                     type="text"
                     outline={useColorModeValue("gray.600", "gray.700")}
                   />
@@ -58,6 +79,10 @@ export default function SignupCard() {
                 <FormControl isRequired>
                   <FormLabel>Username</FormLabel>
                   <Input
+                    onChange={(e) =>
+                      setInputs({ ...inputs, username: e.target.value })
+                    }
+                    value={inputs.username}
                     type="text"
                     outline={useColorModeValue("gray.600", "gray.700")}
                   />
@@ -67,6 +92,10 @@ export default function SignupCard() {
             <FormControl isRequired>
               <FormLabel>Email address</FormLabel>
               <Input
+                onChange={(e) =>
+                  setInputs({ ...inputs, email: e.target.value })
+                }
+                value={inputs.email}
                 type="email"
                 outline={useColorModeValue("gray.600", "gray.700")}
               />
@@ -75,6 +104,10 @@ export default function SignupCard() {
               <FormLabel>Password</FormLabel>
               <InputGroup>
                 <Input
+                  onChange={(e) =>
+                    setInputs({ ...inputs, password: e.target.value })
+                  }
+                  value={inputs.password}
                   outline={useColorModeValue("gray.600", "gray.700")}
                   type={showPassword ? "text" : "password"}
                 />
