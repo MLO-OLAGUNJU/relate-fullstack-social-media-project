@@ -3,13 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const HomePage = () => {
-  return (
-    <Link to={"/mlo"}>
-      <Flex w={"full"} justifyContent={"center"}>
-        <Button mx={"auto"}>Visit Profile Page</Button>
-      </Flex>
-    </Link>
-  );
+  return <></>;
 };
 
 export default HomePage;

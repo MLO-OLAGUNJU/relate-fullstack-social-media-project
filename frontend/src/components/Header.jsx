@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Flex, Image, Button, useColorMode } from "@chakra-ui/react";
 import { CgClose, CgMenuRight, CgMoon, CgSun } from "react-icons/cg";
 import { Link } from "react-router-dom";
+import LogoutButton from "./LogoutButton";
 
 const Header = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -80,16 +81,19 @@ const Header = () => {
                 <CgClose size={25} />
               </Button>
             </div>
-            <button
-              className={`w-full text-start pl-5 py-4  ${
-                colorMode === "dark"
-                  ? " border-b-[#272727] border-b-[1px] border-solid bg-[#181818]"
-                  : " border-b-[#e8e8e8]  border-b-[1px] border-solid bg-[#f9f9f9]"
-              }`}
-              onClick={handleClick}
-            >
-              Your Profile
-            </button>
+
+            <Link to={"/mlo"}>
+              <button
+                className={`w-full text-start pl-5 py-4  ${
+                  colorMode === "dark"
+                    ? " border-b-[#272727] border-b-[1px] border-solid bg-[#181818]"
+                    : " border-b-[#e8e8e8]  border-b-[1px] border-solid bg-[#f9f9f9]"
+                }`}
+                onClick={handleClick}
+              >
+                Your Profile
+              </button>
+            </Link>
             <button
               className={`w-full text-start pl-5 py-4  ${
                 colorMode === "dark"
@@ -100,15 +104,10 @@ const Header = () => {
             >
               Settings
             </button>
-            <button
-              className={`w-full text-start pl-5 py-4  ${
-                colorMode === "dark" ? " bg-[#181818]" : "  bg-[#f9f9f9]"
-              }`}
-              onClick={handleClick}
-            >
-              Log out
-            </button>
 
+            {/*  */}
+            <LogoutButton />
+            {/*  */}
             <div className="grid grid-cols-2 w-full mt-3 gap-2">
               <Button padding={6} rounded={"xl"} onClick={combinedFunction1}>
                 <CgSun size={30} />
