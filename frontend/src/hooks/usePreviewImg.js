@@ -6,19 +6,15 @@ const usePreviewImg = () => {
   const showToast = useShowToast();
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    // if (file && file.type.startsWith("image/")) {
-    //   const reader = new FileReader();
+    if (file && file.type.startsWith("image/")) {
+      const reader = new FileReader();
 
-    //   reader.onloadend = () => {
-    //     setImgUrl(reader.result);
-    //   };
+      reader.onloadend = () => {
+        setImgUrl(reader.result);
+      };
 
-    //   reader.readAsDataURL(file);
-    // } else {
-    //   showToast("Invalid file type", " Please select an image file", "error");
-    //   setImgUrl(null);
-    // }
-
+      reader.readAsDataURL(file);
+    }
     console.log(file);
   };
   return { handleImageChange, imgUrl, setImgUrl };
