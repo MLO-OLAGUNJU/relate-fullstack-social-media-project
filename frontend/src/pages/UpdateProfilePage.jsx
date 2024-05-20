@@ -10,8 +10,49 @@ import {
   Avatar,
   Center,
 } from "@chakra-ui/react";
+import { useRef, useState } from "react";
+import useShowToast from "../hooks/useShowToast";
+import { useRecoilState } from "recoil";
+import userAtom from "../atoms/userAtom";
+import usePreviewImg from "../hooks/usePreviewImg";
 
 export default function UpdateProfilePage() {
+  const showToast = useShowToast();
+  const [user, setUser] = useRecoilState(userAtom);
+  const [inputs, setInputs] = useState({
+    name: user.name,
+    username: user.username,
+    email: user.email,
+    password: "",
+    profilePic: user.profilePic,
+    bio: user.bio,
+  });
+  const handleUpdateProfile = async () => {
+    try {
+      const res = await fetch("/api/users//update/:id", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(inputs),
+      });
+
+      const data = await res.json();
+
+      if (data.error) {
+        showToast("Error", data.error, "error");
+        return;
+      }
+    } catch (error) {
+      console.log(error);
+      showToast("Error", error, "error");
+    }
+  };
+
+  const fileRef = useRef(null);
+
+  const { handleImageChange } = usePreviewImg();
+
   return (
     <Flex
       align={"center"}
@@ -34,10 +75,24 @@ export default function UpdateProfilePage() {
         <FormControl>
           <Stack direction={["column", "row"]} spacing={6}>
             <Center>
-              <Avatar size="xl" src="https://bit.ly/sage-adebayo" />
+              <Avatar
+                border={useColorModeValue("1px solid white", "1px solid black")}
+                size="xl"
+                src={user.profilePic}
+              />
             </Center>
             <Center w="full">
-              <Button w="full">Change Avatar</Button>
+              <Center w="full">
+                <Button w="full" onClick={() => fileRef.current.click()}>
+                  Change Avatar
+                </Button>
+                <Input
+                  type="file"
+                  hidden
+                  ref={fileRef}
+                  onChange={handleImageChange}
+                />
+              </Center>
             </Center>
           </Stack>
         </FormControl>
@@ -48,6 +103,8 @@ export default function UpdateProfilePage() {
             placeholder="Emmanuel Olagunju"
             _placeholder={{ color: "gray.500" }}
             type="text"
+            onChange={(e) => setInputs({ ...inputs, name: e.target.value })}
+            value={inputs.name}
           />
         </FormControl>
         <FormControl isRequired>
@@ -57,6 +114,8 @@ export default function UpdateProfilePage() {
             placeholder="mlo_olagunju"
             _placeholder={{ color: "gray.500" }}
             type="text"
+            onChange={(e) => setInputs({ ...inputs, username: e.target.value })}
+            value={inputs.username}
           />
         </FormControl>
         <FormControl isRequired>
@@ -66,6 +125,8 @@ export default function UpdateProfilePage() {
             placeholder="mlo@mlo.com"
             _placeholder={{ color: "gray.500" }}
             type="email"
+            onChange={(e) => setInputs({ ...inputs, email: e.target.value })}
+            value={inputs.email}
           />
         </FormControl>
         <FormControl isRequired>
@@ -74,7 +135,9 @@ export default function UpdateProfilePage() {
             outline={useColorModeValue("gray.600", "gray.700")}
             placeholder="Your bio"
             _placeholder={{ color: "gray.500" }}
-            type="email"
+            type="text"
+            onChange={(e) => setInputs({ ...inputs, bio: e.target.value })}
+            value={inputs.bio}
           />
         </FormControl>
         <FormControl isRequired>
@@ -84,6 +147,8 @@ export default function UpdateProfilePage() {
             placeholder="password"
             _placeholder={{ color: "gray.500" }}
             type="password"
+            onChange={(e) => setInputs({ ...inputs, password: e.target.value })}
+            value={inputs.password}
           />
         </FormControl>
         <Stack spacing={6} direction={["column", "row"]}>
@@ -104,6 +169,7 @@ export default function UpdateProfilePage() {
             _hover={{
               bg: useColorModeValue("gray.700", "gray.800"),
             }}
+            onClick={handleUpdateProfile}
           >
             Submit
           </Button>

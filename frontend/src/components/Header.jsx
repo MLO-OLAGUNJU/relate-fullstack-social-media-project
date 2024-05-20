@@ -133,7 +133,9 @@ const Header = () => {
             )}
             {/*  */}{" "}
             {user ? (
-              <LogoutButton />
+              <div className="w-full" onClick={handleClick}>
+                <LogoutButton />
+              </div>
             ) : (
               <Link
                 to={"/auth"}

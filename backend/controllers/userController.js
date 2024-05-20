@@ -79,6 +79,8 @@ const loginUser = async (req, res) => {
       name: user.name,
       email: user.email,
       username: user.username,
+      bio: user.bio,
+      profilePic: user.profilePic,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -131,6 +133,7 @@ const followUnfollowUser = async (req, res) => {
   }
 };
 
+//update user
 const updateUser = async (req, res) => {
   const { name, email, password, username, profilePic, bio } = req.body;
   const userId = req.user._id;
