@@ -17,10 +17,40 @@ import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useSetRecoilState } from "recoil";
 import authScreenAtom from "../atoms/authAtom";
+import useShowToast from "../hooks/useShowToast";
 
 export default function LoginInCard() {
   const [showPassword, setShowPassword] = useState(false);
   const setAuthScreenState = useSetRecoilState(authScreenAtom);
+  const showToast = useShowToast();
+
+  const [inputs, setInputs] = useState({
+    username: "",
+    password: "",
+  });
+
+  const handleLogin = async () => {
+    try {
+      const res = await fetch("/api/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(inputs),
+      });
+      const data = await res.json();
+
+      if (data.error) {
+        showToast("Error", data.error, "error");
+        return;
+      }
+
+      localStorage.setItem("user-relate", JSON.stringify(data));
+    } catch (error) {
+      console.log(error);
+      showToast("Error", error, "error");
+    }
+  };
   return (
     <Flex align={"center"} justify={"center"}>
       <Stack spacing={8} mx={"auto"} maxW={"lg"} px={6}>
@@ -45,6 +75,10 @@ export default function LoginInCard() {
               <Input
                 type="text"
                 outline={useColorModeValue("gray.600", "gray.700")}
+                onChange={(e) =>
+                  setInputs({ ...inputs, username: e.target.value })
+                }
+                value={inputs.username}
               />
             </FormControl>
             <FormControl isRequired>
@@ -53,6 +87,10 @@ export default function LoginInCard() {
                 <Input
                   outline={useColorModeValue("gray.600", "gray.700")}
                   type={showPassword ? "text" : "password"}
+                  onChange={(e) =>
+                    setInputs({ ...inputs, password: e.target.value })
+                  }
+                  value={inputs.password}
                 />
                 <InputRightElement h={"full"}>
                   <Button
@@ -75,6 +113,7 @@ export default function LoginInCard() {
                 _hover={{
                   bg: useColorModeValue("gray.700", "gray.800"),
                 }}
+                onClick={handleLogin}
               >
                 Log In
               </Button>

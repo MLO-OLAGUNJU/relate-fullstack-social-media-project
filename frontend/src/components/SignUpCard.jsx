@@ -53,7 +53,6 @@ export default function SignupCard() {
 
       localStorage.setItem("user-relate", JSON.stringify(data));
       setUser(data);
-      showToast("Success", data.message, "message");
     } catch (error) {
       console.log(error);
       showToast("Error", error, "error");

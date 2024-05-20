@@ -3,10 +3,13 @@ import { Flex, Image, Button, useColorMode } from "@chakra-ui/react";
 import { CgClose, CgMenuRight, CgMoon, CgSun } from "react-icons/cg";
 import { Link } from "react-router-dom";
 import LogoutButton from "./LogoutButton";
+import { useRecoilValue } from "recoil";
+import userAtom from "../atoms/userAtom";
 
 const Header = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const [isOpen, setIsOpen] = useState(false);
+  const user = useRecoilValue(userAtom);
 
   const handleClick = () => {
     setIsOpen(!isOpen);
@@ -81,8 +84,34 @@ const Header = () => {
                 <CgClose size={25} />
               </Button>
             </div>
-
-            <Link to={"/mlo"}>
+            {user ? (
+              <Link to={"/mlo"} className="w-full">
+                <button
+                  className={`w-full text-start pl-5 py-4  ${
+                    colorMode === "dark"
+                      ? " border-b-[#272727] border-b-[1px] border-solid bg-[#181818]"
+                      : " border-b-[#e8e8e8]  border-b-[1px] border-solid bg-[#f9f9f9]"
+                  }`}
+                  onClick={handleClick}
+                >
+                  Your Profile
+                </button>
+              </Link>
+            ) : (
+              <Link to={"/auth"}>
+                <button
+                  className={`w-[100%] text-start pl-5 py-4  ${
+                    colorMode === "dark"
+                      ? " border-b-[#272727] border-b-[1px] border-solid bg-[#181818]"
+                      : " border-b-[#e8e8e8]  border-b-[1px] border-solid bg-[#f9f9f9]"
+                  }`}
+                  onClick={handleClick}
+                >
+                  Login
+                </button>
+              </Link>
+            )}
+            {user && (
               <button
                 className={`w-full text-start pl-5 py-4  ${
                   colorMode === "dark"
@@ -91,22 +120,26 @@ const Header = () => {
                 }`}
                 onClick={handleClick}
               >
-                Your Profile
+                Settings
               </button>
-            </Link>
-            <button
-              className={`w-full text-start pl-5 py-4  ${
-                colorMode === "dark"
-                  ? " border-b-[#272727] border-b-[1px] border-solid bg-[#181818]"
-                  : " border-b-[#e8e8e8]  border-b-[1px] border-solid bg-[#f9f9f9]"
-              }`}
-              onClick={handleClick}
-            >
-              Settings
-            </button>
-
-            {/*  */}
-            <LogoutButton />
+            )}
+            {/*  */}{" "}
+            {user ? (
+              <LogoutButton />
+            ) : (
+              <Link to={"/auth"}>
+                <button
+                  className={`w-full text-start pl-5 py-4  ${
+                    colorMode === "dark"
+                      ? " border-b-[#272727] border-b-[1px] border-solid bg-[#181818]"
+                      : " border-b-[#e8e8e8]  border-b-[1px] border-solid bg-[#f9f9f9]"
+                  }`}
+                  onClick={handleClick}
+                >
+                  Create account
+                </button>
+              </Link>
+            )}
             {/*  */}
             <div className="grid grid-cols-2 w-full mt-3 gap-2">
               <Button padding={6} rounded={"xl"} onClick={combinedFunction1}>
