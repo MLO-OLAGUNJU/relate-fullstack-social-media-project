@@ -31,15 +31,17 @@ export default function UpdateProfilePage() {
     e.preventDefault();
 
     try {
-      const res = await fetch("/api/users//update/:id", {
-        method: "POST",
+      const res = await fetch(`/api/users/update/${user._id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(inputs),
+        body: JSON.stringify({ ...inputs, profilePic: imgUrl }),
       });
 
       const data = await res.json();
+
+      console.log(data);
 
       if (data.error) {
         showToast("Error", data.error, "error");
@@ -102,7 +104,7 @@ export default function UpdateProfilePage() {
               </Center>
             </Stack>
           </FormControl>
-          <FormControl isRequired>
+          <FormControl>
             <FormLabel>Full name</FormLabel>
             <Input
               outline={useColorModeValue("gray.600", "gray.700")}
@@ -113,7 +115,7 @@ export default function UpdateProfilePage() {
               value={inputs.name}
             />
           </FormControl>
-          <FormControl isRequired>
+          <FormControl>
             <FormLabel>Username</FormLabel>
             <Input
               outline={useColorModeValue("gray.600", "gray.700")}
@@ -126,7 +128,7 @@ export default function UpdateProfilePage() {
               value={inputs.username}
             />
           </FormControl>
-          <FormControl isRequired>
+          <FormControl>
             <FormLabel>Email address</FormLabel>
             <Input
               outline={useColorModeValue("gray.600", "gray.700")}
@@ -137,7 +139,7 @@ export default function UpdateProfilePage() {
               value={inputs.email}
             />
           </FormControl>
-          <FormControl isRequired>
+          <FormControl>
             <FormLabel>Bio</FormLabel>
             <Input
               outline={useColorModeValue("gray.600", "gray.700")}
@@ -148,7 +150,7 @@ export default function UpdateProfilePage() {
               value={inputs.bio}
             />
           </FormControl>
-          <FormControl isRequired>
+          <FormControl>
             <FormLabel>Password</FormLabel>
             <Input
               outline={useColorModeValue("gray.600", "gray.700")}
@@ -179,6 +181,7 @@ export default function UpdateProfilePage() {
               _hover={{
                 bg: useColorModeValue("gray.700", "gray.800"),
               }}
+              type="submit"
             >
               Submit
             </Button>

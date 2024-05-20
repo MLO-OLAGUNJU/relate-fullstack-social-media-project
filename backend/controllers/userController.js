@@ -134,10 +134,76 @@ const followUnfollowUser = async (req, res) => {
 };
 
 //update user
+// const updateUser = async (req, res) => {
+//   const { name, email, password, username, bio } = req.body;
+//   let { profilePic } = req.body;
+//   const userId = req.user._id;
+//   try {
+//     let user = await User.findById(userId);
+//     if (!user) return res.status(400).json({ message: "User not found" });
+//     if (req.params.id !== userId.toString())
+//       return res.status(400).json({
+//         error: "You cannot update another person's profile",
+//       });
+//     if (password) {
+//       const salt = await bcrypt.genSalt(10);
+//       const hashedPassword = await bcrypt.hash(password, salt);
+//       user.password = hashedPassword;
+//     }
+
+//     // setting the uploaded image from from frontend to backedn
+//     // if (profilePic) {
+//     //   if (user.profilePic) {
+//     //     await cloudinary.uploader.destroy(
+//     //       user.profilePic.split("/").pop().split("."[0])
+//     //     );
+//     //   }
+//     //   const uploadedResponse = await cloudinary.uploader.upload(profilePic);
+//     //   profilePic = uploadedResponse.secure_url;
+//     // }
+
+//     // if (user.profilePic && typeof user.profilePic === "string") {
+//     //   const publicIdParts = user.profilePic.split("/");
+//     //   const publicId = publicIdParts[publicIdParts.length - 1].split(".")[0];
+//     //   await cloudinary.uploader.destroy(publicId);
+//     // }
+
+//     // Check if profilePic is a Base64 string
+//     if (profilePic && profilePic.startsWith("data:image/")) {
+//       try {
+//         // Upload the image to Cloudinary
+//         const uploadResponse = await cloudinary.uploader.upload(profilePic, {
+//           upload_preset: process.env.CLOUDINARY_UPLOAD_PRESET,
+//         });
+
+//         // Store the Cloudinary image URL
+//         profilePic = uploadResponse.secure_url;
+//       } catch (error) {
+//         console.error("Error uploading image to Cloudinary:", error);
+//         return res.status(500).json({ error: "Failed to upload image" });
+//       }
+//     }
+
+//     user.name = name || user.name;
+//     user.email = email || user.email;
+//     user.username = username || user.username;
+//     user.profilePic = profilePic || user.profilePic;
+//     user.bio = bio || user.bio;
+
+//     user = await user.save();
+
+//     res.status(200).json({ message: "Profile updated succesfully", user });
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//     console.log("Error in updateUser: ", err.message);
+//   }
+// };
+
 const updateUser = async (req, res) => {
   const { name, email, password, username, bio } = req.body;
   let { profilePic } = req.body;
   const userId = req.user._id;
+
   try {
     let user = await User.findById(userId);
     if (!user) return res.status(400).json({ message: "User not found" });
@@ -145,21 +211,37 @@ const updateUser = async (req, res) => {
       return res.status(400).json({
         error: "You cannot update another person's profile",
       });
+
     if (password) {
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
       user.password = hashedPassword;
     }
 
-    // setting the uploaded image from from frontend to backedn
+    // Check if a new profilePic is provided
     if (profilePic) {
-      if (user.profilePic) {
-        await cloudinary.uploader.destroy(
-          user.profilePic.split("/").pop().split("."[0])
-        );
+      // Delete the old profile picture from Cloudinary if it exists
+      if (user.profilePic && typeof user.profilePic === "string") {
+        const publicIdParts = user.profilePic.split("/");
+        const publicId = publicIdParts[publicIdParts.length - 1].split(".")[0];
+        await cloudinary.uploader.destroy(publicId);
       }
-      const uploadedResponse = await cloudinary.uploader.upload(profilePic);
-      profilePic = uploadedResponse.secure_url;
+
+      // Upload the new profile picture to Cloudinary
+      if (profilePic.startsWith("data:image/")) {
+        try {
+          const uploadResponse = await cloudinary.uploader.upload(profilePic, {
+            upload_preset: process.env.CLOUDINARY_UPLOAD_PRESET,
+          });
+          profilePic = uploadResponse.secure_url;
+        } catch (error) {
+          console.error("Error uploading image to Cloudinary:", error);
+          return res.status(500).json({ error: "Failed to upload image" });
+        }
+      } else {
+        // If profilePic is not a Base64 string, assume it's a URL
+        profilePic = profilePic;
+      }
     }
 
     user.name = name || user.name;

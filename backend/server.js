@@ -20,6 +20,10 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+// Set the maximum payload size (in bytes)
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
+
 // This is the inbuilt express Middleware
 //Middleware is the function between req, and res
 app.use(express.json()); //To parse JSON data in the req.body

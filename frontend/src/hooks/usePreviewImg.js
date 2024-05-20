@@ -18,7 +18,6 @@ const usePreviewImg = () => {
       showToast("Invalid file type", " Please select an image file", "error");
       setImgUrl(null);
     }
-    console.log(imgUrl);
   };
   return { handleImageChange, imgUrl, setImgUrl };
 };
