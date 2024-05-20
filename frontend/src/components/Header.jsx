@@ -3,13 +3,15 @@ import { Flex, Image, Button, useColorMode } from "@chakra-ui/react";
 import { CgClose, CgMenuRight, CgMoon, CgSun } from "react-icons/cg";
 import { Link } from "react-router-dom";
 import LogoutButton from "./LogoutButton";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom";
+import authScreenAtom from "../atoms/authAtom";
 
 const Header = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const [isOpen, setIsOpen] = useState(false);
   const user = useRecoilValue(userAtom);
+  const setAuthScreenState = useSetRecoilState(authScreenAtom);
 
   const handleClick = () => {
     setIsOpen(!isOpen);
@@ -98,7 +100,11 @@ const Header = () => {
                 </button>
               </Link>
             ) : (
-              <Link to={"/auth"}>
+              <Link
+                to={"/auth"}
+                className="w-full"
+                onClick={() => setAuthScreenState("login")}
+              >
                 <button
                   className={`w-[100%] text-start pl-5 py-4  ${
                     colorMode === "dark"
@@ -127,12 +133,14 @@ const Header = () => {
             {user ? (
               <LogoutButton />
             ) : (
-              <Link to={"/auth"}>
+              <Link
+                to={"/auth"}
+                className="w-full"
+                onClick={() => setAuthScreenState("signup")}
+              >
                 <button
                   className={`w-full text-start pl-5 py-4  ${
-                    colorMode === "dark"
-                      ? " border-b-[#272727] border-b-[1px] border-solid bg-[#181818]"
-                      : " border-b-[#e8e8e8]  border-b-[1px] border-solid bg-[#f9f9f9]"
+                    colorMode === "dark" ? " bg-[#181818]" : " bg-[#f9f9f9]"
                   }`}
                   onClick={handleClick}
                 >
