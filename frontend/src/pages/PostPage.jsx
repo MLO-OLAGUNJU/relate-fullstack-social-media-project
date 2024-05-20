@@ -135,8 +135,7 @@ const PostPage = () => {
         <Flex gap={2} alignItems={"center"}>
           <Text fontSize={"2xl"}>🔔</Text>
           <Text color={"gray.light"}>
-            Hire me, Olagunju Emmanuel, a full-stack developer, to build your
-            product, click to send an email.
+            Need a full-stack developer to build your product?
           </Text>
         </Flex>
         <Link to={"mailto:oladeleemmanuelolagunju@gmail.com"}>

@@ -10,7 +10,7 @@ const getUserProfile = async (req, res) => {
     const user = await User.findOne({ username })
       .select("password")
       .select("updatedAt");
-    if (!user) return res.status(400).json({ message: "User not found" });
+    if (!user) return res.status(400).json({ error: "User not found" });
 
     res.status(200).json(user);
   } catch (err) {
@@ -81,7 +81,7 @@ const loginUser = async (req, res) => {
       username: user.username,
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ error: error.message });
     console.log("Error in loginUser:", error.message);
   }
 };
