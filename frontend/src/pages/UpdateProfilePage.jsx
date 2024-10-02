@@ -68,7 +68,7 @@ export default function UpdateProfilePage() {
           spacing={4}
           w={"full"}
           maxW={"md"}
-          // bg={useColorModeValue("white", "gray.dark")}
+          bg={useColorModeValue("white", "gray.dark")}
           rounded={"xl"}
           boxShadow={"lg"}
           p={6}
