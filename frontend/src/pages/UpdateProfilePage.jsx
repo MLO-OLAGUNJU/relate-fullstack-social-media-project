@@ -53,12 +53,12 @@ export default function UpdateProfilePage() {
         return;
       }
 
-      showToast("Success", data.message, "success");
+      showToast("Success", "Profile updated sucessfully", "success");
       setUser(data);
       localStorage.setItem("user-relate", JSON.stringify(data));
     } catch (error) {
       console.log(error);
-      showToast("Error", error, "error");
+      showToast("Error", error.message, "error"); // Use error.message
     }
   };
 

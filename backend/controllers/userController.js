@@ -136,11 +136,12 @@ const followUnfollowUser = async (req, res) => {
 const updateUser = async (req, res) => {
   const { name, email, password, username, bio } = req.body;
   let { profilePic } = req.body;
-  const userId = req.user._id;
 
+  const userId = req.user._id;
   try {
     let user = await User.findById(userId);
     if (!user) return res.status(400).json({ message: "User not found" });
+
     if (req.params.id !== userId.toString())
       return res.status(400).json({
         error: "You cannot update another person's profile",
@@ -169,6 +170,9 @@ const updateUser = async (req, res) => {
     user.bio = bio || user.bio;
 
     user = await user.save();
+
+    // password should be null in response
+    user.password = null;
 
     res.status(200).json(user);
   } catch (err) {
