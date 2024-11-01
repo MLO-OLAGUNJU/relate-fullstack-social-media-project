@@ -30,6 +30,8 @@ export default function UpdateProfilePage() {
 
   const fileRef = useRef(null);
 
+  const { handleImageChange, imgUrl } = usePreviewImg();
+
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
 
@@ -50,13 +52,15 @@ export default function UpdateProfilePage() {
         showToast("Error", data.error, "error");
         return;
       }
+
+      showToast("Success", data.message, "success");
+      setUser(data);
+      localStorage.setItem("user-relate", JSON.stringify(data));
     } catch (error) {
       console.log(error);
       showToast("Error", error, "error");
     }
   };
-
-  const { handleImageChange, imgUrl } = usePreviewImg();
 
   return (
     <form onSubmit={handleUpdateProfile}>
@@ -89,7 +93,6 @@ export default function UpdateProfilePage() {
                   size="xl"
                   src={imgUrl || user.profilePic}
                 />
-                <Input type="file" hidden ref={fileRef} />
               </Center>
               <Center w="full">
                 <Center w="full">
