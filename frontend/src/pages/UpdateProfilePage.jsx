@@ -27,6 +27,9 @@ export default function UpdateProfilePage() {
     profilePic: user.profilePic,
     bio: user.bio,
   });
+
+  const fileRef = useRef(null);
+
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
 
@@ -52,8 +55,6 @@ export default function UpdateProfilePage() {
       showToast("Error", error, "error");
     }
   };
-
-  const fileRef = useRef(null);
 
   const { handleImageChange, imgUrl } = usePreviewImg();
 
@@ -88,6 +89,7 @@ export default function UpdateProfilePage() {
                   size="xl"
                   src={imgUrl || user.profilePic}
                 />
+                <Input type="file" hidden ref={fileRef} />
               </Center>
               <Center w="full">
                 <Center w="full">
