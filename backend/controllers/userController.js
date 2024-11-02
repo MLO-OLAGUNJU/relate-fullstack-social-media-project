@@ -3,15 +3,15 @@ import bcrypt from "bcryptjs";
 import { v2 as cloudinary } from "cloudinary";
 import generateTokenAndSetCookie from "../utils/helpers/generateTokenAndSetCookie.js";
 
-//gwet user profile
+//get user profile
 const getUserProfile = async (req, res) => {
   const { username } = req.params;
   try {
-    const user = await User.findOne({ username })
-      .select("password")
-      .select("updatedAt");
-    if (!user) return res.status(400).json({ error: "User not found" });
+    const user = await User.findOne({ username }).select(
+      "-password -updatedAt"
+    ); // Use minus (-) to exclude fields
 
+    if (!user) return res.status(400).json({ error: "User not found" });
     res.status(200).json(user);
   } catch (err) {
     res.status(500).json({ error: err.message });

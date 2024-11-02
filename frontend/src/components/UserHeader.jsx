@@ -15,8 +15,8 @@ import {
 } from "@chakra-ui/react";
 import { CgMoreO } from "react-icons/cg";
 import { Link as Linking, useLocation } from "react-router-dom";
-// import { toast } from "react-hot-toast";
-const UserHeader = () => {
+
+const UserHeader = ({ user }) => {
   const location = useLocation();
   const toast = useToast();
   const copyUrl = () => {
@@ -36,10 +36,10 @@ const UserHeader = () => {
       <Flex justifyContent={"space-between"} w={"full"}>
         <Box>
           <Text fontSize={"2xl"} fontWeight={"bold"}>
-            Olagunju Oladele Emmanuel
+            {user.name}
           </Text>
           <Flex gap={2} alignItems={"center"}>
-            <Text fontSize={"sm"}>mlolagunju</Text>
+            <Text fontSize={"sm"}>{user.username}</Text>
             <Text
               fontSize={"xs"}
               bg={"gray.dark"}
@@ -47,39 +47,50 @@ const UserHeader = () => {
               p={1}
               borderRadius={"full"}
             >
-              <Linking to={"/"}>
-                <Link
-                  _light={{
-                    color: "#fff",
-                  }}
-                >
-                  relate.net
-                </Link>
-              </Linking>
+              <Link
+                as={Linking}
+                to={"/"}
+                _light={{
+                  color: "#fff",
+                }}
+              >
+                relate.net
+              </Link>
             </Text>
           </Flex>
         </Box>
         <Box>
-          <Avatar
-            cursor={"pointer"}
-            name="MLO Olagunju"
-            src="/mlo.jpg"
-            size={{
-              base: "md",
-              md: "xl",
-            }}
-          />
+          {user.profilePic && (
+            <Avatar
+              cursor={"pointer"}
+              name={user.name}
+              src={user.profilePic}
+              size={{
+                base: "md",
+                md: "xl",
+              }}
+            />
+          )}
+
+          {!user.profilePic && (
+            <Avatar
+              cursor={"pointer"}
+              name={user.name}
+              src="https://bit.ly/broken-link"
+              size={{
+                base: "md",
+                md: "xl",
+              }}
+            />
+          )}
         </Box>
       </Flex>
 
-      <Text>
-        JavaScript Alchemist | FullStack Engineer | MERNStack Developer | Web
-        Developer | SFC® | AGILE | Theology Scholar
-      </Text>
+      <Text>{user.bio}</Text>
 
       <Flex w={"full"} justifyContent={"space-between"}>
         <Flex gap={2} alignItems={"center"}>
-          <Text color={"gray.light"}>1.1M Followers</Text>
+          <Text color={"gray.light"}>{user.followers.length}</Text>
           <Box w={1} h={1} bg={"gray.light"} borderRadius={"full"}></Box>
           <Link color={"gray.light"}>mlo-olagunju-portfolio.vercel.app</Link>
         </Flex>
