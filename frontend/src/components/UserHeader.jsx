@@ -57,7 +57,7 @@ const UserHeader = ({ user }) => {
       navigate("auth");
       return;
     }
-
+    if (updating) return;
     setUpdating(true);
 
     try {

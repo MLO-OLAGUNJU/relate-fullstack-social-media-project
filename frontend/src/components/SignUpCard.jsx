@@ -37,6 +37,8 @@ export default function SignupCard() {
   const setUser = useSetRecoilState(userAtom);
 
   const handleSignUp = async () => {
+    if (updating) return;
+
     setUpdating(true);
 
     try {

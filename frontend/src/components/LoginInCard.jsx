@@ -33,6 +33,8 @@ export default function LoginInCard() {
   });
 
   const handleLogin = async () => {
+    if (updating) return;
+
     setUpdating(true);
 
     try {
