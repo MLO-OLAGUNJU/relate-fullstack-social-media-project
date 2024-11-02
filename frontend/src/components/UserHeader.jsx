@@ -12,16 +12,23 @@ import {
   MenuItem,
   Link,
   useToast,
+  Button,
 } from "@chakra-ui/react";
 import { CgMoreO } from "react-icons/cg";
 import { Link as Linking, useLocation, useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
+import { useRecoilValue } from "recoil";
 
 const UserHeader = ({ user }) => {
   const location = useLocation();
   const toast = useToast();
   const currentUser = useRecoilValue(userAtom); //this is the user that is currently logged in
+
+  const [following, setFollowing] = useState(
+    user.followers.includes(currentUser._id)
+  );
+
+  console.log(following);
 
   const copyUrl = () => {
     const currentUrl = window.location.href;
@@ -96,6 +103,10 @@ const UserHeader = ({ user }) => {
 
       <Text>{user.bio}</Text>
 
+      {currentUser._id !== user._id && (
+        <Button size={"sm"}>{following ? "Unfollow" : "Follow"}</Button>
+      )}
+
       <Flex w={"full"} justifyContent={"space-between"}>
         <Flex gap={2} alignItems={"center"}>
           <Text color={"gray.light"}>{user.followers.length}</Text>
@@ -133,13 +144,27 @@ const UserHeader = ({ user }) => {
                   <MenuItem
                     _light={{
                       bg: "gray.light",
-                      color: "#fff",
+                      color: "red",
                     }}
                     bg={"gray.dark"}
-                    onClick={updateProfile}
+                    color={"red"}
+                    // onClick={copyUrl}
                   >
-                    Update your profile
+                    Report
                   </MenuItem>
+
+                  {currentUser._id === user._id && (
+                    <MenuItem
+                      _light={{
+                        bg: "gray.light",
+                        color: "#fff",
+                      }}
+                      bg={"gray.dark"}
+                      onClick={updateProfile}
+                    >
+                      Update your profile
+                    </MenuItem>
+                  )}
                 </MenuList>
               </Portal>
             </Box>
