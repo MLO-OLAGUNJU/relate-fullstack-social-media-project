@@ -14,11 +14,15 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { CgMoreO } from "react-icons/cg";
-import { Link as Linking, useLocation } from "react-router-dom";
+import { Link as Linking, useLocation, useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import userAtom from "../atoms/userAtom";
 
 const UserHeader = ({ user }) => {
   const location = useLocation();
   const toast = useToast();
+  const currentUser = useRecoilValue(userAtom); //this is the user that is currently logged in
+
   const copyUrl = () => {
     const currentUrl = window.location.href;
     navigator.clipboard.writeText(currentUrl).then(() => {
@@ -29,6 +33,10 @@ const UserHeader = ({ user }) => {
         description: "Profile link has been copied to clipboard",
       });
     });
+  };
+  const navigate = useNavigate();
+  const updateProfile = () => {
+    navigate("/update");
   };
 
   return (
@@ -120,7 +128,17 @@ const UserHeader = ({ user }) => {
                     bg={"gray.dark"}
                     onClick={copyUrl}
                   >
-                    Copy link
+                    Copy Profile Link
+                  </MenuItem>
+                  <MenuItem
+                    _light={{
+                      bg: "gray.light",
+                      color: "#fff",
+                    }}
+                    bg={"gray.dark"}
+                    onClick={updateProfile}
+                  >
+                    Update your profile
                   </MenuItem>
                 </MenuList>
               </Portal>
