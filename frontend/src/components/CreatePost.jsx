@@ -25,12 +25,27 @@ import { BsFillImageFill } from "react-icons/bs";
 const CreatePost = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [postText, setPostText] = useState("");
+  const MAX_CHAR = 500;
+  const [remainingChar, setRemainingChar] = useState(MAX_CHAR);
 
   const { handleImageChange, imgUrl, setImgUrl } = usePreviewImg();
 
-  const handleTextChange = () => {};
+  const handleTextChange = (e) => {
+    const inputText = e.target.value;
+
+    if (inputText.length > MAX_CHAR) {
+      const truncatedText = inputText.slice(0, MAX_CHAR);
+      setPostText(truncatedText);
+      setRemainingChar(0);
+    } else {
+      setPostText(inputText);
+      setRemainingChar(MAX_CHAR - inputText.length);
+    }
+  };
 
   const imageRef = useRef(null);
+
+  const handleCreateRelate = async () => {};
 
   return (
     <>
@@ -58,12 +73,13 @@ const CreatePost = () => {
 
               <Text
                 fontSize="xs"
-                fontWeight="bold"
+                fontWeight="semibold"
                 textAlign={"right"}
                 m={1}
-                color={"gray.800"}
+                textColor={remainingChar !== 0 ? "black" : "red"}
+                _dark={{ textColor: remainingChar !== 0 ? "white" : "red" }}
               >
-                500/500
+                {remainingChar}/{MAX_CHAR}
               </Text>
 
               <Input
