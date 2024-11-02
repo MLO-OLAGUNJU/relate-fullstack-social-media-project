@@ -24,6 +24,7 @@ import userAtom from "../atoms/userAtom";
 export default function SignupCard() {
   const [showPassword, setShowPassword] = useState(false);
   const setAuthScreenState = useSetRecoilState(authScreenAtom);
+  const [updating, setUpdating] = useState(false);
 
   const [inputs, setInputs] = useState({
     name: "",
@@ -36,6 +37,8 @@ export default function SignupCard() {
   const setUser = useSetRecoilState(userAtom);
 
   const handleSignUp = async () => {
+    setUpdating(true);
+
     try {
       const res = await fetch("/api/users/signup", {
         method: "POST",
@@ -56,6 +59,8 @@ export default function SignupCard() {
     } catch (error) {
       console.log(error);
       showToast("Error", error, "error");
+    } finally {
+      setUpdating(false);
     }
   };
   return (
@@ -137,7 +142,7 @@ export default function SignupCard() {
             </FormControl>
             <Stack spacing={10} pt={2}>
               <Button
-                loadingText="Submitting"
+                isLoading={updating}
                 size="lg"
                 bg={useColorModeValue("gray.600", "gray.700")}
                 color={"white"}

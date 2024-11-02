@@ -25,6 +25,7 @@ export default function LoginInCard() {
   const setAuthScreenState = useSetRecoilState(authScreenAtom);
   const showToast = useShowToast();
   const setUser = useSetRecoilState(userAtom);
+  const [updating, setUpdating] = useState(false);
 
   const [inputs, setInputs] = useState({
     username: "",
@@ -32,6 +33,8 @@ export default function LoginInCard() {
   });
 
   const handleLogin = async () => {
+    setUpdating(true);
+
     try {
       const res = await fetch("/api/users/login", {
         method: "POST",
@@ -52,6 +55,8 @@ export default function LoginInCard() {
     } catch (error) {
       console.log(error);
       showToast("Error", error, "error");
+    } finally {
+      setUpdating(false);
     }
   };
   return (
@@ -109,7 +114,7 @@ export default function LoginInCard() {
             </FormControl>
             <Stack spacing={10} pt={2}>
               <Button
-                loadingText="Submitting"
+                isLoading={updating}
                 size="lg"
                 bg={useColorModeValue("gray.600", "gray.700")}
                 color={"white"}

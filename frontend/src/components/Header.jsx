@@ -12,6 +12,7 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const user = useRecoilValue(userAtom);
   const setAuthScreenState = useSetRecoilState(authScreenAtom);
+  const currentUser = useRecoilValue(userAtom); //this is the user that is currently logged in
 
   const handleClick = () => {
     setIsOpen(!isOpen);
@@ -87,7 +88,7 @@ const Header = () => {
               </Button>
             </div>
             {user ? (
-              <Link to={"/mlo"} className="w-full">
+              <Link to={currentUser.username} className="w-full">
                 <button
                   className={`w-full text-start pl-5 py-4  ${
                     colorMode === "dark"

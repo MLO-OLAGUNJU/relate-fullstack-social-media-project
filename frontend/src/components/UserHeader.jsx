@@ -18,17 +18,18 @@ import { CgMoreO } from "react-icons/cg";
 import { Link as Linking, useLocation, useNavigate } from "react-router-dom";
 import userAtom from "../atoms/userAtom";
 import { useRecoilValue } from "recoil";
+import useShowToast from "../hooks/useShowToast";
 
 const UserHeader = ({ user }) => {
   const location = useLocation();
   const toast = useToast();
   const currentUser = useRecoilValue(userAtom); //this is the user that is currently logged in
+  const showToast = useShowToast();
+  const [updating, setUpdating] = useState(false);
 
   const [following, setFollowing] = useState(
     user.followers.includes(currentUser._id)
   );
-
-  console.log(following);
 
   const copyUrl = () => {
     const currentUrl = window.location.href;
@@ -44,6 +45,51 @@ const UserHeader = ({ user }) => {
   const navigate = useNavigate();
   const updateProfile = () => {
     navigate("/update");
+  };
+
+  const handleFolloworUnfollow = async () => {
+    if (!currentUser) {
+      showToast(
+        "Error",
+        "You must be logged in to follow or unfollow users",
+        "error"
+      );
+      navigate("auth");
+      return;
+    }
+
+    setUpdating(true);
+
+    try {
+      const res = await fetch(`/api/users/follow/${user._id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await res.json();
+
+      if (data.error) {
+        showToast("Error", data.error, "error");
+        return;
+      }
+
+      if (following) {
+        showToast("Success", `Unfollowed ${user.name}`, "success");
+        user.followers.pop(); //to simulate removing from the followers
+      } else {
+        showToast("Success", `Followed ${user.name}`, "success");
+        user.followers.push(currentUser._id); //to simulate adding to the followers
+      }
+
+      setFollowing(!following);
+      // console.log(data);
+    } catch (error) {
+      showToast("Error", error, "error");
+    } finally {
+      setUpdating(false);
+    }
   };
 
   return (
@@ -104,7 +150,13 @@ const UserHeader = ({ user }) => {
       <Text>{user.bio}</Text>
 
       {currentUser._id !== user._id && (
-        <Button size={"sm"}>{following ? "Unfollow" : "Follow"}</Button>
+        <Button
+          onClick={handleFolloworUnfollow}
+          isLoading={updating}
+          size={"sm"}
+        >
+          {following ? "Unfollow" : "Follow"}
+        </Button>
       )}
 
       <Flex w={"full"} justifyContent={"space-between"}>
