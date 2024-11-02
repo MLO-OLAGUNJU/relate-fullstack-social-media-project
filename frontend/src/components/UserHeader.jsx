@@ -161,7 +161,10 @@ const UserHeader = ({ user }) => {
 
       <Flex w={"full"} justifyContent={"space-between"}>
         <Flex gap={2} alignItems={"center"}>
-          <Text color={"gray.light"}>{user.followers.length}</Text>
+          <Text color={"gray.light"}>
+            {user.followers.length}{" "}
+            {user.followers.length > 0 ? "followers" : "follower"}
+          </Text>
           <Box w={1} h={1} bg={"gray.light"} borderRadius={"full"}></Box>
           <Link color={"gray.light"}>mlo-olagunju-portfolio.vercel.app</Link>
         </Flex>
@@ -193,17 +196,20 @@ const UserHeader = ({ user }) => {
                   >
                     Copy Profile Link
                   </MenuItem>
-                  <MenuItem
-                    _light={{
-                      bg: "gray.light",
-                      color: "red",
-                    }}
-                    bg={"gray.dark"}
-                    color={"red"}
-                    // onClick={copyUrl}
-                  >
-                    Report
-                  </MenuItem>
+
+                  {currentUser._id !== user._id && (
+                    <MenuItem
+                      _light={{
+                        bg: "gray.light",
+                        color: "red",
+                      }}
+                      bg={"gray.dark"}
+                      color={"red"}
+                      // onClick={copyUrl}
+                    >
+                      Report
+                    </MenuItem>
+                  )}
 
                   {currentUser._id === user._id && (
                     <MenuItem

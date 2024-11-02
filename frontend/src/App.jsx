@@ -9,6 +9,7 @@ import AuthPage from "./pages/AuthPage";
 import { useRecoilValue } from "recoil";
 import userAtom from "./atoms/userAtom";
 import UpdateProfilePage from "./pages/UpdateProfilePage";
+import CreatePost from "./components/CreatePost";
 
 function App() {
   const user = useRecoilValue(userAtom);
@@ -47,6 +48,8 @@ function App() {
               element={user ? <Replies /> : <Navigate to="/auth" />}
             />
           </Routes>
+
+          {user && <CreatePost />}
         </Container>
       </div>
     </>

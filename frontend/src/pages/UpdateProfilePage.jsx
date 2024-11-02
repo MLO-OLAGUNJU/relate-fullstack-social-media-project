@@ -27,6 +27,7 @@ export default function UpdateProfilePage() {
     profilePic: user.profilePic,
     bio: user.bio,
   });
+  const [updating, setUpdating] = useState(false);
 
   const fileRef = useRef(null);
 
@@ -34,6 +35,8 @@ export default function UpdateProfilePage() {
 
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
+    if (updating) return;
+    setUpdating(true);
 
     try {
       const res = await fetch(`/api/users/update/${user._id}`, {
@@ -46,8 +49,6 @@ export default function UpdateProfilePage() {
 
       const data = await res.json();
 
-      console.log(data);
-
       if (data.error) {
         showToast("Error", data.error, "error");
         return;
@@ -59,6 +60,8 @@ export default function UpdateProfilePage() {
     } catch (error) {
       console.log(error);
       showToast("Error", error.message, "error"); // Use error.message
+    } finally {
+      setUpdating(false);
     }
   };
 
@@ -187,6 +190,7 @@ export default function UpdateProfilePage() {
                 bg: useColorModeValue("gray.700", "gray.800"),
               }}
               type="submit"
+              isLoading={updating}
             >
               Submit
             </Button>
