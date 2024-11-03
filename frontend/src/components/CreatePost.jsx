@@ -21,9 +21,16 @@ import {
 import React, { useRef, useState } from "react";
 import usePreviewImg from "../hooks/usePreviewImg";
 import { BsFillImageFill } from "react-icons/bs";
+import userAtom from "../atoms/userAtom";
+import { useRecoilValue } from "recoil";
+import useShowToast from "../hooks/useShowToast";
 
 const CreatePost = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const currentUser = useRecoilValue(userAtom); //this is the user that is currently logged in
+
+  const showToast = useShowToast();
+
   const [postText, setPostText] = useState("");
   const MAX_CHAR = 500;
   const [remainingChar, setRemainingChar] = useState(MAX_CHAR);
@@ -45,7 +52,25 @@ const CreatePost = () => {
 
   const imageRef = useRef(null);
 
-  const handleCreateRelate = async () => {};
+  const handleCreateRelate = async () => {
+    const res = await fetch(`/api/posts/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "apllication/json",
+      },
+      body: JSON.stringify({
+        postedBy: currentUser,
+        text: postText,
+        img: imgUrl,
+      }),
+    });
+
+    const data = res.json();
+    if (data.error) {
+      showToast("Error", data.error, "error");
+      return;
+    }
+  };
 
   return (
     <>
@@ -117,7 +142,7 @@ const CreatePost = () => {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
+            <Button colorScheme="blue" mr={3} onClick={handleCreateRelate}>
               Relate
             </Button>
           </ModalFooter>
