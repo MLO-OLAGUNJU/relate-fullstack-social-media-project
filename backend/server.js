@@ -26,7 +26,7 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 // This is the inbuilt express Middleware
 //Middleware is the function between req, and res
-app.use(express.json()); //To parse JSON data in the req.body
+app.use(express.json({ limit: "50mb" })); //To parse JSON data in the req.body
 app.use(express.urlencoded({ extended: true })); //To parse form data in the req.body
 app.use(cookieParser());
 

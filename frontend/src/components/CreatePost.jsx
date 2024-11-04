@@ -70,6 +70,9 @@ const CreatePost = () => {
       showToast("Error", data.error, "error");
       return;
     }
+
+    showToast("Success", "Relate created successfully", "success");
+    onClose();
   };
 
   return (
@@ -81,7 +84,7 @@ const CreatePost = () => {
         leftIcon={<AddIcon />}
         bg={useColorModeValue("gray.300", "gray.dark")}
         onClick={onOpen}
-      ></Button>
+      />
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
