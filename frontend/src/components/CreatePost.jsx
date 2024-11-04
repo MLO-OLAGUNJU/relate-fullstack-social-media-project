@@ -28,6 +28,7 @@ import useShowToast from "../hooks/useShowToast";
 const CreatePost = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const currentUser = useRecoilValue(userAtom); //this is the user that is currently logged in
+  const [loading, setLoading] = useState("false");
 
   const showToast = useShowToast();
 
@@ -53,26 +54,35 @@ const CreatePost = () => {
   const imageRef = useRef(null);
 
   const handleCreateRelate = async () => {
-    const res = await fetch(`/api/posts/create`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "apllication/json",
-      },
-      body: JSON.stringify({
-        postedBy: currentUser,
-        text: postText,
-        img: imgUrl,
-      }),
-    });
+    setLoading(true);
 
-    const data = res.json();
-    if (data.error) {
-      showToast("Error", data.error, "error");
-      return;
+    try {
+      const res = await fetch(`/api/posts/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          postedBy: currentUser,
+          text: postText,
+          img: imgUrl,
+        }),
+      });
+
+      const data = res.json();
+
+      if (data.error) {
+        showToast("Error", data.error, "error");
+        return;
+      }
+
+      showToast("Success", "Relate created successfully", "success");
+      onClose();
+    } catch (error) {
+      showToast("Error", error, "error");
+    } finally {
+      setLoading(false);
     }
-
-    showToast("Success", "Relate created successfully", "success");
-    onClose();
   };
 
   return (
@@ -145,7 +155,12 @@ const CreatePost = () => {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={handleCreateRelate}>
+            <Button
+              colorScheme="blue"
+              isLoading={loading}
+              mr={3}
+              onClick={handleCreateRelate}
+            >
               Relate
             </Button>
           </ModalFooter>
