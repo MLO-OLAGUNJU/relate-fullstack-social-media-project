@@ -28,7 +28,7 @@ import useShowToast from "../hooks/useShowToast";
 const CreatePost = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const currentUser = useRecoilValue(userAtom); //this is the user that is currently logged in
-  const [loading, setLoading] = useState("false");
+  const [loading, setLoading] = useState(false);
 
   const showToast = useShowToast();
 
@@ -57,6 +57,16 @@ const CreatePost = () => {
     setLoading(true);
 
     try {
+      // Check if both postText and imgUrl are empty
+      if (!postText && !imgUrl) {
+        showToast(
+          "Error",
+          "You have to write a Relate or add an image!",
+          "error"
+        );
+        return;
+      }
+
       const res = await fetch(`/api/posts/create`, {
         method: "POST",
         headers: {
@@ -78,6 +88,8 @@ const CreatePost = () => {
 
       showToast("Success", "Relate created successfully", "success");
       onClose();
+      setPostText("");
+      setImgUrl("");
     } catch (error) {
       showToast("Error", error, "error");
     } finally {

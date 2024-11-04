@@ -6,6 +6,8 @@ import LogoutButton from "./LogoutButton";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom";
 import authScreenAtom from "../atoms/authAtom";
+import { AiFillHome } from "react-icons/ai";
+import { RxAvatar } from "react-icons/rx";
 
 const Header = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -49,6 +51,11 @@ const Header = () => {
 
   return (
     <div className="your-navbar-class">
+      {/* {user && (
+        <Link to={"/"}>
+          <AiFillHome size={24} />
+        </Link>
+      )} */}
       <Flex
         position={"relative"}
         justifyContent={"space-between"}
@@ -67,6 +74,12 @@ const Header = () => {
             }
           />
         </Link>
+
+        {/* {user && (
+          <Link to={`/${user.username}`}>
+            <RxAvatar size={24} />
+          </Link>
+        )} */}
 
         <button onClick={handleClick}>
           <CgMenuRight
@@ -88,18 +101,33 @@ const Header = () => {
               </Button>
             </div>
             {user ? (
-              <Link to={currentUser.username} className="w-full">
-                <button
-                  className={`w-full text-start pl-5 py-4  ${
-                    colorMode === "dark"
-                      ? " border-b-[#272727] border-b-[1px] border-solid bg-[#181818]"
-                      : " border-b-[#e8e8e8]  border-b-[1px] border-solid bg-[#f9f9f9]"
-                  }`}
-                  onClick={handleClick}
-                >
-                  Your Profile
-                </button>
-              </Link>
+              <>
+                <Link to={currentUser.username} className="w-full">
+                  <button
+                    className={`w-full text-start pl-5 py-4  ${
+                      colorMode === "dark"
+                        ? " border-b-[#272727] border-b-[1px] border-solid bg-[#181818]"
+                        : " border-b-[#e8e8e8]  border-b-[1px] border-solid bg-[#f9f9f9]"
+                    }`}
+                    onClick={handleClick}
+                  >
+                    Your Profile
+                  </button>
+                </Link>
+
+                <Link to={"/"} className="w-full">
+                  <button
+                    className={`w-full text-start pl-5 py-4  ${
+                      colorMode === "dark"
+                        ? " border-b-[#272727] border-b-[1px] border-solid bg-[#181818]"
+                        : " border-b-[#e8e8e8]  border-b-[1px] border-solid bg-[#f9f9f9]"
+                    }`}
+                    onClick={handleClick}
+                  >
+                    Go to Home
+                  </button>
+                </Link>
+              </>
             ) : (
               <Link
                 to={"/auth"}
