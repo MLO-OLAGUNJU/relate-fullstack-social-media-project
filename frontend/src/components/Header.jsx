@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Flex, Image, Button, useColorMode } from "@chakra-ui/react";
+import { Flex, Image, Button, useColorMode, Box } from "@chakra-ui/react";
 import { CgClose, CgMenuRight, CgMoon, CgSun } from "react-icons/cg";
 import { Link } from "react-router-dom";
 import LogoutButton from "./LogoutButton";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom";
 import authScreenAtom from "../atoms/authAtom";
-import { AiFillHome } from "react-icons/ai";
-import { RxAvatar } from "react-icons/rx";
 
 const Header = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -51,11 +49,28 @@ const Header = () => {
 
   return (
     <div className="your-navbar-class">
+      {/* {isOpen && (
+        <div className="fixed top-0 bottom-0 z-5 right-0 left-0 bg-white dark:bg-black bg-opacity-20"></div>
+      )} */}
       {/* {user && (
         <Link to={"/"}>
           <AiFillHome size={24} />
         </Link>
       )} */}
+
+      {isOpen && (
+        <Box
+          onClick={handleClick}
+          backdropFilter="auto"
+          position={"fixed"}
+          top={0}
+          right={0}
+          left={0}
+          bottom={0}
+          zIndex={40}
+          backdropBlur="5px"
+        />
+      )}
       <Flex
         position={"relative"}
         justifyContent={"space-between"}
@@ -89,6 +104,7 @@ const Header = () => {
             size={30}
           />
         </button>
+
         {isOpen && (
           <div
             className={`z-50 flex items-start justify-start rounded-xl p-4 w-full md:py-8 md:px-3 flex-col absolute md:w-[350px] top-10 md:right-8 overflow-hidden ${
@@ -102,19 +118,6 @@ const Header = () => {
             </div>
             {user ? (
               <>
-                <Link to={currentUser.username} className="w-full">
-                  <button
-                    className={`w-full text-start pl-5 py-4  ${
-                      colorMode === "dark"
-                        ? " border-b-[#272727] border-b-[1px] border-solid bg-[#181818]"
-                        : " border-b-[#e8e8e8]  border-b-[1px] border-solid bg-[#f9f9f9]"
-                    }`}
-                    onClick={handleClick}
-                  >
-                    Your Profile
-                  </button>
-                </Link>
-
                 <Link to={"/"} className="w-full">
                   <button
                     className={`w-full text-start pl-5 py-4  ${
@@ -125,6 +128,18 @@ const Header = () => {
                     onClick={handleClick}
                   >
                     Go to Home
+                  </button>
+                </Link>
+                <Link to={currentUser.username} className="w-full">
+                  <button
+                    className={`w-full text-start pl-5 py-4  ${
+                      colorMode === "dark"
+                        ? " border-b-[#272727] border-b-[1px] border-solid bg-[#181818]"
+                        : " border-b-[#e8e8e8]  border-b-[1px] border-solid bg-[#f9f9f9]"
+                    }`}
+                    onClick={handleClick}
+                  >
+                    Your Profile
                   </button>
                 </Link>
               </>
