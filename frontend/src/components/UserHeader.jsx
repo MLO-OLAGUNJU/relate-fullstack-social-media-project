@@ -19,6 +19,7 @@ import { Link as Linking, useLocation, useNavigate } from "react-router-dom";
 import userAtom from "../atoms/userAtom";
 import { useRecoilValue } from "recoil";
 import useShowToast from "../hooks/useShowToast";
+import { RiVerifiedBadgeFill } from "react-icons/ri";
 
 const UserHeader = ({ user }) => {
   const location = useLocation();
@@ -100,7 +101,17 @@ const UserHeader = ({ user }) => {
             {user.name}
           </Text>
           <Flex gap={2} alignItems={"center"}>
-            <Text fontSize={"sm"}>{user.username}</Text>
+            {" "}
+            <Flex alignItems={"center"}>
+              <Text fontSize={"sm"}>{user.username}</Text>{" "}
+              {user.isVerified === true && (
+                <RiVerifiedBadgeFill
+                  className={`ml-1 ${
+                    user.isCEO ? "text-[#8fbd1a]" : "text-sky-600"
+                  }`}
+                />
+              )}
+            </Flex>
             <Text
               fontSize={"xs"}
               bg={"gray.dark"}
@@ -115,9 +126,12 @@ const UserHeader = ({ user }) => {
                   color: "#fff",
                 }}
               >
-                relate.net
+                <Text>relate.net</Text>
               </Link>
             </Text>
+            {user.isCEO === true && (
+              <h1 className="font-bold text-[#8fbd1a]">CEO & CTO of Relate</h1>
+            )}
           </Flex>
         </Box>
         <Box>

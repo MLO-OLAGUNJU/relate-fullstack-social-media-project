@@ -45,6 +45,10 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isCEO: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
