@@ -1,5 +1,6 @@
 import { AddIcon } from "@chakra-ui/icons";
 import {
+  Box,
   Button,
   CloseButton,
   Flex,
@@ -108,8 +109,22 @@ const CreatePost = () => {
         onClick={onOpen}
       />
 
+      {isOpen && (
+        <Box
+          onClick={onClose}
+          backdropFilter="auto"
+          position={"fixed"}
+          top={0}
+          right={0}
+          left={0}
+          bottom={0}
+          zIndex={40}
+          backdropBlur="5px"
+        />
+      )}
+
       <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
+        {/* <ModalOverlay /> */}
         <ModalContent bg={useColorModeValue("white", "gray.dark")}>
           <ModalHeader>Relate a Post</ModalHeader>
           <ModalCloseButton />
