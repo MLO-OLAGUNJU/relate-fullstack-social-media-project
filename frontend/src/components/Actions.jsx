@@ -1,6 +1,62 @@
 import React, { useState } from "react";
-import { Flex } from "@chakra-ui/react";
-const Actions = ({ liked, setLiked }) => {
+import { Box, Flex, Text } from "@chakra-ui/react";
+import useShowToast from "../hooks/useShowToast";
+import { useRecoilValue } from "recoil";
+import userAtom from "../atoms/userAtom";
+const Actions = ({ post: post_ }) => {
+  const user = useRecoilValue(userAtom);
+  const [liked, setLiked] = useState(post_.likes.includes(user?._id));
+
+  const [post, setPost] = useState(post_);
+  const [isLiking, setIsLiking] = useState(false);
+  const showToast = useShowToast();
+
+  const HandleLikeAndUnlike = async () => {
+    if (!user) {
+      showToast(
+        "Error",
+        "You are not allowed to perform this action without logging in!",
+        "error"
+      );
+      return;
+    }
+
+    if (isLiking) return;
+
+    setIsLiking(true);
+    try {
+      const res = await fetch(`/api/posts/like/${post._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: user._id,
+          postId: post._id,
+        }),
+      });
+      const data = await res.json();
+
+      if (data.error) {
+        showToast("Error", error, "error");
+        return;
+      }
+
+      if (!liked) {
+        //add the id of the current user to post.likes array
+        setPost({ ...post, likes: [...post.likes, user._id] });
+      } else {
+        //remove the id of the current user from post.likes array
+        setPost({ ...post, likes: post.likes.filter((id) => id !== user._id) });
+      }
+
+      setLiked(!liked);
+    } catch (error) {
+      showToast("Error", error.message, "error");
+    } finally {
+      setIsLiking(false);
+    }
+  };
   return (
     <div>
       <Flex flexDirection="column">
@@ -13,7 +69,7 @@ const Actions = ({ liked, setLiked }) => {
             role="img"
             viewBox="0 0 24 22"
             width="20"
-            onClick={() => setLiked(!liked)}
+            onClick={HandleLikeAndUnlike}
             className="cursor-pointer"
           >
             <path
@@ -46,6 +102,15 @@ const Actions = ({ liked, setLiked }) => {
 
           <RepostSVG />
           <ShareSVG />
+        </Flex>
+        <Flex gap={2} alignItems={"center"}>
+          <Text color={"gray.light"} fontSize="sm">
+            {post.replies.length} replies
+          </Text>
+          <Box w={0.5} h={0.5} borderRadius={"full"} bg={"gray.light"}></Box>
+          <Text color={"gray.light"} fontSize="sm">
+            {post.likes.length} likes
+          </Text>
         </Flex>
       </Flex>
     </div>

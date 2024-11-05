@@ -126,7 +126,7 @@ const UserHeader = ({ user }) => {
                   color: "#fff",
                 }}
               >
-                <Text>relate.net</Text>
+                <>relate.net</>
               </Link>
             </Text>
             {user.isCEO === true && (
@@ -180,7 +180,9 @@ const UserHeader = ({ user }) => {
             {user.followers.length > 1 ? "followers" : "follower"}
           </Text>
           <Box w={1} h={1} bg={"gray.light"} borderRadius={"full"}></Box>
-          <Link color={"gray.light"}>mlo-olagunju-portfolio.vercel.app</Link>
+          <Text color={"gray.light"}>{user.following.length} following</Text>
+
+          {/* <Box w={1} h={1} bg={"gray.light"} borderRadius={"full"}></Box> */}
         </Flex>
         <Flex>
           <Menu>

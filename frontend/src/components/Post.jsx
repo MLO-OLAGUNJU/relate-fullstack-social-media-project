@@ -21,9 +21,28 @@ import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { BsThreeDots } from "react-icons/bs";
 import Actions from "./Actions";
 import useShowToast from "../hooks/useShowToast";
+import { formatDistanceToNow } from "date-fns";
+
+const formatTimeAgo = (date) => {
+  const distance = formatDistanceToNow(new Date(date))
+    .replace("about ", "")
+    .replace("less than ", "");
+
+  // Optional: Further shortening
+  return distance
+    .replace(" minutes", "m")
+    .replace(" minute", "m")
+    .replace(" hours", "h")
+    .replace(" hour", "h")
+    .replace(" days", "d")
+    .replace(" day", "d")
+    .replace(" months", "mo")
+    .replace(" month", "mo")
+    .replace(" years", "y")
+    .replace(" year", "y");
+};
 
 const Post = ({ post, postedBy }) => {
-  const [liked, setLiked] = useState(false);
   const [user, setUser] = useState(null);
 
   const showToast = useShowToast();
@@ -35,7 +54,6 @@ const Post = ({ post, postedBy }) => {
         const res = await fetch(`/api/users/profile/${postedBy}`);
 
         const data = await res.json();
-        console.log(data);
 
         if (data.error) {
           showToast("Error", data.error, "error");
@@ -51,8 +69,6 @@ const Post = ({ post, postedBy }) => {
 
     getUser();
   }, [postedBy, showToast]);
-
-  // if (!user) return null;
 
   return (
     <div>
@@ -154,10 +170,10 @@ const Post = ({ post, postedBy }) => {
               </Flex>
 
               <Flex gap={4} alignItems={"center"}>
-                <Text fontSize={"sm"} color={"gray.light"}>
-                  1d
-                </Text>
-                {/* <BsThreeDots /> */}
+                <h1 className="flex items-center gap-1 text-xs text-gray-400">
+                  {formatTimeAgo(post.createdAt)}
+                  <span>ago</span>
+                </h1>
 
                 <Flex>
                   <Menu>
@@ -232,22 +248,7 @@ const Post = ({ post, postedBy }) => {
             </Link>
 
             <Flex gap={3} my={1}>
-              <Actions liked={liked} setLiked={setLiked} />
-            </Flex>
-
-            <Flex gap={2} alignItems={"center"}>
-              <Text color={"gray.light"} fontSize="sm">
-                {post.replies.length} replies
-              </Text>
-              <Box
-                w={0.5}
-                h={0.5}
-                borderRadius={"full"}
-                bg={"gray.light"}
-              ></Box>
-              <Text color={"gray.light"} fontSize="sm">
-                {post.likes.length} likes
-              </Text>
+              <Actions post={post} />
             </Flex>
           </Flex>
         </Flex>

@@ -127,7 +127,7 @@ const Header = () => {
                     }`}
                     onClick={handleClick}
                   >
-                    Go to Home
+                    Go to Feeds
                   </button>
                 </Link>
                 <Link to={currentUser.username} className="w-full">
