@@ -53,7 +53,15 @@ const Post = ({ post, postedBy }) => {
     <div>
       <Flex gap={3} marginBottom={4} py={5}>
         <Flex flexDirection={"column"} alignItems={"center"}>
-          <Avatar size={"md"} name={user.name} src={user.profilePic} />
+          <Avatar
+            size={"md"}
+            name={user.name}
+            src={user.profilePic}
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = `/${user.username}`;
+            }}
+          />
           <Box
             w={"1px"}
             h={"full"}
@@ -64,40 +72,56 @@ const Post = ({ post, postedBy }) => {
             my={2}
           ></Box>
           <Box position={"relative"} w={"full"}>
-            <Avatar
-              size={"xs"}
-              name="Dan Abrahmov"
-              src="https://bit.ly/dan-abramov"
-              position={"absolute"}
-              top={0}
-              left={"15px"}
-              padding={"2px"}
-            />
-            <Avatar
-              size={"xs"}
-              name="Kent Dodds"
-              src="https://bit.ly/kent-c-dodds"
-              position={"absolute"}
-              bottom={0}
-              right={"-5px"}
-              padding={"2px"}
-            />
-            <Avatar
-              size={"xs"}
-              name="Kola Tioluwani"
-              src="https://bit.ly/tioluwani-kolawole"
-              position={"absolute"}
-              bottom={0}
-              left={"4px"}
-              padding={"2px"}
-            />
+            {post.replies.length === 0 && <Text textAlign={"center"}>💤</Text>}
+            {post.replies[0] && (
+              <Avatar
+                size={"xs"}
+                name="Dan Abrahmov"
+                src={post.replies[0].userprofilePic}
+                position={"absolute"}
+                top={0}
+                left={"15px"}
+                padding={"2px"}
+              />
+            )}
+
+            {post.replies[1] && (
+              <Avatar
+                size={"xs"}
+                name="Kent Dodds"
+                src={post.replies[1].userprofilePic}
+                position={"absolute"}
+                bottom={0}
+                right={"-5px"}
+                padding={"2px"}
+              />
+            )}
+
+            {post.replies[2] && (
+              <Avatar
+                size={"xs"}
+                name="Kola Tioluwani"
+                src={post.replies[2].userprofilePic}
+                position={"absolute"}
+                bottom={0}
+                left={"4px"}
+                padding={"2px"}
+              />
+            )}
           </Box>
         </Flex>
 
         <Flex flex={1} flexDirection={"column"} gap={2}>
           <Flex justifyContent={"space-between"} w={"full"}>
             <Flex w={"full"} alignItems={"center"}>
-              <Text fontSize={"sm"} fontWeight={"bold"}>
+              <Text
+                fontSize={"sm"}
+                fontWeight={"bold"}
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.location.href = `/${user.username}`;
+                }}
+              >
                 {user.username}
               </Text>
               {user.isVerified === true && (
@@ -158,7 +182,10 @@ const Post = ({ post, postedBy }) => {
             </Flex>
           </Flex>
 
-          <Link to={"/username/post/1"} className="flex flex-col gap-y-3">
+          <Link
+            to={`/${user.username}/post/${post._id}`}
+            className="flex flex-col gap-y-3"
+          >
             <Text fontSize={"small"}>{post.text}</Text>
 
             {post.img && (
