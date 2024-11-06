@@ -112,7 +112,7 @@ const UserHeader = ({ user, activeTab, handleTabClick }) => {
 
       <Text>{user.bio}</Text>
 
-      {currentUser._id !== user._id && (
+      {currentUser?._id !== user._id && (
         <Button
           onClick={handleFolloworUnfollow}
           isLoading={updating}
@@ -162,7 +162,7 @@ const UserHeader = ({ user, activeTab, handleTabClick }) => {
                     Copy Profile Link
                   </MenuItem>
 
-                  {currentUser._id !== user._id && (
+                  {currentUser?._id !== user._id && (
                     <MenuItem
                       _light={{
                         bg: "gray.light",
@@ -176,7 +176,7 @@ const UserHeader = ({ user, activeTab, handleTabClick }) => {
                     </MenuItem>
                   )}
 
-                  {currentUser._id === user._id && (
+                  {currentUser?._id === user._id && (
                     <MenuItem
                       _light={{
                         bg: "gray.light",

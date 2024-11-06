@@ -195,7 +195,7 @@ const Post = ({ post, postedBy }) => {
                           }}
                         >
                           {" "}
-                          {currentUser._id === user._id && (
+                          {currentUser?._id === user._id && (
                             <>
                               <MenuItem
                                 _light={{
@@ -220,7 +220,7 @@ const Post = ({ post, postedBy }) => {
                               </MenuItem>
                             </>
                           )}
-                          {currentUser._id !== user._id && (
+                          {currentUser?._id !== user._id && (
                             <FollowMenu user={user} />
                           )}
                         </MenuList>
