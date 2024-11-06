@@ -111,7 +111,7 @@ const Post = ({ post, postedBy }) => {
               {post.replies[0] && (
                 <Avatar
                   size={"xs"}
-                  name="Dan Abrahmov"
+                  name={post.replies[0].name}
                   src={post.replies[0].userprofilePic}
                   position={"absolute"}
                   top={0}
@@ -123,7 +123,7 @@ const Post = ({ post, postedBy }) => {
               {post.replies[1] && (
                 <Avatar
                   size={"xs"}
-                  name="Kent Dodds"
+                  name={post.replies[1].name}
                   src={post.replies[1].userprofilePic}
                   position={"absolute"}
                   bottom={0}
@@ -135,7 +135,7 @@ const Post = ({ post, postedBy }) => {
               {post.replies[2] && (
                 <Avatar
                   size={"xs"}
-                  name="Kola Tioluwani"
+                  name={post.replies[2].name}
                   src={post.replies[2].userprofilePic}
                   position={"absolute"}
                   bottom={0}

@@ -11,7 +11,6 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
   Text,
   useColorModeValue,
   useDisclosure,
@@ -32,7 +31,41 @@ const Actions = ({ post: post_ }) => {
   const [isLiking, setIsLiking] = useState(false);
   const showToast = useShowToast();
 
-  const handleReply = async () => {};
+  const handleReply = async () => {
+    setIsReplying(true);
+    if (!user)
+      return showToast(
+        "Error",
+        "You are not allowed to perform this action without logging in!",
+        "error"
+      );
+    try {
+      const res = await fetch(`/api/posts/reply/${post._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          text: reply,
+        }),
+      });
+
+      const data = await res.json();
+      if (data.error) {
+        showToast("Error", error, "error");
+        return;
+      }
+      setReply("");
+      setPost({ ...post, replies: [...post.replies, data.reply] });
+      // showToast("Success", "Relate succcess!", "success");
+      console.log(data);
+      onClose();
+    } catch (error) {
+      showToast("Error", error.message, "error");
+    } finally {
+      setIsReplying(false);
+    }
+  };
 
   const HandleLikeAndUnlike = async () => {
     if (!user) {
@@ -158,7 +191,7 @@ const Actions = ({ post: post_ }) => {
             <ModalBody pb={6}>
               <FormControl>
                 <Input
-                  placeholder="Tell them how you relate with it...."
+                  placeholder="Relate with the post...."
                   value={reply}
                   onChange={(e) => setReply(e.target.value)}
                 />
@@ -173,7 +206,7 @@ const Actions = ({ post: post_ }) => {
                 isLoading={isReplying}
                 onClick={handleReply}
               >
-                Reply
+                Relate post
               </Button>
             </ModalFooter>
           </ModalContent>

@@ -118,6 +118,7 @@ const replyToPost = async (req, res) => {
     const userId = req.user._id;
     const userProfilePIc = req.user.profilePic;
     const username = req.user.username;
+    const name = req.user.name;
 
     if (!text) {
       return res.status(400).json({ error: "Text field is required" });
@@ -128,7 +129,7 @@ const replyToPost = async (req, res) => {
       return res.status(404).json({ error: "Post not found" });
     }
 
-    const reply = { userId, text, userProfilePIc, username };
+    const reply = { userId, text, userProfilePIc, username, name };
 
     post.replies.push(reply);
     await post.save();
