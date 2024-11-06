@@ -6,7 +6,7 @@ import useShowToast from "./useShowToast";
 const useFollowToggle = (user) => {
   const currentUser = useRecoilValue(userAtom);
   const [following, setFollowing] = useState(
-    user.followers.includes(currentUser._id)
+    user.followers.includes(currentUser?._id)
   );
   const [updating, setUpdating] = useState(false);
   const showToast = useShowToast();
@@ -43,7 +43,7 @@ const useFollowToggle = (user) => {
         user.followers.pop(); //to simulate removing from the followers
       } else {
         showToast("Success", `Followed ${user.name}`, "success");
-        user.followers.push(currentUser._id); //to simulate adding to the followers
+        user.followers.push(currentUser?._id); //to simulate adding to the followers
       }
 
       setFollowing(!following);
