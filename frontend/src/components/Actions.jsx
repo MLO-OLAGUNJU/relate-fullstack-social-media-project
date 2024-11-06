@@ -1,5 +1,21 @@
 import React, { useState } from "react";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Text,
+  useColorModeValue,
+  useDisclosure,
+} from "@chakra-ui/react";
 import useShowToast from "../hooks/useShowToast";
 import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
@@ -7,9 +23,16 @@ const Actions = ({ post: post_ }) => {
   const user = useRecoilValue(userAtom);
   const [liked, setLiked] = useState(post_.likes.includes(user?._id));
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const [isReplying, setIsReplying] = useState(false);
+  const [reply, setReply] = useState("");
+
   const [post, setPost] = useState(post_);
   const [isLiking, setIsLiking] = useState(false);
   const showToast = useShowToast();
+
+  const handleReply = async () => {};
 
   const HandleLikeAndUnlike = async () => {
     if (!user) {
@@ -87,7 +110,7 @@ const Actions = ({ post: post_ }) => {
             role="img"
             viewBox="0 0 24 24"
             width="20"
-            // onClick={onOpen}
+            onClick={onOpen}
             className="cursor-pointer"
           >
             <title>Comment</title>
@@ -112,6 +135,49 @@ const Actions = ({ post: post_ }) => {
             {post.likes.length} likes
           </Text>
         </Flex>
+
+        {isOpen && (
+          <Box
+            onClick={onClose}
+            backdropFilter="auto"
+            position={"fixed"}
+            top={0}
+            right={0}
+            left={0}
+            bottom={0}
+            zIndex={40}
+            backdropBlur="5px"
+          />
+        )}
+
+        <Modal isOpen={isOpen} onClose={onClose}>
+          {/* <ModalOverlay /> */}
+          <ModalContent bg={useColorModeValue("white", "gray.dark")}>
+            <ModalHeader></ModalHeader>
+            <ModalCloseButton />
+            <ModalBody pb={6}>
+              <FormControl>
+                <Input
+                  placeholder="Tell them how you relate with it...."
+                  value={reply}
+                  onChange={(e) => setReply(e.target.value)}
+                />
+              </FormControl>
+            </ModalBody>
+
+            <ModalFooter>
+              <Button
+                colorScheme="blue"
+                size={"sm"}
+                mr={3}
+                isLoading={isReplying}
+                onClick={handleReply}
+              >
+                Reply
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </Flex>
     </div>
   );
