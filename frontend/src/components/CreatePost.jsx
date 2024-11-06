@@ -133,6 +133,7 @@ const CreatePost = () => {
                 placeholder="What do you want people to relate to?"
                 onChange={handleTextChange}
                 value={postText}
+                outline={useColorModeValue("gray.600", "gray.700")}
               />
 
               <Text
@@ -182,7 +183,7 @@ const CreatePost = () => {
 
           <ModalFooter>
             <Button
-              colorScheme="blue"
+              // colorScheme="blue"
               isLoading={loading}
               mr={3}
               onClick={handleCreateRelate}

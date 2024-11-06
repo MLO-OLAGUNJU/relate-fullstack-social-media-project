@@ -15,14 +15,13 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { CgMoreO } from "react-icons/cg";
-import { Link as Linking, useLocation, useNavigate } from "react-router-dom";
+import { Link as Linking, useNavigate } from "react-router-dom";
 import userAtom from "../atoms/userAtom";
 import { useRecoilValue } from "recoil";
 import useShowToast from "../hooks/useShowToast";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 
-const UserHeader = ({ user }) => {
-  const location = useLocation();
+const UserHeader = ({ user, activeTab, handleTabClick }) => {
   const toast = useToast();
   const currentUser = useRecoilValue(userAtom); //this is the user that is currently logged in
   const showToast = useShowToast();
@@ -245,56 +244,44 @@ const UserHeader = ({ user }) => {
           </Menu>
         </Flex>
       </Flex>
+
       <Flex w={"full"}>
-        <Linking to="/username" className="flex-1">
-          <Flex
-            flex={1}
-            justifyContent={"center"}
-            pb={3}
-            cursor={"pointer"}
-            borderBottom={
-              location.pathname === "/username"
-                ? "3px solid white"
-                : "1px solid #333638"
-            }
-            color={location.pathname === "/username" ? "white" : "gray.light"}
-            _light={{
-              color: location.pathname === "/username" ? "black" : "#a0a0a0",
-              borderBottom:
-                location.pathname === "/username"
-                  ? "3px solid black"
-                  : "1px solid #E5E5E5",
-            }}
-          >
-            <Text fontWeight={"bold"}>Relates</Text>
-          </Flex>
-        </Linking>
-        <Linking to="/username/replies" className="flex-1">
-          <Flex
-            flex={1}
-            justifyContent={"center"}
-            pb={3}
-            cursor={"pointer"}
-            borderBottom={
-              location.pathname === "/username/replies"
-                ? "3px solid white"
-                : "1px solid #333638"
-            }
-            color={
-              location.pathname === "/username/replies" ? "white" : "gray.light"
-            }
-            _light={{
-              color:
-                location.pathname === "/username/replies" ? "black" : "#a0a0a0",
-              borderBottom:
-                location.pathname === "/username/replies"
-                  ? "3px solid black"
-                  : "1px solid #E5E5E5",
-            }}
-          >
-            <Text fontWeight={"bold"}>Replies</Text>
-          </Flex>
-        </Linking>
+        <Flex
+          flex={1}
+          justifyContent={"center"}
+          pb={3}
+          cursor={"pointer"}
+          borderBottom={
+            activeTab === "relates" ? "3px solid white" : "1px solid #333638"
+          }
+          color={activeTab === "relates" ? "white" : "gray.light"}
+          _light={{
+            color: activeTab === "relates" ? "black" : "#a0a0a0",
+            borderBottom:
+              activeTab === "relates" ? "3px solid black" : "1px solid #E5E5E5",
+          }}
+          onClick={() => handleTabClick("relates")}
+        >
+          <Text fontWeight={"bold"}>Relates</Text>
+        </Flex>
+        <Flex
+          flex={1}
+          justifyContent={"center"}
+          pb={3}
+          cursor={"pointer"}
+          borderBottom={
+            activeTab === "replies" ? "3px solid white" : "1px solid #333638"
+          }
+          color={activeTab === "replies" ? "white" : "gray.light"}
+          _light={{
+            color: activeTab === "replies" ? "black" : "#a0a0a0",
+            borderBottom:
+              activeTab === "replies" ? "3px solid black" : "1px solid #E5E5E5",
+          }}
+          onClick={() => handleTabClick("replies")}
+        >
+          <Text fontWeight={"bold"}>Replies</Text>
+        </Flex>
       </Flex>
     </VStack>
   );

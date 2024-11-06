@@ -58,7 +58,7 @@ const Actions = ({ post: post_ }) => {
       setReply("");
       setPost({ ...post, replies: [...post.replies, data.reply] });
       // showToast("Success", "Relate succcess!", "success");
-      console.log(data);
+      // console.log(data);
       onClose();
     } catch (error) {
       showToast("Error", error.message, "error");
@@ -194,13 +194,14 @@ const Actions = ({ post: post_ }) => {
                   placeholder="Relate with the post...."
                   value={reply}
                   onChange={(e) => setReply(e.target.value)}
+                  outline={useColorModeValue("gray.600", "gray.700")}
                 />
               </FormControl>
             </ModalBody>
 
             <ModalFooter>
               <Button
-                colorScheme="blue"
+                // colorScheme="blue"
                 size={"sm"}
                 mr={3}
                 isLoading={isReplying}

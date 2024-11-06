@@ -22,6 +22,8 @@ import { BsThreeDots } from "react-icons/bs";
 import Actions from "./Actions";
 import useShowToast from "../hooks/useShowToast";
 import { formatDistanceToNow } from "date-fns";
+import { useRecoilValue } from "recoil";
+import userAtom from "../atoms/userAtom";
 
 const formatTimeAgo = (date) => {
   const distance = formatDistanceToNow(new Date(date))
@@ -43,6 +45,8 @@ const formatTimeAgo = (date) => {
 };
 
 const Post = ({ post, postedBy }) => {
+  const currentUser = useRecoilValue(userAtom); //this is the user that is currently logged in
+
   const [user, setUser] = useState(null);
 
   const showToast = useShowToast();
@@ -73,7 +77,7 @@ const Post = ({ post, postedBy }) => {
   return (
     <div>
       {!user && (
-        <Stack gap="6">
+        <Stack gap="2">
           <HStack width="full">
             <SkeletonCircle size="20" />
             <SkeletonText noOfLines={10} />
@@ -193,27 +197,59 @@ const Post = ({ post, postedBy }) => {
                             bg: "gray.light",
                           }}
                         >
-                          <MenuItem
-                            _light={{
-                              bg: "gray.light",
-                              color: "#fff",
-                            }}
-                            bg={"gray.dark"}
-                            // onClick={copyUrl}
-                          >
-                            Edit post
-                          </MenuItem>
-                          <MenuItem
-                            _light={{
-                              bg: "gray.light",
-                              // color: "#fff",
-                            }}
-                            bg={"gray.dark"}
-                            // onClick={copyUrl}
-                            color={"red"}
-                          >
-                            Delete Post
-                          </MenuItem>
+                          {" "}
+                          {currentUser._id === user._id && (
+                            <>
+                              <MenuItem
+                                _light={{
+                                  bg: "gray.light",
+                                  color: "#fff",
+                                }}
+                                bg={"gray.dark"}
+                                // onClick={copyUrl}
+                              >
+                                Edit post
+                              </MenuItem>
+                              <MenuItem
+                                _light={{
+                                  bg: "gray.light",
+                                  // color: "#fff",
+                                }}
+                                bg={"gray.dark"}
+                                // onClick={copyUrl}
+                                color={"red"}
+                              >
+                                Delete Post
+                              </MenuItem>
+                            </>
+                          )}
+                          {currentUser._id !== user._id && (
+                            <>
+                              {" "}
+                              <MenuItem
+                                _light={{
+                                  bg: "gray.light",
+                                  // color: "#fff",
+                                }}
+                                bg={"gray.dark"}
+                                // onClick={copyUrl}
+                                color={"red"}
+                              >
+                                Report Relate
+                              </MenuItem>
+                              <MenuItem
+                                _light={{
+                                  bg: "gray.light",
+                                  // color: "#fff",
+                                }}
+                                bg={"gray.dark"}
+                                // onClick={copyUrl}
+                                // color={"red"}
+                              >
+                                Unfollow {user.username}
+                              </MenuItem>
+                            </>
+                          )}
                         </MenuList>
                       </Portal>
                     </Box>

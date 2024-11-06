@@ -163,6 +163,28 @@ const getFeedsPosts = async (req, res) => {
   }
 };
 
+const getUserPost = async (req, res) => {
+  const { username } = req.params;
+
+  try {
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    //postedBy: user._id} by this: we are fetching all posts the filtering the ones with corresponding id of the user that we have already
+    const posts = await Post.find({ postedBy: user._id }).sort({
+      createdAt: -1,
+    }); //createdAt: -1 means sorting descending order
+
+    res.status(200).json(posts);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+    console.log("Error in getUserPost: ", error.message);
+  }
+};
+
 export {
   createPost,
   getPost,
@@ -170,4 +192,5 @@ export {
   likeUnlikePost,
   replyToPost,
   getFeedsPosts,
+  getUserPost,
 };
