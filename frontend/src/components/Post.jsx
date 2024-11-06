@@ -24,6 +24,7 @@ import useShowToast from "../hooks/useShowToast";
 import { formatDistanceToNow } from "date-fns";
 import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
+import FollowMenu from "./FollowMenu";
 
 const formatTimeAgo = (date) => {
   const distance = formatDistanceToNow(new Date(date))
@@ -45,18 +46,14 @@ const formatTimeAgo = (date) => {
 };
 
 const Post = ({ post, postedBy }) => {
-  const currentUser = useRecoilValue(userAtom); //this is the user that is currently logged in
-
+  const currentUser = useRecoilValue(userAtom);
   const [user, setUser] = useState(null);
-
   const showToast = useShowToast();
 
-  //fetch user
   useEffect(() => {
     const getUser = async () => {
       try {
         const res = await fetch(`/api/users/profile/${postedBy}`);
-
         const data = await res.json();
 
         if (data.error) {
@@ -64,10 +61,10 @@ const Post = ({ post, postedBy }) => {
           return;
         }
 
+        // console.log(data);
         setUser(data);
       } catch (error) {
         showToast("Error", error.message, "error");
-        setUser(null);
       }
     };
 
@@ -224,31 +221,7 @@ const Post = ({ post, postedBy }) => {
                             </>
                           )}
                           {currentUser._id !== user._id && (
-                            <>
-                              {" "}
-                              <MenuItem
-                                _light={{
-                                  bg: "gray.light",
-                                  // color: "#fff",
-                                }}
-                                bg={"gray.dark"}
-                                // onClick={copyUrl}
-                                color={"red"}
-                              >
-                                Report Relate
-                              </MenuItem>
-                              <MenuItem
-                                _light={{
-                                  bg: "gray.light",
-                                  // color: "#fff",
-                                }}
-                                bg={"gray.dark"}
-                                // onClick={copyUrl}
-                                // color={"red"}
-                              >
-                                Unfollow {user.username}
-                              </MenuItem>
-                            </>
+                            <FollowMenu user={user} />
                           )}
                         </MenuList>
                       </Portal>
