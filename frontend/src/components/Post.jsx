@@ -128,6 +128,13 @@ const Post = ({ post, postedBy }) => {
     setCancelLoading(false); // Reset cancel button loading state
   };
 
+  const copyUrl = () => {
+    const currentUrl = window.location.href;
+    navigator.clipboard.writeText(currentUrl).then(() => {
+      showToast("Success", "Post link has been copied to clipboard", "error");
+    });
+  };
+
   return (
     <div>
       {!user && (
@@ -310,6 +317,16 @@ const Post = ({ post, postedBy }) => {
                           {" "}
                           {currentUser?._id === user._id && (
                             <>
+                              <MenuItem
+                                _light={{
+                                  bg: "gray.light",
+                                  color: "#fff",
+                                }}
+                                bg={"gray.dark"}
+                                onClick={copyUrl}
+                              >
+                                Copy Post URL
+                              </MenuItem>
                               <MenuItem
                                 _light={{
                                   bg: "gray.light",
