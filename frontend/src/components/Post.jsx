@@ -32,9 +32,10 @@ import { BsThreeDots } from "react-icons/bs";
 import Actions from "./Actions";
 import useShowToast from "../hooks/useShowToast";
 import { formatDistanceToNow } from "date-fns";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import FollowMenu from "./FollowMenu";
+import postAtom from "../atoms/postAtom";
 
 const formatTimeAgo = (date) => {
   const distance = formatDistanceToNow(new Date(date))
@@ -64,6 +65,7 @@ const Post = ({ post, postedBy }) => {
   const [user, setUser] = useState(null);
   const showToast = useShowToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [posts, setPosts] = useRecoilState(postAtom);
 
   useEffect(() => {
     const getUser = async () => {
@@ -114,6 +116,7 @@ const Post = ({ post, postedBy }) => {
       }
 
       showToast("Success", "Relate deleted successfully", "success");
+      setPosts(posts.filter((p) => p._id !== post._id));
       onClose(); // Close the modal after successful deletion
     } catch (error) {
       showToast("Error", error.message, "error");
@@ -233,7 +236,7 @@ const Post = ({ post, postedBy }) => {
                 <Avatar
                   size={"xs"}
                   name={post.replies[0].name}
-                  src={post.replies[0].userprofilePic}
+                  src={post.replies[0].userProfilePic}
                   position={"absolute"}
                   top={0}
                   left={"15px"}
@@ -245,7 +248,7 @@ const Post = ({ post, postedBy }) => {
                 <Avatar
                   size={"xs"}
                   name={post.replies[1].name}
-                  src={post.replies[1].userprofilePic}
+                  src={post.replies[1].userProfilePic}
                   position={"absolute"}
                   bottom={0}
                   right={"-5px"}
@@ -257,7 +260,7 @@ const Post = ({ post, postedBy }) => {
                 <Avatar
                   size={"xs"}
                   name={post.replies[2].name}
-                  src={post.replies[2].userprofilePic}
+                  src={post.replies[2].userProfilePic}
                   position={"absolute"}
                   bottom={0}
                   left={"4px"}

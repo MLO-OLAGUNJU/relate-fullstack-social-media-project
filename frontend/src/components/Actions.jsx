@@ -16,18 +16,19 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import useShowToast from "../hooks/useShowToast";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
-const Actions = ({ post: post_ }) => {
+import postAtom from "../atoms/postAtom";
+const Actions = ({ post }) => {
   const user = useRecoilValue(userAtom);
-  const [liked, setLiked] = useState(post_.likes.includes(user?._id));
+  const [liked, setLiked] = useState(post.likes.includes(user?._id));
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [posts, setPosts] = useRecoilState(postAtom);
 
   const [isReplying, setIsReplying] = useState(false);
   const [reply, setReply] = useState("");
 
-  const [post, setPost] = useState(post_);
   const [isLiking, setIsLiking] = useState(false);
   const showToast = useShowToast();
 
@@ -55,11 +56,18 @@ const Actions = ({ post: post_ }) => {
         showToast("Error", error, "error");
         return;
       }
-      setReply("");
-      setPost({ ...post, replies: [...post.replies, data.reply] });
-      // showToast("Success", "Relate succcess!", "success");
-      // console.log(data);
+
+      const updatedPosts = posts.map((p) => {
+        if (p._id === post._id) {
+          return { ...p, replies: [...p.replies, data] };
+        }
+        return p;
+      });
+
+      setPosts(updatedPosts);
+
       onClose();
+      setReply("");
     } catch (error) {
       showToast("Error", error.message, "error");
     } finally {
@@ -99,11 +107,23 @@ const Actions = ({ post: post_ }) => {
       }
 
       if (!liked) {
-        //add the id of the current user to post.likes array
-        setPost({ ...post, likes: [...post.likes, user._id] });
+        // add the id of the current user to post.likes array
+        const updatedPosts = posts.map((p) => {
+          if (p._id === post._id) {
+            return { ...p, likes: [...p.likes, user._id] };
+          }
+          return p;
+        });
+        setPosts(updatedPosts);
       } else {
-        //remove the id of the current user from post.likes array
-        setPost({ ...post, likes: post.likes.filter((id) => id !== user._id) });
+        // remove the id of the current user from post.likes array
+        const updatedPosts = posts.map((p) => {
+          if (p._id === post._id) {
+            return { ...p, likes: p.likes.filter((id) => id !== user._id) };
+          }
+          return p;
+        });
+        setPosts(updatedPosts);
       }
 
       setLiked(!liked);

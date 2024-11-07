@@ -5,16 +5,17 @@ import { useParams } from "react-router-dom";
 import useShowToast from "../hooks/useShowToast";
 import { Flex, Spinner } from "@chakra-ui/react";
 import Post from "../components/Post";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import useGetUserProfile from "../hooks/useGetUserProfile";
+import postAtom from "../atoms/postAtom";
 
 const UserPage = () => {
   const currentUser = useRecoilValue(userAtom); //this is the user that is currently logged in
   const { user, loading } = useGetUserProfile();
   const { username } = useParams();
   const showToast = useShowToast();
-  const [posts, setPosts] = useState(null);
+  const [posts, setPosts] = useRecoilState(postAtom);
   const [fetchingPosts, setFetchingPosts] = useState(true);
 
   const [activeTab, setActiveTab] = useState("relates");
@@ -48,7 +49,9 @@ const UserPage = () => {
     };
 
     getPosts();
-  }, [username, showToast]);
+  }, [username, showToast, setPosts]);
+
+  console.log("post is here and it is recoil", posts);
 
   // console.log(user);
 

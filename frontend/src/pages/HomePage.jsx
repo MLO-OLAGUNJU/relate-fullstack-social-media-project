@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import useShowToast from "../hooks/useShowToast";
 import { Flex, Spinner } from "@chakra-ui/react";
 import Post from "../components/Post";
+import { useRecoilState } from "recoil";
+import postAtom from "../atoms/postAtom";
 
 const HomePage = () => {
   const showToast = useShowToast(); // Assuming showToast is a custom hook for showing toast notifications
-  const [posts, SetPosts] = useState([]);
+  const [posts, setPosts] = useRecoilState(postAtom);
   const [loading, SetLoading] = useState(true);
 
   useEffect(() => {
@@ -21,7 +23,7 @@ const HomePage = () => {
           return;
         }
 
-        SetPosts(data);
+        setPosts(data);
       } catch (error) {
         showToast("Error", error.message, "error");
       } finally {
@@ -30,7 +32,7 @@ const HomePage = () => {
     };
 
     getFeedsPost();
-  }, [showToast]);
+  }, [showToast, setPosts]);
 
   return (
     <>

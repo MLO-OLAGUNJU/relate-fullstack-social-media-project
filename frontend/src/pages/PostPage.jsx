@@ -31,9 +31,10 @@ import Comments from "../components/Comments";
 import useGetUserProfile from "../hooks/useGetUserProfile";
 import { formatDistanceToNow } from "date-fns";
 import FollowMenu from "../components/FollowMenu";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import useShowToast from "../hooks/useShowToast";
+import postAtom from "../atoms/postAtom";
 
 const formatTimeAgo = (date) => {
   const distance = formatDistanceToNow(new Date(date))
@@ -70,11 +71,14 @@ const PostPage = () => {
   const { user, loading } = useGetUserProfile();
   const { pid } = useParams();
   const showToast = useShowToast();
-  const [posts, setPosts] = useState(null);
+  const [posts, setPosts] = useRecoilState(postAtom);
+
   const [fetchingPosts, setFetchingPosts] = useState(true);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [cancelLoading, setCancelLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
+
+  const currentPost = posts[0];
 
   useEffect(() => {
     const getPosts = async () => {
@@ -91,7 +95,7 @@ const PostPage = () => {
           showToast("Error", data.error, "error");
           return;
         }
-        setPosts(data);
+        setPosts([data]);
       } catch (error) {
         showToast("Error", error.message, "error");
       } finally {
@@ -100,7 +104,7 @@ const PostPage = () => {
     };
 
     getPosts();
-  }, [pid, showToast]);
+  }, [pid, showToast, setPosts]);
 
   const HandleDeletePost = async () => {
     try {
@@ -115,7 +119,7 @@ const PostPage = () => {
   const confirmDelete = async () => {
     try {
       setDeleteLoading(true); // Set delete button loading state
-      const res = await fetch(`/api/posts/${posts._id}`, {
+      const res = await fetch(`/api/posts/${post._id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -153,7 +157,7 @@ const PostPage = () => {
     );
   }
 
-  if (!posts) return null;
+  if (!currentPost) return null;
 
   return (
     <>
@@ -242,7 +246,7 @@ const PostPage = () => {
 
           <Flex gap={4} alignItems={"center"}>
             <h1 className="flex items-center gap-1 text-xs text-gray-400">
-              {formatTimeAgo(posts.createdAt)}
+              {formatTimeAgo(currentPost.createdAt)}
               <span>ago</span>
             </h1>
 
@@ -311,8 +315,8 @@ const PostPage = () => {
           </Flex>
         </Flex>
 
-        <Text my={3}>{posts.text}</Text>
-        {posts.img && (
+        <Text my={3}>{currentPost.text}</Text>
+        {currentPost.img && (
           <Box
             borderRadius={6}
             overflow={"hidden"}
@@ -322,12 +326,12 @@ const PostPage = () => {
               borderColor: "#E5E5E5",
             }}
           >
-            <Image src={posts.img} w={"full"} />
+            <Image src={currentPost.img} w={"full"} />
           </Box>
         )}
 
         <Flex gap={3} my={3}>
-          <Actions post={posts} />
+          <Actions post={currentPost} />
         </Flex>
 
         <Divider my={4} />
@@ -344,12 +348,13 @@ const PostPage = () => {
           </Link>
         </Flex>
         <Divider my={4} />
-        {posts.replies.map((reply) => (
+        {currentPost.replies.map((reply) => (
           <Comments
             key={reply.id}
             reply={reply}
             lastReply={
-              reply._id === posts.replies[posts.replies.length - 1]._id
+              reply._id ===
+              currentPost.replies[currentPost.replies.length - 1]._id
             }
           />
         ))}

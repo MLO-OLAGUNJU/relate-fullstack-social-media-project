@@ -22,13 +22,15 @@ import React, { useRef, useState } from "react";
 import usePreviewImg from "../hooks/usePreviewImg";
 import { BsFillImageFill } from "react-icons/bs";
 import userAtom from "../atoms/userAtom";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import useShowToast from "../hooks/useShowToast";
+import postAtom from "../atoms/postAtom";
 
 const CreatePost = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const currentUser = useRecoilValue(userAtom); //this is the user that is currently logged in
   const [loading, setLoading] = useState(false);
+  const [posts, setPosts] = useRecoilState(postAtom);
 
   const showToast = useShowToast();
 
@@ -87,6 +89,7 @@ const CreatePost = () => {
       }
 
       showToast("Success", "Relate created successfully", "success");
+      setPosts([data, ...posts]);
       onClose();
       setPostText("");
       setImgUrl("");
@@ -102,11 +105,12 @@ const CreatePost = () => {
       <Button
         position={"fixed"}
         bottom={10}
-        right={10}
-        leftIcon={<AddIcon />}
+        right={5}
         bg={useColorModeValue("gray.300", "gray.dark")}
         onClick={onOpen}
-      />
+      >
+        <AddIcon />
+      </Button>
 
       {isOpen && (
         <Box
