@@ -58,8 +58,6 @@ const UserPage = () => {
         }
 
         setPosts(data);
-
-        console.log(data);
       } catch (error) {
         showToast("Error", error.message, "error");
       } finally {

@@ -175,7 +175,7 @@ const updateUser = async (req, res) => {
         );
       }
       const uploadedResponse = await cloudinary.uploader.upload(profilePic);
-      profilePic = uploadedResponse.secure_url;
+      user.profilePic = uploadedResponse.secure_url;
     }
 
     user.name = name || user.name;

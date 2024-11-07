@@ -62,10 +62,8 @@ const formatTimeAgo = (date) => {
 const Post = ({ post, postedBy }) => {
   const currentUser = useRecoilValue(userAtom);
   const [user, setUser] = useState(null);
-  const [askToConfirm, setAskToConfirm] = useState(false);
   const showToast = useShowToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getUser = async () => {
@@ -129,6 +127,7 @@ const Post = ({ post, postedBy }) => {
     onClose();
     setCancelLoading(false); // Reset cancel button loading state
   };
+
   return (
     <div>
       {!user && (
