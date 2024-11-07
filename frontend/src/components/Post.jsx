@@ -88,7 +88,9 @@ const Post = ({ post, postedBy }) => {
     getUser();
   }, [postedBy, showToast]);
 
-  // Modify the HandleDeletePost function
+  const [cancelLoading, setCancelLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+
   const HandleDeletePost = async () => {
     try {
       onOpen(); // Just open the modal first
@@ -97,10 +99,9 @@ const Post = ({ post, postedBy }) => {
     }
   };
 
-  // Add a new function to handle the actual deletion
   const confirmDelete = async () => {
     try {
-      setLoading(true);
+      setDeleteLoading(true); // Set delete button loading state
       const res = await fetch(`/api/posts/${post._id}`, {
         method: "DELETE",
         headers: {
@@ -119,10 +120,15 @@ const Post = ({ post, postedBy }) => {
     } catch (error) {
       showToast("Error", error.message, "error");
     } finally {
-      setLoading(false);
+      setDeleteLoading(false); // Reset delete button loading state
     }
   };
 
+  const cancelDelete = () => {
+    setCancelLoading(true); // Set cancel button loading state
+    onClose();
+    setCancelLoading(false); // Reset cancel button loading state
+  };
   return (
     <div>
       {!user && (
@@ -135,25 +141,59 @@ const Post = ({ post, postedBy }) => {
         </Stack>
       )}
 
-      {/* // Modify your Modal implementation */}
-      <Modal isOpen={isOpen} onClose={onClose}>
+      {isOpen && (
+        <Box
+          onClick={onClose}
+          backdropFilter="auto"
+          position={"fixed"}
+          top={0}
+          right={0}
+          left={0}
+          bottom={0}
+          zIndex={40}
+          backdropBlur="5px"
+        />
+      )}
+
+      <Modal isOpen={isOpen} onClose={cancelDelete}>
         <ModalContent bg={useColorModeValue("white", "gray.dark")}>
-          <ModalHeader>Do you CONFIRM to Delete this Relate?</ModalHeader>
+          <ModalHeader textAlign={"center"}></ModalHeader>
           <ModalCloseButton />
 
-          <ModalFooter>
-            <Button mr={3} onClick={onClose} isLoading={loading}>
-              Cancel
-            </Button>
-            <Button
-              colorScheme="red"
-              mr={3}
-              onClick={confirmDelete}
-              isLoading={loading}
-            >
-              Delete
-            </Button>
-          </ModalFooter>
+          <ModalBody pb={6}>
+            <FormControl>
+              <Text fontSize="md" my={4} textAlign={"center"}>
+                Do you CONFIRM to Delete this Relate?
+              </Text>
+
+              <Flex
+                direction="row"
+                align="center"
+                mx={"auto"}
+                w={"fit-content"}
+              >
+                <Button
+                  mr={3}
+                  onClick={cancelDelete}
+                  isLoading={cancelLoading}
+                  disabled={deleteLoading} // Disable cancel button when delete is loading
+                >
+                  Cancel
+                </Button>
+                <Button
+                  colorScheme="red"
+                  mr={3}
+                  onClick={confirmDelete}
+                  isLoading={deleteLoading}
+                  disabled={cancelLoading} // Disable delete button when cancel is loading
+                >
+                  Delete
+                </Button>
+              </Flex>
+            </FormControl>
+          </ModalBody>
+
+          <ModalFooter></ModalFooter>
         </ModalContent>
       </Modal>
 
