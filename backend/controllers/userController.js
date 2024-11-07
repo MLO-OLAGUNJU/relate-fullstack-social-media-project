@@ -174,8 +174,9 @@ const updateUser = async (req, res) => {
           user.profilePic.split("/").pop().split(".")[0]
         );
       }
+
       const uploadedResponse = await cloudinary.uploader.upload(profilePic);
-      user.profilePic = uploadedResponse.secure_url;
+      profilePic = uploadedResponse.secure_url;
     }
 
     user.name = name || user.name;

@@ -12,7 +12,6 @@ import {
   Box,
   MenuItem,
   Image,
-  useToast,
   Divider,
   Spinner,
   useDisclosure,
@@ -60,8 +59,6 @@ const formatTimeAgo = (date) => {
 };
 
 const PostPage = () => {
-  const toast = useToast();
-
   const copyUrl = () => {
     const currentUrl = window.location.href;
     navigator.clipboard.writeText(currentUrl).then(() => {
@@ -94,9 +91,6 @@ const PostPage = () => {
           showToast("Error", data.error, "error");
           return;
         }
-
-        console.log(data);
-
         setPosts(data);
       } catch (error) {
         showToast("Error", error.message, "error");
@@ -176,47 +170,50 @@ const PostPage = () => {
           backdropBlur="5px"
         />
       )}
-      <Modal isOpen={isOpen} onClose={cancelDelete}>
-        <ModalContent bg={useColorModeValue("white", "gray.dark")}>
-          <ModalHeader textAlign={"center"}></ModalHeader>
-          <ModalCloseButton />
 
-          <ModalBody pb={6}>
-            <FormControl>
-              <Text fontSize="md" my={4} textAlign={"center"}>
-                Do you CONFIRM to Delete this Relate?
-              </Text>
+      {isOpen && (
+        <Modal isOpen={isOpen} onClose={cancelDelete}>
+          <ModalContent bg={useColorModeValue("white", "gray.dark")}>
+            <ModalHeader textAlign={"center"}></ModalHeader>
+            <ModalCloseButton />
 
-              <Flex
-                direction="row"
-                align="center"
-                mx={"auto"}
-                w={"fit-content"}
-              >
-                <Button
-                  mr={3}
-                  onClick={cancelDelete}
-                  isLoading={cancelLoading}
-                  disabled={deleteLoading} // Disable cancel button when delete is loading
+            <ModalBody pb={6}>
+              <FormControl>
+                <Text fontSize="md" my={4} textAlign={"center"}>
+                  Do you CONFIRM to Delete this Relate?
+                </Text>
+
+                <Flex
+                  direction="row"
+                  align="center"
+                  mx={"auto"}
+                  w={"fit-content"}
                 >
-                  Cancel
-                </Button>
-                <Button
-                  colorScheme="red"
-                  mr={3}
-                  onClick={confirmDelete}
-                  isLoading={deleteLoading}
-                  disabled={cancelLoading} // Disable delete button when cancel is loading
-                >
-                  Delete
-                </Button>
-              </Flex>
-            </FormControl>
-          </ModalBody>
+                  <Button
+                    mr={3}
+                    onClick={cancelDelete}
+                    isLoading={cancelLoading}
+                    disabled={deleteLoading} // Disable cancel button when delete is loading
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    colorScheme="red"
+                    mr={3}
+                    onClick={confirmDelete}
+                    isLoading={deleteLoading}
+                    disabled={cancelLoading} // Disable delete button when cancel is loading
+                  >
+                    Delete
+                  </Button>
+                </Flex>
+              </FormControl>
+            </ModalBody>
 
-          <ModalFooter></ModalFooter>
-        </ModalContent>
-      </Modal>
+            <ModalFooter></ModalFooter>
+          </ModalContent>
+        </Modal>
+      )}
       <div>
         <Flex justifyContent={"space-between"}>
           <Flex w={"full"} alignItems={"center"} gap={3}>
@@ -333,23 +330,13 @@ const PostPage = () => {
           <Actions post={posts} />
         </Flex>
 
-        {/* <Flex gap={2} alignItems={"center"}>
-          <Text color={"gray.light"} fontSize={"sm"}>
-            238 replies
-          </Text>
-          <Box w={0.5} h={0.5} borderRadius={"full"} bg={"gray.light"}></Box>
-          <Text color={"gray.light"} fontSize={"sm"}>
-            {638} likes
-          </Text>
-        </Flex> */}
-
         <Divider my={4} />
 
         <Flex justifyContent={"space-between"}>
           <Flex gap={2} alignItems={"center"}>
             <Text fontSize={"2xl"}>🔔</Text>
             <Text color={"gray.light"}>
-              Need a full-stack developer to build your product?
+              Need a FullStack Engineer or Cloud Engineer?
             </Text>
           </Flex>
           <Link to={"mailto:oladeleemmanuelolagunju@gmail.com"}>
@@ -357,13 +344,15 @@ const PostPage = () => {
           </Link>
         </Flex>
         <Divider my={4} />
-        {/* <Comments
-        comment={"Hey this looks great!"}
-        createdAt={"2d"}
-        likes={100}
-        userAvatar={"/mlo.png"}
-        username={"backsmith"}
-      /> */}
+        {posts.replies.map((reply) => (
+          <Comments
+            key={reply.id}
+            reply={reply}
+            lastReply={
+              reply._id === posts.replies[posts.replies.length - 1]._id
+            }
+          />
+        ))}
       </div>
     </>
   );

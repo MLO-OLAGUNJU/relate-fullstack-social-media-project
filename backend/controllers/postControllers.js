@@ -75,9 +75,8 @@ const deletePost = async (req, res) => {
     if (post.img) {
       const imgId = post.img.split("/").pop().split(".")[0];
       await cloudinary.uploader.destroy(imgId);
-      post.img = null;
-      await post.save();
     }
+
     await Post.findByIdAndDelete(req.params.id);
 
     res.status(200).json({ message: "Post has been successfully deleted" });
@@ -122,7 +121,7 @@ const replyToPost = async (req, res) => {
     const { text } = req.body;
     const postId = req.params.id;
     const userId = req.user._id;
-    const userProfilePIc = req.user.profilePic;
+    const userProfilePic = req.user.profilePic;
     const username = req.user.username;
     const name = req.user.name;
 
@@ -135,7 +134,7 @@ const replyToPost = async (req, res) => {
       return res.status(404).json({ error: "Post not found" });
     }
 
-    const reply = { userId, text, userProfilePIc, username, name };
+    const reply = { userId, text, userProfilePic, username, name };
 
     post.replies.push(reply);
     await post.save();
