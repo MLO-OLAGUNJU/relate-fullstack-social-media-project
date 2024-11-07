@@ -16,6 +16,16 @@ import {
   SkeletonCircle,
   SkeletonText,
   Skeleton,
+  ModalHeader,
+  ModalContent,
+  Modal,
+  ModalCloseButton,
+  ModalBody,
+  FormControl,
+  useDisclosure,
+  useColorModeValue,
+  Button,
+  ModalFooter,
 } from "@chakra-ui/react";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { BsThreeDots } from "react-icons/bs";
@@ -29,10 +39,14 @@ import FollowMenu from "./FollowMenu";
 const formatTimeAgo = (date) => {
   const distance = formatDistanceToNow(new Date(date))
     .replace("about ", "")
-    .replace("less than ", "");
+    .replace("less than ", "")
+    .replace("a minute", "1s");
+  // .replace("now ago", "just now");
 
   // Optional: Further shortening
   return distance
+    .replace(" second", "s")
+    .replace(" seconds", "s")
     .replace(" minutes", "m")
     .replace(" minute", "m")
     .replace(" hours", "h")
@@ -48,7 +62,10 @@ const formatTimeAgo = (date) => {
 const Post = ({ post, postedBy }) => {
   const currentUser = useRecoilValue(userAtom);
   const [user, setUser] = useState(null);
+  const [askToConfirm, setAskToConfirm] = useState(false);
   const showToast = useShowToast();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getUser = async () => {
@@ -71,6 +88,41 @@ const Post = ({ post, postedBy }) => {
     getUser();
   }, [postedBy, showToast]);
 
+  // Modify the HandleDeletePost function
+  const HandleDeletePost = async () => {
+    try {
+      onOpen(); // Just open the modal first
+    } catch (error) {
+      showToast("Error", error.message, "error");
+    }
+  };
+
+  // Add a new function to handle the actual deletion
+  const confirmDelete = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch(`/api/posts/${post._id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await res.json();
+      if (data.error) {
+        showToast("Error", data.error, "error");
+        return;
+      }
+
+      showToast("Success", "Relate deleted successfully", "success");
+      onClose(); // Close the modal after successful deletion
+    } catch (error) {
+      showToast("Error", error.message, "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div>
       {!user && (
@@ -82,6 +134,28 @@ const Post = ({ post, postedBy }) => {
           <Skeleton height="200px" />
         </Stack>
       )}
+
+      {/* // Modify your Modal implementation */}
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalContent bg={useColorModeValue("white", "gray.dark")}>
+          <ModalHeader>Do you CONFIRM to Delete this Relate?</ModalHeader>
+          <ModalCloseButton />
+
+          <ModalFooter>
+            <Button mr={3} onClick={onClose} isLoading={loading}>
+              Cancel
+            </Button>
+            <Button
+              colorScheme="red"
+              mr={3}
+              onClick={confirmDelete}
+              isLoading={loading}
+            >
+              Delete
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
 
       {user && (
         <Flex gap={3} marginBottom={4} py={5}>
@@ -213,7 +287,7 @@ const Post = ({ post, postedBy }) => {
                                   // color: "#fff",
                                 }}
                                 bg={"gray.dark"}
-                                // onClick={copyUrl}
+                                onClick={HandleDeletePost}
                                 color={"red"}
                               >
                                 Delete Post
