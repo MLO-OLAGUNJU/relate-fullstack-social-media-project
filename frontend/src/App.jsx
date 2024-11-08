@@ -13,7 +13,6 @@ import CreatePost from "./components/CreatePost";
 
 function App() {
   const user = useRecoilValue(userAtom);
-  // console.log(user);
   return (
     <>
       <div>
@@ -35,11 +34,6 @@ function App() {
               element={user ? <UpdateProfilePage /> : <Navigate to="/auth" />}
             />
 
-            {/* <Route
-              path="/:username"
-              element={user ? <UserPage /> : <Navigate to="/auth" />}
-            /> */}
-
             <Route
               path="/:username"
               element={
@@ -53,10 +47,6 @@ function App() {
                 )
               }
             />
-            {/* <Route
-              path="/:username/post/:pid"
-              element={user ? <PostPage /> : <Navigate to="/auth" />}
-            /> */}
 
             <Route path="/:username/post/:pid" element={<PostPage />} />
 

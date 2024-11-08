@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Flex, Image, Button, useColorMode, Box } from "@chakra-ui/react";
 import { CgClose, CgMenuRight, CgMoon, CgSun } from "react-icons/cg";
 import { Link } from "react-router-dom";
-import LogoutButton from "./LogoutButton";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom";
 import authScreenAtom from "../atoms/authAtom";
+import useLogout from "../hooks/useLogout";
 
 const Header = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -13,6 +13,8 @@ const Header = () => {
   const user = useRecoilValue(userAtom);
   const setAuthScreenState = useSetRecoilState(authScreenAtom);
   const currentUser = useRecoilValue(userAtom); //this is the user that is currently logged in
+
+  const logout = useLogout();
 
   const handleClick = () => {
     setIsOpen(!isOpen);
@@ -89,12 +91,6 @@ const Header = () => {
             }
           />
         </Link>
-
-        {/* {user && (
-          <Link to={`/${user.username}`}>
-            <RxAvatar size={24} />
-          </Link>
-        )} */}
 
         <button onClick={handleClick}>
           <CgMenuRight
@@ -178,7 +174,14 @@ const Header = () => {
             {/*  */}{" "}
             {user ? (
               <div className="w-full" onClick={handleClick}>
-                <LogoutButton />
+                <button
+                  className={`w-full text-start pl-5 py-4  ${
+                    colorMode === "dark" ? " bg-[#181818]" : "  bg-[#f9f9f9]"
+                  }`}
+                  onClick={logout}
+                >
+                  Log out
+                </button>
               </div>
             ) : (
               <Link

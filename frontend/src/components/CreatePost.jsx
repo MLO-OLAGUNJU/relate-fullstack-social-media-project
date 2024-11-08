@@ -25,12 +25,18 @@ import userAtom from "../atoms/userAtom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import useShowToast from "../hooks/useShowToast";
 import postAtom from "../atoms/postAtom";
+import { useLocation } from "react-router-dom";
 
 const CreatePost = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const currentUser = useRecoilValue(userAtom); //this is the user that is currently logged in
+  const user = useRecoilValue(userAtom); //this is the user that is currently logged in
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useRecoilState(postAtom);
+
+  const location = useLocation();
+  const { pathname } = location;
+  const parts = pathname.split("/");
+  const username = parts[1];
 
   const showToast = useShowToast();
 
@@ -75,7 +81,7 @@ const CreatePost = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          postedBy: currentUser,
+          postedBy: user._id,
           text: postText,
           img: imgUrl,
         }),
@@ -89,7 +95,11 @@ const CreatePost = () => {
       }
 
       showToast("Success", "Relate created successfully", "success");
-      setPosts([data, ...posts]);
+
+      if (username === user.username) {
+        setPosts([data, ...posts]);
+      }
+
       onClose();
       setPostText("");
       setImgUrl("");
