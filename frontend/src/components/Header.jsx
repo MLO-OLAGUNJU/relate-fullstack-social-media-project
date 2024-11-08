@@ -138,6 +138,30 @@ const Header = () => {
                     Your Profile
                   </button>
                 </Link>
+                <Link to={currentUser.username} className="w-full">
+                  <button
+                    className={`w-full text-start pl-5 py-4  ${
+                      colorMode === "dark"
+                        ? " border-b-[#272727] border-b-[1px] border-solid bg-[#181818]"
+                        : " border-b-[#e8e8e8]  border-b-[1px] border-solid bg-[#f9f9f9]"
+                    }`}
+                    onClick={handleClick}
+                  >
+                    Notifcations
+                  </button>
+                </Link>
+                <Link to={currentUser.username} className="w-full">
+                  <button
+                    className={`w-full text-start pl-5 py-4  ${
+                      colorMode === "dark"
+                        ? " border-b-[#272727] border-b-[1px] border-solid bg-[#181818]"
+                        : " border-b-[#e8e8e8]  border-b-[1px] border-solid bg-[#f9f9f9]"
+                    }`}
+                    onClick={handleClick}
+                  >
+                    Messages
+                  </button>
+                </Link>
               </>
             ) : (
               <Link

@@ -54,6 +54,10 @@ function App() {
               path="/:username/replies"
               element={user ? <Replies /> : <Navigate to="/auth" />}
             />
+            <Route
+              path="/chat"
+              element={user ? <ChatPage /> : <Navigate to="/auth" />}
+            />
           </Routes>
 
           {user && <CreatePost />}
