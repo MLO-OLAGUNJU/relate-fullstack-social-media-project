@@ -82,6 +82,9 @@ const PostPage = () => {
 
   useEffect(() => {
     const getPosts = async () => {
+      setFetchingPosts(true); // Set fetching posts loading state
+      setPosts([]);
+
       try {
         const res = await fetch(`/api/posts/${pid}`, {
           method: "GET",
