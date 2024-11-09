@@ -150,7 +150,7 @@ const Header = () => {
                     Notifcations
                   </button>
                 </Link>
-                <Link to={currentUser.username} className="w-full">
+                <Link to={"/chat"} className="w-full">
                   <button
                     className={`w-full text-start pl-5 py-4  ${
                       colorMode === "dark"

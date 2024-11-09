@@ -1,4 +1,4 @@
-import { Container } from "@chakra-ui/react";
+import { Box, Container } from "@chakra-ui/react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import UserPage from "./pages/UserPage";
 import PostPage from "./pages/PostPage";
@@ -20,49 +20,51 @@ function App() {
         <Container maxW={"90%"}>
           <Header />
         </Container>
-        <Container maxW="680px">
-          <Routes>
-            <Route
-              path="/"
-              element={user ? <HomePage /> : <Navigate to="/auth" />}
-            />
-            <Route
-              path="/auth"
-              element={!user ? <AuthPage /> : <Navigate to="/" />}
-            />
-            <Route
-              path="/update"
-              element={user ? <UpdateProfilePage /> : <Navigate to="/auth" />}
-            />
+        <Box position={"relative"} w={"full"}>
+          <Container maxW="680px">
+            <Routes>
+              <Route
+                path="/"
+                element={user ? <HomePage /> : <Navigate to="/auth" />}
+              />
+              <Route
+                path="/auth"
+                element={!user ? <AuthPage /> : <Navigate to="/" />}
+              />
+              <Route
+                path="/update"
+                element={user ? <UpdateProfilePage /> : <Navigate to="/auth" />}
+              />
 
-            <Route
-              path="/:username"
-              element={
-                user ? (
-                  <>
+              <Route
+                path="/:username"
+                element={
+                  user ? (
+                    <>
+                      <UserPage />
+                      <CreatePost />
+                    </>
+                  ) : (
                     <UserPage />
-                    <CreatePost />
-                  </>
-                ) : (
-                  <UserPage />
-                )
-              }
-            />
+                  )
+                }
+              />
 
-            <Route path="/:username/post/:pid" element={<PostPage />} />
+              <Route path="/:username/post/:pid" element={<PostPage />} />
 
-            <Route
-              path="/:username/replies"
-              element={user ? <Replies /> : <Navigate to="/auth" />}
-            />
-            <Route
-              path="/chat"
-              element={user ? <ChatPage /> : <Navigate to="/auth" />}
-            />
-          </Routes>
+              <Route
+                path="/:username/replies"
+                element={user ? <Replies /> : <Navigate to="/auth" />}
+              />
+              <Route
+                path="/chat"
+                element={user ? <ChatPage /> : <Navigate to="/auth" />}
+              />
+            </Routes>
 
-          {user && <CreatePost />}
-        </Container>
+            {user && <CreatePost />}
+          </Container>
+        </Box>
       </div>
     </>
   );
