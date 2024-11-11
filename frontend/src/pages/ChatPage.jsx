@@ -19,18 +19,19 @@ const ChatPage = () => {
     <Box
       position={"absolute"}
       left={"50%"}
-      w={{ base: "100%", md: "80%", lg: "750px" }}
+      w={{ base: "100%", md: "80%", lg: "950px" }}
       transform={"translateX(-50%)"}
       p={4}
     >
       <Flex
-        gap={4}
+        gap={10}
         flexDirection={{ base: "column", md: "row" }}
         maxW={{
           sm: "400px",
           md: "full",
         }}
         mx={"auto"}
+        justifyContent={"space-between"}
       >
         <Flex
           flex={30}
