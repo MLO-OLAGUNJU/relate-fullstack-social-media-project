@@ -10,6 +10,7 @@ import {
 import React from "react";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import Message from "./Message";
+import MessageInput from "./MessageInput";
 
 const MessageContainer = () => {
   return (
