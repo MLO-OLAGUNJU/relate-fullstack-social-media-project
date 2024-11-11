@@ -36,6 +36,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 import FollowMenu from "./FollowMenu";
 import postAtom from "../atoms/postAtom";
+import PostReplyAvatars from "./PostReplyAvatars ";
 
 const formatTimeAgo = (date) => {
   const distance = formatDistanceToNow(new Date(date))
@@ -229,7 +230,7 @@ const Post = ({ post, postedBy }) => {
               }}
               my={2}
             ></Box>
-            <Box position={"relative"} w={"full"}>
+            {/* <Box position={"relative"} w={"full"}>
               {post.replies.length === 0 && (
                 <Text textAlign={"center"}>💤</Text>
               )}
@@ -268,7 +269,8 @@ const Post = ({ post, postedBy }) => {
                   padding={"2px"}
                 />
               )}
-            </Box>
+            </Box> */}
+            <PostReplyAvatars replies={post.replies} />
           </Flex>
 
           <Flex flex={1} flexDirection={"column"} gap={2}>
