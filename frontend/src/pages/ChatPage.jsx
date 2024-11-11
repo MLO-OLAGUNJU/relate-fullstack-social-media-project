@@ -85,7 +85,8 @@ const ChatPage = () => {
           <Conversation />
           <Conversation />
         </Flex>
-        <Flex
+
+        {/* <Flex
           flex={70}
           borderRadius={"md"}
           p={2}
@@ -96,8 +97,7 @@ const ChatPage = () => {
         >
           <GiConversation size={100} />
           <Text fontSize={20}>Select a conversation to start messaging</Text>
-        </Flex>
-
+        </Flex> */}
         <MessageContainer />
       </Flex>
     </Box>
