@@ -72,6 +72,8 @@ const MessageContainer = () => {
         <Message ownMessage={false} />
         <Message ownMessage={true} />
       </Flex>
+
+      <MessageInput />
     </Flex>
   );
 };
