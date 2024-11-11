@@ -43,6 +43,7 @@ const MessageContainer = () => {
         flexDir={"column"}
         gap={4}
         my={4}
+        px={2}
         height={"300px"}
         overflowY={"auto"}
       >
