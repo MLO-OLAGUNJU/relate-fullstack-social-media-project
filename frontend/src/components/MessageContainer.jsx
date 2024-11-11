@@ -44,7 +44,7 @@ const MessageContainer = () => {
         gap={4}
         my={4}
         height={"300px"}
-        overflowY={"scroll"}
+        overflowY={"auto"}
       >
         {false &&
           [...Array(5)].map((_, i) => (
@@ -65,7 +65,11 @@ const MessageContainer = () => {
               {i % 2 !== 0 && <SkeletonCircle size={7} />}
             </Flex>
           ))}
-        <Message />
+        <Message ownMessage={true} />
+        {/* <Message ownMessage={false} />
+        <Message ownMessage={true} />
+        <Message ownMessage={false} />
+        <Message ownMessage={true} /> */}
       </Flex>
     </Flex>
   );
