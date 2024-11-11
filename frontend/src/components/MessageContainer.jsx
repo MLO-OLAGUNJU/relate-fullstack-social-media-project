@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
+import Message from "./Message";
 
 const MessageContainer = () => {
   return (
@@ -64,6 +65,7 @@ const MessageContainer = () => {
               {i % 2 !== 0 && <SkeletonCircle size={7} />}
             </Flex>
           ))}
+        <Message />
       </Flex>
     </Flex>
   );
