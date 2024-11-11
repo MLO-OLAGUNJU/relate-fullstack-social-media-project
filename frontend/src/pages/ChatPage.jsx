@@ -12,6 +12,7 @@ import {
 import React from "react";
 import Conversation from "../components/Conversation";
 import { GiConversation } from "react-icons/gi";
+import MessageContainer from "../components/MessageContainer";
 
 const ChatPage = () => {
   return (
@@ -96,7 +97,8 @@ const ChatPage = () => {
           <GiConversation size={100} />
           <Text fontSize={20}>Select a conversation to start messaging</Text>
         </Flex>
-        {/* <Flex flex={70}>Message Container</Flex> */}
+
+        <MessageContainer />
       </Flex>
     </Box>
   );
