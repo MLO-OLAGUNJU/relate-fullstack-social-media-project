@@ -53,9 +53,13 @@ const getMessages = async (req, res) => {
       participants: { $all: [userId, otherUserId] },
     });
 
-    const messages = await Message.findOne({
+    if (!conversation) {
+      return res.status(404).json({ error: "Conversation not found" });
+    }
+
+    const messages = await Message.find({
       conversationId: conversation._id,
-    }).sort({ createdAt: -1 });
+    }).sort({ createdAt: 1 });
 
     res.status(200).json(messages);
   } catch (error) {
@@ -63,4 +67,19 @@ const getMessages = async (req, res) => {
   }
 };
 
-export { sendMessage, getMessages };
+const getConversations = async (req, res) => {
+  const userId = req.user._id;
+  try {
+    const conversations = await Conversation.find({
+      participants: userId,
+    }).populate({
+      path: "participants",
+      select: "username profilePic",
+    });
+
+    res.status(200).json(conversations);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+export { sendMessage, getMessages, getConversations };
