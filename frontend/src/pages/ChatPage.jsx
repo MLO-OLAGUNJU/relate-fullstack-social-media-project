@@ -9,12 +9,44 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Conversation from "../components/Conversation";
 import { GiConversation } from "react-icons/gi";
 import MessageContainer from "../components/MessageContainer";
+import useShowToast from "../hooks/useShowToast";
 
 const ChatPage = () => {
+  const showToast = useShowToast();
+  const [loadingConversations, setLoadingConversations] = useState(true);
+
+  useEffect(() => {
+    const getConversations = async () => {
+      setLoadingConversations(true);
+      try {
+        const res = await fetch(`api/messages/conversations`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const data = await res.json();
+
+        if (data.error) {
+          showToast("Error", data.error, "error");
+          return;
+        }
+
+        console.log(data);
+      } catch (error) {
+        showToast("Error", error.message, "error");
+      } finally {
+        setLoadingConversations(false);
+      }
+    };
+
+    getConversations();
+  }, [showToast]);
+
   return (
     <Box
       position={"absolute"}
@@ -58,7 +90,7 @@ const ChatPage = () => {
             </Flex>
           </form>
 
-          {false &&
+          {loadingConversations &&
             [0, 1, 2, 3, 4, 5].map((_, i) => (
               <Flex
                 key={i}
@@ -77,14 +109,14 @@ const ChatPage = () => {
               </Flex>
             ))}
 
-          {/* {false && (
-
-            )} */}
-
-          <Conversation />
-          <Conversation />
-          <Conversation />
-          <Conversation />
+          {loadingConversations && (
+            <>
+              <Conversation />
+              <Conversation />
+              <Conversation />
+              <Conversation />
+            </>
+          )}
         </Flex>
 
         {/* <Flex
