@@ -11,7 +11,9 @@ import {
 import React from "react";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 
-const Conversation = () => {
+const Conversation = ({ conversation }) => {
+  const user = conversation.participants[0]; // Assuming we have a userAtom with user data
+  const lastMessage = conversation.lastMessage;
   return (
     <Flex
       gap={4}
@@ -40,14 +42,14 @@ const Conversation = () => {
 
       <Stack direction={"column"} fontSize={"sm"}>
         <Text fontWeight={"700"} display={"flex"} alignItems={"center"}>
-          Johndoe
-          {/* {user.isVerified === true && ( */}
-          <RiVerifiedBadgeFill
-          // className={`ml-1 ${
-          //   user.isCEO ? "text-[#8fbd1a]" : "text-sky-600"
-          // }`}
-          />
-          {/* )} */}
+          {user.username}
+          {user.isVerified === true && (
+            <RiVerifiedBadgeFill
+              className={`ml-1 ${
+                user.isCEO ? "text-[#8fbd1a]" : "text-sky-600"
+              }`}
+            />
+          )}
         </Text>
 
         <Text fontSize={"xs"} display={"flex"} alignItems={"center"} gap={1}>

@@ -14,10 +14,13 @@ import Conversation from "../components/Conversation";
 import { GiConversation } from "react-icons/gi";
 import MessageContainer from "../components/MessageContainer";
 import useShowToast from "../hooks/useShowToast";
+import { useRecoilState } from "recoil";
+import { conversationAtom } from "../atoms/messagesAtom";
 
 const ChatPage = () => {
   const showToast = useShowToast();
   const [loadingConversations, setLoadingConversations] = useState(true);
+  const [conversations, setConversations] = useRecoilState(conversationAtom);
 
   useEffect(() => {
     const getConversations = async () => {
@@ -37,6 +40,7 @@ const ChatPage = () => {
         }
 
         console.log(data);
+        setConversations(data);
       } catch (error) {
         showToast("Error", error.message, "error");
       } finally {
@@ -45,7 +49,7 @@ const ChatPage = () => {
     };
 
     getConversations();
-  }, [showToast]);
+  }, [showToast, setConversations]);
 
   return (
     <Box
@@ -109,12 +113,14 @@ const ChatPage = () => {
               </Flex>
             ))}
 
-          {loadingConversations && (
+          {!loadingConversations && (
             <>
-              <Conversation />
-              <Conversation />
-              <Conversation />
-              <Conversation />
+              {conversations.map((conversation) => (
+                <Conversation
+                  key={conversation._id}
+                  conversation={conversation}
+                />
+              ))}{" "}
             </>
           )}
         </Flex>

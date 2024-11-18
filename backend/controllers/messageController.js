@@ -74,7 +74,14 @@ const getConversations = async (req, res) => {
       participants: userId,
     }).populate({
       path: "participants",
-      select: "username profilePic",
+      select: "username profilePic isCEO isVerified",
+    });
+
+    //remove current user from the partcipants array
+    conversations.forEach((conversation) => {
+      conversation.participants = conversation.participants.filter(
+        (participant) => participant._id.toString() !== userId.toString()
+      );
     });
 
     res.status(200).json(conversations);
