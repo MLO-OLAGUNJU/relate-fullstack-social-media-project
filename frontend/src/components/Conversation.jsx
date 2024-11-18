@@ -50,8 +50,8 @@ const Conversation = ({ conversation }) => {
             md: "md",
             sm: "sm",
           }}
-          alt="User"
-          src="https://bit.ly/broken-link"
+          alt={user.username}
+          src={user.profilePic}
         >
           <AvatarBadge boxSize={"1em"} bg={"green.500"} />
         </Avatar>
