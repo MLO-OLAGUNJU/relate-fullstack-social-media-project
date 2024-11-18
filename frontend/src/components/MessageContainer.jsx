@@ -29,6 +29,8 @@ const MessageContainer = () => {
 
   useEffect(() => {
     const getMessages = async () => {
+      setLaodingMessages(true);
+      setMessages([]);
       try {
         const res = await fetch(`api/messages/${selectedConversation.userId}`);
 
@@ -109,7 +111,7 @@ const MessageContainer = () => {
           ))}
       </Flex>
 
-      <MessageInput />
+      <MessageInput setMessages={setMessages} />
     </Flex>
   );
 };

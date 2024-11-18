@@ -54,6 +54,8 @@ const Conversation = ({ conversation }) => {
 
   console.log(selectedConversation);
 
+  if (!user) return null;
+
   return (
     <Flex
       gap={4}
