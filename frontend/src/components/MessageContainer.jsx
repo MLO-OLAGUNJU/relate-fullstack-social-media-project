@@ -11,14 +11,16 @@ import React, { useEffect } from "react";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import Message from "./Message";
 import MessageInput from "./MessageInput";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { selectedConversationAttoms } from "../atoms/messagesAtom";
 import useShowToast from "../hooks/useShowToast";
+import userAtom from "../atoms/userAtom";
 
 const MessageContainer = () => {
   const [selectedConversation, setSelectedConversation] = useRecoilState(
     selectedConversationAttoms
   );
+  const currentUser = useRecoilValue(userAtom);
 
   const [loading, setLaodingMessages] = true;
   const [messages, setMessages] = useState([]);
@@ -97,12 +99,16 @@ const MessageContainer = () => {
               {i % 2 !== 0 && <SkeletonCircle size={7} />}
             </Flex>
           ))}
-        <Message ownMessage={true} />
-        <Message ownMessage={false} />
-        <Message ownMessage={true} />
-        <Message ownMessage={false} />
-        <Message ownMessage={true} />
       </Flex>
+
+      {!loading &&
+        messages.map((message) => (
+          <Message
+            key={message._id}
+            ownMessage={message.sender === currentUser._id}
+            message={message}
+          />
+        ))}
 
       <MessageInput />
     </Flex>

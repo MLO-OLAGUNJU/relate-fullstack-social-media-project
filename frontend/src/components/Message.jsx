@@ -1,7 +1,12 @@
 import { Avatar, Flex, Text } from "@chakra-ui/react";
 import React from "react";
+import { selectedConversationAttoms } from "../atoms/messagesAtom";
+import { useRecoilState } from "recoil";
 
-const Message = ({ ownMessage }) => {
+const Message = ({ ownMessage, message }) => {
+  const [selectedConversation, setSelectedConversation] = useRecoilState(
+    selectedConversationAttoms
+  );
   return (
     <>
       {ownMessage ? (
@@ -10,7 +15,7 @@ const Message = ({ ownMessage }) => {
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim,
             architecto debitis eum incidunt repellendus
           </Text>
-          <Avatar src="" w={7} h={7} />
+          <Avatar src={message} w={7} h={7} />
         </Flex>
       ) : (
         <Flex gap={2}>
