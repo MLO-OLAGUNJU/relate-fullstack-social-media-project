@@ -52,9 +52,6 @@ const Conversation = ({ conversation }) => {
     selectedConversationAttoms
   );
 
-  console.log(selectedConversation);
-
-  console.log("user", user);
   if (!user) return null;
 
   return (
@@ -84,7 +81,7 @@ const Conversation = ({ conversation }) => {
         useColorModeValue("gray.600", "gray.dark")
       }
     >
-      {!lastMessage.seen && (
+      {lastMessage && !lastMessage.seen && (
         <Box
           position={"absolute"}
           top={3}

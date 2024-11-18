@@ -33,16 +33,88 @@ const ChatPage = () => {
     selectedConversationAttoms
   );
 
+  // const HandleSearchConversation = async (e) => {
+  //   e.preventDefault();
+  //   setSearchText("");
+  //   setLoadingSearch(true);
+  //   try {
+  //     const res = await fetch(`api/users/profile/${searchText}`);
+
+  //     const data = await res.json();
+  //     console.log(data);
+
+  //     //try to chat yourself?
+  //     if (data.error) {
+  //       showToast("Error", data.error, "error");
+  //       return;
+  //     }
+
+  //     if (data._id === currentUser?._id) {
+  //       showToast(
+  //         "Error",
+  //         "Cannot start a conversation with yourself",
+  //         "error"
+  //       );
+  //       return;
+  //     }
+
+  //     //if we chat before, we have a conversation before?
+  //     if (
+  //       conversations.find(
+  //         (conversation) => conversation.participants[0]._id === data?._id
+  //       )
+  //     ) {
+  //       setSelectedConversation({
+  //         _id: conversations.find(
+  //           (conversation) => conversation.participants[0]._id === data?._id
+  //         )._id,
+  //         userId: data?._id,
+  //         username: data?.username,
+  //         userProfilePic: data.profilePic,
+  //       });
+  //       return;
+  //     }
+
+  //     const mockConversation = {
+  //       mock: true,
+  //       lastMessage: {
+  //         text: "",
+  //         sender: "",
+  //       },
+  //       _id: Date.now(),
+  //       participants: [
+  //         {
+  //           _id: data._id,
+  //           username: data.username,
+  //           profilePic: data.profilePic,
+  //         },
+  //       ],
+  //     };
+
+  //     setConversations((prevConvs) => [...prevConvs, mockConversation]);
+  //   } catch (error) {
+  //     showToast("Error", error.message, "error");
+  //     console.log(error);
+  //   } finally {
+  //     setLoadingSearch(false);
+  //   }
+  // };
+
   const HandleSearchConversation = async (e) => {
     e.preventDefault();
     setSearchText("");
     setLoadingSearch(true);
     try {
+      if (selectedConversation.mock) return;
       const res = await fetch(`api/users/profile/${searchText}`);
-
       const data = await res.json();
 
-      //try to chat yourself?
+      // Check if currentUser exists before accessing its _id
+      if (!currentUser) {
+        showToast("Error", "Current user information is missing", "error");
+        return;
+      }
+
       if (data.error) {
         showToast("Error", data.error, "error");
         return;
@@ -57,24 +129,49 @@ const ChatPage = () => {
         return;
       }
 
-      //if we chat before, we have a conversation before?
-      if (
-        conversations.find(
-          (conversation) => conversation.participants[0]._id === data._id
+      // Modify the find method to check participants more comprehensively
+      const existingConversation = conversations.find((conversation) =>
+        conversation.participants.some(
+          (participant) => participant._id === data._id
         )
-      ) {
+      );
+
+      if (existingConversation) {
         setSelectedConversation({
-          _id: conversations.find(
-            (conversation) => conversation.participants[0]._id === data._id
-          )._id,
+          _id: existingConversation._id,
           userId: data._id,
           username: data.username,
           userProfilePic: data.profilePic,
         });
         return;
       }
+
+      const mockConversation = {
+        mock: true,
+        lastMessage: {
+          text: "",
+          sender: "",
+        },
+        _id: Date.now(),
+        participants: [
+          {
+            _id: data._id,
+            username: data.username,
+            profilePic: data.profilePic,
+          },
+          // Optionally add current user as a participant
+          {
+            _id: currentUser._id,
+            username: currentUser.username,
+            profilePic: currentUser.profilePic,
+          },
+        ],
+      };
+
+      setConversations((prevConvs) => [...prevConvs, mockConversation]);
     } catch (error) {
       showToast("Error", error.message, "error");
+      console.log(error);
     } finally {
       setLoadingSearch(false);
     }
@@ -97,7 +194,6 @@ const ChatPage = () => {
           return;
         }
 
-        console.log(data);
         setConversations(data);
       } catch (error) {
         showToast("Error", error.message, "error");
