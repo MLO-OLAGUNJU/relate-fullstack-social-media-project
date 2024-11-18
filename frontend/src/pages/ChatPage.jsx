@@ -42,6 +42,7 @@ const ChatPage = () => {
 
       const data = await res.json();
 
+      //try to chat yourself?
       if (data.error) {
         showToast("Error", data.error, "error");
         return;
@@ -63,13 +64,14 @@ const ChatPage = () => {
         )
       ) {
         setSelectedConversation({
-          _id: conversation._id,
-          userId: user._id,
-          userProfilePic: user.profilePic,
-          username: user.username,
-          isCEO: user.isCEO,
-          isVerified: user.isVerified,
+          _id: conversations.find(
+            (conversation) => conversation.participants[0]._id === data._id
+          )._id,
+          userId: data._id,
+          username: data.username,
+          userProfilePic: data.profilePic,
         });
+        return;
       }
     } catch (error) {
       showToast("Error", error.message, "error");
