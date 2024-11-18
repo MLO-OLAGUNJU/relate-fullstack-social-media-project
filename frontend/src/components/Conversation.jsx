@@ -14,7 +14,8 @@ import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { IoCheckmarkDone } from "react-icons/io5";
 import { IoCheckmarkOutline } from "react-icons/io5";
 import userAtom from "../atoms/userAtom";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { selectedConversationAttoms } from "../atoms/messagesAtom";
 
 const Conversation = ({ conversation }) => {
   const user = conversation.participants[0]; // Assuming we have a userAtom with user data
@@ -46,6 +47,11 @@ const Conversation = ({ conversation }) => {
       ? `${text.substring(0, truncateLength)}...`
       : text;
   };
+
+  const [selectedConversation, setSelectedConversation] = useRecoilState(
+    selectedConversationAttoms
+  );
+
   return (
     <Flex
       gap={4}
@@ -58,6 +64,18 @@ const Conversation = ({ conversation }) => {
         color: "white",
       }}
       borderRadius={"md"}
+      onClick={() => {
+        setSelectedConversation({
+          _id: conversation._id,
+          userId: user._id,
+          userProfilePic: user.profilePic,
+          username: user.username,
+        });
+      }}
+      bg={
+        selectedConversation?._id === conversation._id &&
+        useColorModeValue("gray.600", "gray.dark")
+      }
     >
       {!lastMessage.seen && (
         <Box
