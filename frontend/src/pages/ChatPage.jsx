@@ -57,7 +57,7 @@ const ChatPage = () => {
         return;
       }
 
-      //if we chat before
+      //if we chat before, we have a conversation before?
       if (
         conversations.find(
           (conversation) => conversation.participants[0]._id === data._id
