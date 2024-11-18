@@ -52,6 +52,8 @@ const Conversation = ({ conversation }) => {
     selectedConversationAttoms
   );
 
+  console.log(selectedConversation);
+
   return (
     <Flex
       gap={4}
@@ -70,6 +72,8 @@ const Conversation = ({ conversation }) => {
           userId: user._id,
           userProfilePic: user.profilePic,
           username: user.username,
+          isCEO: user.isCEO,
+          isVerified: user.isVerified,
         });
       }}
       bg={

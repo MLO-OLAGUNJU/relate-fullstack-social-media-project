@@ -11,8 +11,14 @@ import React from "react";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import Message from "./Message";
 import MessageInput from "./MessageInput";
+import { useRecoilState } from "recoil";
+import { selectedConversationAttoms } from "../atoms/messagesAtom";
 
 const MessageContainer = () => {
+  const [selectedConversation, setSelectedConversation] = useRecoilState(
+    selectedConversationAttoms
+  );
+
   return (
     <Flex
       flex={70}
@@ -24,17 +30,17 @@ const MessageContainer = () => {
       {/* Message Container */}
 
       <Flex w={"full"} h={12} alignItems={"center"} gap={2}>
-        <Avatar src="" size={"sm"} />
+        <Avatar src={selectedConversation.userProfilePic} size={"sm"} />
         <Text fontWeight={"700"} display={"flex"} alignItems={"center"}>
-          Johndoe
-          {/* {user.isVerified === true && ( */}
-          <RiVerifiedBadgeFill
-          // className={`ml-1 ${
-          //   user.isCEO ? "text-[#8fbd1a]" : "text-sky-600"
-          // }`}
-          />
-          {/* )} */}
-        </Text>{" "}
+          {selectedConversation.username}
+          {selectedConversation.isVerified === true && (
+            <RiVerifiedBadgeFill
+              className={`ml-1 ${
+                selectedConversation.isCEO ? "text-[#8fbd1a]" : "text-sky-600"
+              }`}
+            />
+          )}
+        </Text>
       </Flex>
 
       <Divider />

@@ -12,5 +12,7 @@ export const selectedConversationAttoms = atom({
     userId: "",
     username: "",
     userProfilePic: "",
+    isCEO: false,
+    isVerified: false,
   },
 });
