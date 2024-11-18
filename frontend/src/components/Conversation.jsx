@@ -1,6 +1,7 @@
 import {
   Avatar,
   AvatarBadge,
+  Box,
   Flex,
   Image,
   Stack,
@@ -10,15 +11,20 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
+import { IoCheckmarkDone } from "react-icons/io5";
+import userAtom from "../atoms/userAtom";
+import { useRecoilValue } from "recoil";
 
 const Conversation = ({ conversation }) => {
   const user = conversation.participants[0]; // Assuming we have a userAtom with user data
+  const currentUser = useRecoilValue(userAtom);
   const lastMessage = conversation.lastMessage;
   return (
     <Flex
       gap={4}
       alignItems={"center"}
       p={1}
+      position={"relative"}
       _hover={{
         cursor: "pointer",
         bg: useColorModeValue("gray.600", "gray.dark"),
@@ -26,6 +32,17 @@ const Conversation = ({ conversation }) => {
       }}
       borderRadius={"md"}
     >
+      {!lastMessage.seen && (
+        <Box
+          position={"absolute"}
+          top={3}
+          right={3}
+          p={1}
+          border={"1px solid blanchedalmond"}
+          borderRadius={"100%"}
+          className="bg-sky-600"
+        />
+      )}
       <WrapItem>
         <Avatar
           size={{
@@ -39,7 +56,6 @@ const Conversation = ({ conversation }) => {
           <AvatarBadge boxSize={"1em"} bg={"green.500"} />
         </Avatar>
       </WrapItem>
-
       <Stack direction={"column"} fontSize={"sm"}>
         <Text fontWeight={"700"} display={"flex"} alignItems={"center"}>
           {user.username}
@@ -53,7 +69,15 @@ const Conversation = ({ conversation }) => {
         </Text>
 
         <Text fontSize={"xs"} display={"flex"} alignItems={"center"} gap={1}>
-          Hello, I'm John Doe!...
+          {currentUser._id === lastMessage.sender && !lastMessage.seen && (
+            <IoCheckmarkDone size={16} />
+          )}
+          {currentUser._id === lastMessage.sender && lastMessage.seen && (
+            <IoCheckmarkDone size={16} className="text-sky-600" />
+          )}
+          {lastMessage.text.length > 18
+            ? lastMessage.text.substring(0, 14) + "..."
+            : lastMessage.text}
         </Text>
       </Stack>
     </Flex>
