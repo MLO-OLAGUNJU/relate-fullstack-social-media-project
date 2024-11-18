@@ -7,7 +7,7 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import Message from "./Message";
 import MessageInput from "./MessageInput";
@@ -22,7 +22,7 @@ const MessageContainer = () => {
   );
   const currentUser = useRecoilValue(userAtom);
 
-  const [loading, setLaodingMessages] = true;
+  const [loading, setLaodingMessages] = useState(true);
   const [messages, setMessages] = useState([]);
 
   const showToast = useShowToast();
@@ -30,7 +30,6 @@ const MessageContainer = () => {
   useEffect(() => {
     const getMessages = async () => {
       try {
-        setLaodingMessages(true);
         const res = await fetch(`api/messages/${selectedConversation.userId}`);
 
         const data = await res.json();
@@ -99,16 +98,16 @@ const MessageContainer = () => {
               {i % 2 !== 0 && <SkeletonCircle size={7} />}
             </Flex>
           ))}
-      </Flex>
 
-      {!loading &&
-        messages.map((message) => (
-          <Message
-            key={message._id}
-            ownMessage={message.sender === currentUser._id}
-            message={message}
-          />
-        ))}
+        {!loading &&
+          messages.map((message) => (
+            <Message
+              key={message._id}
+              ownMessage={message.sender === currentUser._id}
+              message={message}
+            />
+          ))}
+      </Flex>
 
       <MessageInput />
     </Flex>
