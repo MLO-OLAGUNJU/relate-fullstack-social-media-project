@@ -88,6 +88,10 @@ const loginUser = async (req, res) => {
     if (!user || !isPasswordCorrect)
       return res.status(400).json({ error: "Invalid username or password" });
 
+    // Set user as online
+    user.isOnline = true;
+    await user.save();
+
     generateTokenAndSetCookie(user._id, res);
 
     res.status(200).json({
@@ -105,13 +109,50 @@ const loginUser = async (req, res) => {
 };
 
 //logout User
-const logoutUser = (req, res) => {
+const logoutUser = async (req, res) => {
   try {
+    // Get user from token and set offline
+    if (req.user) {
+      await User.findByIdAndUpdate(req.user._id, { isOnline: false });
+    }
+
     res.cookie("jwt", "", { maxAge: 1 });
     res.status(200).json({ message: "User logged out successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
     console.log("Error in logoutUser:", error.message);
+  }
+};
+
+// Add new function to get online users
+const getOnlineUsers = async (req, res) => {
+  try {
+    const onlineUsers = await User.find({ isOnline: true })
+      .select("name username profilePic")
+      .limit(20);
+
+    res.status(200).json(onlineUsers);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+    console.log("Error in getOnlineUsers:", error.message);
+  }
+};
+
+// Add function to manually update online status
+const updateOnlineStatus = async (req, res) => {
+  try {
+    const { isOnline } = req.body;
+
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      { isOnline },
+      { new: true }
+    ).select("-password");
+
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+    console.log("Error in updateOnlineStatus:", error.message);
   }
 };
 
@@ -148,67 +189,6 @@ const followUnfollowUser = async (req, res) => {
     console.log("Error in followUnFollowUser: ", err.message);
   }
 };
-
-// const updateUser = async (req, res) => {
-//   const { name, email, password, username, bio } = req.body;
-//   let { profilePic } = req.body;
-
-//   const userId = req.user._id;
-//   try {
-//     let user = await User.findById(userId);
-//     if (!user) return res.status(400).json({ message: "User not found" });
-
-//     if (req.params.id !== userId.toString())
-//       return res.status(400).json({
-//         error: "You cannot update another person's profile",
-//       });
-
-//     if (password) {
-//       const salt = await bcrypt.genSalt(10);
-//       const hashedPassword = await bcrypt.hash(password, salt);
-//       user.password = hashedPassword;
-//     }
-
-//     if (profilePic) {
-//       if (user.profilePic) {
-//         await cloudinary.uploader.destroy(
-//           user.profilePic.split("/").pop().split(".")[0]
-//         );
-//       }
-
-//       const uploadedResponse = await cloudinary.uploader.upload(profilePic);
-//       profilePic = uploadedResponse.secure_url;
-//     }
-
-//     user.name = name || user.name;
-//     user.email = email || user.email;
-//     user.username = username || user.username;
-//     user.profilePic = profilePic || user.profilePic;
-//     user.bio = bio || user.bio;
-
-//     user = await user.save();
-
-//     // Find all posts that this user replied and update username and userProfilePic fields
-//     await Post.updateMany(
-//       { "replies,userId": userId },
-//       {
-//         $set: {
-//           "replies.$[reply].username": user.username,
-//           "replies.$[reply].userProfilePic": user.profilePic,
-//         },
-//       },
-//       { arrayFilters: [{ "reply.userId": userId }] }
-//     );
-
-//     // password should be null in response
-//     user.password = null;
-
-//     res.status(200).json(user);
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//     console.log("Error in updateUser: ", err.message);
-//   }
-// };
 
 const updateUser = async (req, res) => {
   const { name, email, username, password, bio } = req.body;
@@ -278,4 +258,6 @@ export {
   followUnfollowUser,
   updateUser,
   getUserProfile,
+  getOnlineUsers,
+  updateOnlineStatus,
 };

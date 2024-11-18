@@ -12,6 +12,7 @@ import {
 import React from "react";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import { IoCheckmarkDone } from "react-icons/io5";
+import { IoCheckmarkOutline } from "react-icons/io5";
 import userAtom from "../atoms/userAtom";
 import { useRecoilValue } from "recoil";
 
@@ -19,6 +20,32 @@ const Conversation = ({ conversation }) => {
   const user = conversation.participants[0]; // Assuming we have a userAtom with user data
   const currentUser = useRecoilValue(userAtom);
   const lastMessage = conversation.lastMessage;
+
+  const getMessageStatus = () => {
+    const isSender = currentUser._id === lastMessage.sender;
+
+    if (!isSender) return null;
+
+    if (!lastMessage.seen) {
+      // Message is sent but not seen
+      if (!user.isOnline) {
+        // Recipient is offline - single check
+        return <IoCheckmarkOutline size={16} className="text-gray-500" />;
+      } else {
+        // Recipient is online - double check (delivered)
+        return <IoCheckmarkDone size={16} className="text-gray-500" />;
+      }
+    } else {
+      // Message is seen - blue double check
+      return <IoCheckmarkDone size={16} className="text-sky-600" />;
+    }
+  };
+
+  const truncateText = (text, maxLength = 18, truncateLength = 14) => {
+    return text.length > maxLength
+      ? `${text.substring(0, truncateLength)}...`
+      : text;
+  };
   return (
     <Flex
       gap={4}
@@ -53,7 +80,7 @@ const Conversation = ({ conversation }) => {
           alt={user.username}
           src={user.profilePic}
         >
-          <AvatarBadge boxSize={"1em"} bg={"green.500"} />
+          {user.isOnline && <AvatarBadge boxSize={"1em"} bg={"green.500"} />}
         </Avatar>
       </WrapItem>
       <Stack direction={"column"} fontSize={"sm"}>
@@ -69,15 +96,8 @@ const Conversation = ({ conversation }) => {
         </Text>
 
         <Text fontSize={"xs"} display={"flex"} alignItems={"center"} gap={1}>
-          {currentUser._id === lastMessage.sender && !lastMessage.seen && (
-            <IoCheckmarkDone size={16} />
-          )}
-          {currentUser._id === lastMessage.sender && lastMessage.seen && (
-            <IoCheckmarkDone size={16} className="text-sky-600" />
-          )}
-          {lastMessage.text.length > 18
-            ? lastMessage.text.substring(0, 14) + "..."
-            : lastMessage.text}
+          {getMessageStatus()}
+          <span>{truncateText(lastMessage.text)}</span>
         </Text>
       </Stack>
     </Flex>

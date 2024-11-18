@@ -74,7 +74,7 @@ const getConversations = async (req, res) => {
       participants: userId,
     }).populate({
       path: "participants",
-      select: "username profilePic isCEO isVerified",
+      select: "username profilePic isCEO isVerified isOnline",
     });
 
     //remove current user from the partcipants array
