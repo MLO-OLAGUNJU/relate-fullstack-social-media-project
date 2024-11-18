@@ -7,17 +7,41 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import Message from "./Message";
 import MessageInput from "./MessageInput";
 import { useRecoilState } from "recoil";
 import { selectedConversationAttoms } from "../atoms/messagesAtom";
+import useShowToast from "../hooks/useShowToast";
 
 const MessageContainer = () => {
   const [selectedConversation, setSelectedConversation] = useRecoilState(
     selectedConversationAttoms
   );
+
+  const [loading, setLaodingMessages] = true;
+  const [messages, setMessages] = useState([]);
+
+  const showToast = useShowToast();
+
+  useEffect(() => {
+    const getMessages = async () => {
+      try {
+        setLaodingMessages(true);
+        const res = await fetch(`api/messages/${selectedConversation.userId}`);
+
+        const data = await res.json();
+        setMessages(data);
+      } catch (error) {
+        showToast("Error", error.message, "error");
+      } finally {
+        setLaodingMessages(false);
+      }
+    };
+
+    getMessages();
+  }, [showToast, selectedConversation.userId]);
 
   return (
     <Flex
@@ -54,7 +78,7 @@ const MessageContainer = () => {
         height={"300px"}
         overflowY={"auto"}
       >
-        {false &&
+        {loading &&
           [...Array(5)].map((_, i) => (
             <Flex
               key={i}
