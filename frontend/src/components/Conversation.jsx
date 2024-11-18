@@ -54,6 +54,7 @@ const Conversation = ({ conversation }) => {
 
   console.log(selectedConversation);
 
+  console.log("user", user);
   if (!user) return null;
 
   return (

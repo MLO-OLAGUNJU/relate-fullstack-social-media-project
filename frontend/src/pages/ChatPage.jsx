@@ -14,19 +14,69 @@ import Conversation from "../components/Conversation";
 import { GiConversation } from "react-icons/gi";
 import MessageContainer from "../components/MessageContainer";
 import useShowToast from "../hooks/useShowToast";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
   conversationAtom,
   selectedConversationAttoms,
 } from "../atoms/messagesAtom";
+import userAtom from "../atoms/userAtom";
 
 const ChatPage = () => {
   const showToast = useShowToast();
+  const currentUser = useRecoilValue(userAtom);
+
   const [loadingConversations, setLoadingConversations] = useState(true);
+  const [loadingSearch, setLoadingSearch] = useState(false);
+  const [searchText, setSearchText] = useState("");
   const [conversations, setConversations] = useRecoilState(conversationAtom);
   const [selectedConversation, setSelectedConversation] = useRecoilState(
     selectedConversationAttoms
   );
+
+  const HandleSearchConversation = async (e) => {
+    e.preventDefault();
+    setSearchText("");
+    setLoadingSearch(true);
+    try {
+      const res = await fetch(`api/users/profile/${searchText}`);
+
+      const data = await res.json();
+
+      if (data.error) {
+        showToast("Error", data.error, "error");
+        return;
+      }
+
+      if (data._id === currentUser._id) {
+        showToast(
+          "Error",
+          "Cannot start a conversation with yourself",
+          "error"
+        );
+        return;
+      }
+
+      //if we chat before
+      if (
+        conversations.find(
+          (conversation) => conversation.participants[0]._id === data._id
+        )
+      ) {
+        setSelectedConversation({
+          _id: conversation._id,
+          userId: user._id,
+          userProfilePic: user.profilePic,
+          username: user.username,
+          isCEO: user.isCEO,
+          isVerified: user.isVerified,
+        });
+      }
+    } catch (error) {
+      showToast("Error", error.message, "error");
+    } finally {
+      setLoadingSearch(false);
+    }
+  };
 
   useEffect(() => {
     const getConversations = async () => {
@@ -88,13 +138,21 @@ const ChatPage = () => {
           >
             Your Conversations
           </Text>
-          <form>
+          <form onSubmit={HandleSearchConversation}>
             <Flex alignItems={"center"} gap={1}>
               <Input
+                onChange={(e) => {
+                  setSearchText(e.target.value);
+                }}
+                value={searchText}
                 placeholder="Search for a user here"
                 outline={useColorModeValue("gray.600", "gray.700")}
               />
-              <Button size={"sm"}>
+              <Button
+                size={"sm"}
+                onClick={HandleSearchConversation}
+                isLoading={loadingSearch}
+              >
                 <SearchIcon />
               </Button>
             </Flex>
