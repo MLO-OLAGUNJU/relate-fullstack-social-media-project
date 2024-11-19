@@ -21,7 +21,6 @@ const UserPost = ({ postImg, postTitle, likes, replies }) => {
 
   return (
     <div>
-      {/* <Link to={"/username/post/1"}> */}
       <Flex gap={3} marginBottom={4} py={5}>
         <Flex flexDirection={"column"} alignItems={"center"}>
           <Avatar size={"md"} name="Olagunju Emmanuel" src="/mlo.jpg" />

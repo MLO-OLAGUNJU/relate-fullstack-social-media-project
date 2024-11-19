@@ -221,16 +221,17 @@ const Post = ({ post, postedBy }) => {
                 window.location.href = `/${user.username}`;
               }}
             />
-            <Box
-              w={"1px"}
-              h={"full"}
-              bg={"#333638"}
-              _light={{
-                bg: "#E5E5E5",
-              }}
-              my={2}
-            ></Box>
-
+            {post.replies.length > 0 && (
+              <Box
+                w={"1px"}
+                h={"full"}
+                bg={"#333638"}
+                _light={{
+                  bg: "#E5E5E5",
+                }}
+                my={2}
+              ></Box>
+            )}
             <PostReplyAvatars replies={post.replies} />
           </Flex>
 

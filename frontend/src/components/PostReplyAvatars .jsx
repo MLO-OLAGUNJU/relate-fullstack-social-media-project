@@ -16,21 +16,21 @@ const PostReplyAvatars = ({ replies }) => {
 
   return (
     <Box position={"relative"} w={"full"}>
-      {replies.length === 0 && <Text textAlign={"center"}>💤</Text>}
-      {uniqueReplies.map((reply, index) => (
-        <Avatar
-          key={reply._id}
-          size={"xs"}
-          name={reply.username}
-          src={reply.userProfilePic}
-          position={"absolute"}
-          top={index === 0 && "-5px"}
-          bottom={index === 1 ? "0px" : index === 2 && "0px"}
-          left={index === 0 ? "12px" : index === 2 && "3px"}
-          right={index === 1 && "3px"}
-          padding={"2px"}
-        />
-      ))}
+      {replies.length > 0 &&
+        uniqueReplies.map((reply, index) => (
+          <Avatar
+            key={reply._id}
+            size={"xs"}
+            name={reply.username}
+            src={reply.userProfilePic}
+            position={"absolute"}
+            top={index === 0 && "-5px"}
+            bottom={index === 1 ? "0px" : index === 2 && "0px"}
+            left={index === 0 ? "12px" : index === 2 && "3px"}
+            right={index === 1 && "3px"}
+            padding={"2px"}
+          />
+        ))}
     </Box>
   );
 };
