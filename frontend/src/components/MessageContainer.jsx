@@ -11,7 +11,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import Message from "./Message";
 import MessageInput from "./MessageInput";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
   conversationAtom,
   selectedConversationAttoms,
@@ -63,7 +63,7 @@ const MessageContainer = () => {
     });
 
     return () => socket.off("newMessage");
-  }, [socket]);
+  }, [socket, selectedConversation, setConversations]);
 
   useEffect(() => {
     const getMessages = async () => {
