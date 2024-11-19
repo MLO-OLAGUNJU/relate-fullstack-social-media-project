@@ -122,7 +122,11 @@ const Conversation = ({ conversation, isOnline }) => {
 
         <Text fontSize={"xs"} display={"flex"} alignItems={"center"} gap={1}>
           {getMessageStatus()}
-          <span>{truncateText(lastMessage.text)}</span>
+          <span>
+            {lastMessage.text
+              ? truncateText(lastMessage.text)
+              : "sent an Image 🖼️"}
+          </span>
         </Text>
       </Stack>
     </Flex>

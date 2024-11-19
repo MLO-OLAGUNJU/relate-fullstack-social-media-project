@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useShowToast from "../hooks/useShowToast";
-import { Flex, Spinner } from "@chakra-ui/react";
+import { Box, Flex, Spinner } from "@chakra-ui/react";
 import Post from "../components/Post";
 import { useRecoilState } from "recoil";
 import postAtom from "../atoms/postAtom";
@@ -37,23 +37,31 @@ const HomePage = () => {
 
   return (
     <>
-      {loading && (
-        <>
-          <Flex justifyContent={"center"}>
-            <Spinner size={"xl"} />
-          </Flex>
-        </>
-      )}
+      <Flex gap={20} alignItems={"flex-start"}>
+        <Box flex={70}>
+          {loading && (
+            <>
+              <Flex justifyContent={"center"}>
+                <Spinner size={"xl"} />
+              </Flex>
+            </>
+          )}
 
-      {!loading && posts.length === 0 && (
-        <Flex justifyContent={"center"}>
-          <h1>Follow some users to see the feed</h1>{" "}
-        </Flex>
-      )}
+          {!loading && posts.length === 0 && (
+            <Flex justifyContent={"center"}>
+              <h1>Follow some users to see the feed</h1>{" "}
+            </Flex>
+          )}
 
-      {posts.map((post) => (
-        <Post key={post._id} post={post} postedBy={post.postedBy} />
-      ))}
+          {posts.map((post) => (
+            <Post key={post._id} post={post} postedBy={post.postedBy} />
+          ))}
+        </Box>
+
+        <Box flex={30} border={"1px solid red"}>
+          Suggested Users
+        </Box>
+      </Flex>
     </>
   );
 };
