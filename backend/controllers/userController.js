@@ -88,8 +88,6 @@ const loginUser = async (req, res) => {
     if (!user || !isPasswordCorrect)
       return res.status(400).json({ error: "Invalid username or password" });
 
-    // Set user as online
-    user.isOnline = true;
     await user.save();
 
     generateTokenAndSetCookie(user._id, res);
@@ -111,48 +109,11 @@ const loginUser = async (req, res) => {
 //logout User
 const logoutUser = async (req, res) => {
   try {
-    // Get user from token and set offline
-    if (req.user) {
-      await User.findByIdAndUpdate(req.user._id, { isOnline: false });
-    }
-
     res.cookie("jwt", "", { maxAge: 1 });
     res.status(200).json({ message: "User logged out successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
     console.log("Error in logoutUser:", error.message);
-  }
-};
-
-// Add new function to get online users
-const getOnlineUsers = async (req, res) => {
-  try {
-    const onlineUsers = await User.find({ isOnline: true })
-      .select("name username profilePic")
-      .limit(20);
-
-    res.status(200).json(onlineUsers);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-    console.log("Error in getOnlineUsers:", error.message);
-  }
-};
-
-// Add function to manually update online status
-const updateOnlineStatus = async (req, res) => {
-  try {
-    const { isOnline } = req.body;
-
-    const user = await User.findByIdAndUpdate(
-      req.user._id,
-      { isOnline },
-      { new: true }
-    ).select("-password");
-
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-    console.log("Error in updateOnlineStatus:", error.message);
   }
 };
 
@@ -258,6 +219,4 @@ export {
   followUnfollowUser,
   updateUser,
   getUserProfile,
-  getOnlineUsers,
-  updateOnlineStatus,
 };

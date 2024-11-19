@@ -84,7 +84,7 @@ const MessageContainer = () => {
     };
 
     getMessages();
-  }, [showToast, selectedConversation.userId]);
+  }, [showToast, selectedConversation.userId, selectedConversation.mock]);
 
   useEffect(() => {
     scrollToBottom();
