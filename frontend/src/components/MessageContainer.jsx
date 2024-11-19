@@ -11,8 +11,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import Message from "./Message";
 import MessageInput from "./MessageInput";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { selectedConversationAttoms } from "../atoms/messagesAtom";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import {
+  conversationAtom,
+  selectedConversationAttoms,
+} from "../atoms/messagesAtom";
 import useShowToast from "../hooks/useShowToast";
 import userAtom from "../atoms/userAtom";
 import { useSocket } from "../context/SocketContext";
@@ -32,12 +35,15 @@ const MessageContainer = () => {
   const [messages, setMessages] = useState([]);
 
   const showToast = useShowToast();
+  const setConversations = useSetRecoilState(conversationAtom);
 
   const { socket } = useSocket();
 
   useEffect(() => {
     socket.on("newMessage", (message) => {
-      setMessages((prevMessages) => [...prevMessages, message]);
+      if (selectedConversation._id === message.conversationId) {
+        setMessages((prev) => [...prev, message]);
+      }
 
       setConversations((prev) => {
         const updatedConversations = prev.map((conversation) => {
