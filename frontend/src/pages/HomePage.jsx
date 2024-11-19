@@ -4,6 +4,7 @@ import { Box, Flex, Spinner } from "@chakra-ui/react";
 import Post from "../components/Post";
 import { useRecoilState } from "recoil";
 import postAtom from "../atoms/postAtom";
+import SuggestedUsers from "../components/SuggestedUsers";
 
 const HomePage = () => {
   const showToast = useShowToast(); // Assuming showToast is a custom hook for showing toast notifications
@@ -58,8 +59,8 @@ const HomePage = () => {
           ))}
         </Box>
 
-        <Box flex={30} border={"1px solid red"}>
-          Suggested Users
+        <Box flex={30}>
+          <SuggestedUsers />
         </Box>
       </Flex>
     </>
