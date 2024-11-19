@@ -7,7 +7,6 @@ import {
   ModalBody,
   ModalCloseButton,
   ModalContent,
-  ModalFooter,
   ModalHeader,
   Text,
   useColorModeValue,
@@ -18,6 +17,7 @@ import useShowToast from "../hooks/useShowToast";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import userAtom from "../atoms/userAtom";
+import useLogout from "../hooks/useLogout";
 
 const FreezeAccount = () => {
   const [updating, setUpdating] = useState(false);
@@ -25,6 +25,7 @@ const FreezeAccount = () => {
   const showToast = useShowToast();
   const navigate = useNavigate();
   const [user, setUser] = useRecoilState(userAtom);
+  const logout = useLogout();
 
   const handleFreezeAccount = async () => {
     setUpdating(true);
@@ -43,8 +44,12 @@ const FreezeAccount = () => {
 
       // Clear user state and redirect to login
       setUser(null);
-      localStorage.removeItem("user-threads");
-      showToast("Success", "Account frozen successfully", "success");
+
+      if (data.success) {
+        await logout();
+        localStorage.clear();
+        showToast("Success", "Account frozen successfully", "success");
+      }
       navigate("/auth");
     } catch (error) {
       showToast("Error", "Something went wrong", "error");

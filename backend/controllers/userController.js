@@ -253,7 +253,6 @@ const freezeAccount = async (req, res) => {
     }
 
     user.isFrozen = true;
-
     await user.save();
 
     res.status(200).json({ success: true });
