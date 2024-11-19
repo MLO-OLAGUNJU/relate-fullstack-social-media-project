@@ -15,12 +15,16 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { selectedConversationAttoms } from "../atoms/messagesAtom";
 import useShowToast from "../hooks/useShowToast";
 import userAtom from "../atoms/userAtom";
+import { useSocket } from "../context/SocketContext";
 
 const MessageContainer = () => {
   const [selectedConversation, setSelectedConversation] = useRecoilState(
     selectedConversationAttoms
   );
   const messagesEndRef = useRef(null);
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   const currentUser = useRecoilValue(userAtom);
 
@@ -28,6 +32,17 @@ const MessageContainer = () => {
   const [messages, setMessages] = useState([]);
 
   const showToast = useShowToast();
+
+  const { socket } = useSocket();
+
+  useEffect(() => {
+    socket.on("newMessage", (message) => {
+      setMessages((prevMessages) => [...prevMessages, message]);
+      scrollToBottom();
+    });
+
+    return () => socket.off("newMessage");
+  }, [socket]);
 
   useEffect(() => {
     const getMessages = async () => {
@@ -49,9 +64,6 @@ const MessageContainer = () => {
 
     getMessages();
   }, [showToast, selectedConversation.userId]);
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
 
   useEffect(() => {
     scrollToBottom();
