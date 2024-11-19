@@ -38,6 +38,23 @@ const MessageContainer = () => {
   useEffect(() => {
     socket.on("newMessage", (message) => {
       setMessages((prevMessages) => [...prevMessages, message]);
+
+      setConversations((prev) => {
+        const updatedConversations = prev.map((conversation) => {
+          if (conversation._id === message.conversationId) {
+            return {
+              ...conversation,
+              lastMessage: {
+                text: message.text,
+                sender: message.sender,
+              },
+            };
+          }
+          return conversation;
+        });
+        return updatedConversations;
+      });
+
       scrollToBottom();
     });
 
