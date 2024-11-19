@@ -54,16 +54,19 @@ const Conversation = ({ conversation, isOnline }) => {
 
   if (!user) return null;
 
+  console.log(lastMessage);
+
   return (
     <Flex
       gap={4}
       alignItems={"center"}
-      p={1}
+      px={4}
+      py={2}
       position={"relative"}
       _hover={{
         cursor: "pointer",
-        bg: useColorModeValue("gray.600", "gray.dark"),
-        color: "white",
+        bg: useColorModeValue("gray.200", "gray.dark"),
+        color: useColorModeValue("gray.700", "white"),
       }}
       borderRadius={"md"}
       onClick={() => {
@@ -79,10 +82,11 @@ const Conversation = ({ conversation, isOnline }) => {
       }}
       bg={
         selectedConversation?._id === conversation._id &&
-        useColorModeValue("gray.600", "gray.dark")
+        useColorModeValue("gray.200", "gray.dark")
       }
     >
-      {lastMessage && !lastMessage.seen && (
+      {/*  notification dot*/}
+      {!lastMessage.seen && currentUser._id !== lastMessage.sender && (
         <Box
           position={"absolute"}
           top={3}

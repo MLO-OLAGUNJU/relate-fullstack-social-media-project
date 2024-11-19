@@ -1,4 +1,4 @@
-import { Avatar, Box, Flex, Text } from "@chakra-ui/react";
+import { Avatar, Box, Flex, Text, useColorModeValue } from "@chakra-ui/react";
 import React from "react";
 import { IoCheckmarkOutline, IoCheckmarkDone } from "react-icons/io5";
 import { selectedConversationAttoms } from "../atoms/messagesAtom";
@@ -14,32 +14,32 @@ const Message = ({ ownMessage, message }) => {
   const currentUser = useRecoilValue(userAtom);
   const { socket, onlineUsers } = useSocket();
 
+  // Color configurations for different message types
+  const ownMessageBg = useColorModeValue("blue.300", "blue.600");
+  const otherMessageBg = useColorModeValue("gray.200", "gray.700");
+  const ownMessageTextColor = useColorModeValue("white", "white");
+  const otherMessageTextColor = useColorModeValue("black", "white");
+  const deliveredCheckColor = useColorModeValue("gray.600", "gray.300");
+  const seenCheckColor = useColorModeValue("blue", "blue");
+
   const getMessageStatus = () => {
-    // If this is not an own message, don't show status
     if (!ownMessage) return null;
 
-    // Check if the current user is the sender of the last message
     const isSender = currentUser._id === message.sender;
-
     if (!isSender) return null;
 
-    // If the message is not seen
     if (!message.seen) {
-      // Check if recipient is online
       const isRecipientOnline = onlineUsers.includes(
         selectedConversation.userId
       );
 
       if (!isRecipientOnline) {
-        // Recipient is offline - single check
-        return <IoCheckmarkOutline size={16} />;
+        return <IoCheckmarkOutline size={16} color={deliveredCheckColor} />;
       } else {
-        // Recipient is online - double check (delivered)
-        return <IoCheckmarkDone size={16} />;
+        return <IoCheckmarkDone size={16} color={deliveredCheckColor} />;
       }
     } else {
-      // Message is seen - blue double check
-      return <IoCheckmarkDone size={16} className="text-sky-600" />;
+      return <IoCheckmarkDone size={16} color={seenCheckColor} />;
     }
   };
 
@@ -47,7 +47,13 @@ const Message = ({ ownMessage, message }) => {
     <>
       {ownMessage ? (
         <Flex gap={2} alignSelf={"flex-end"}>
-          <Flex maxWidth={"350px"} bg={"blue.400"} p={1} borderRadius={"md"}>
+          <Flex
+            maxWidth={"350px"}
+            bg={ownMessageBg}
+            p={1}
+            borderRadius={"md"}
+            color={ownMessageTextColor}
+          >
             <Text>{message.text}</Text>
             <Box alignSelf={"flex-end"} ml={1} fontWeight={"bold"}>
               {getMessageStatus()}
@@ -62,8 +68,8 @@ const Message = ({ ownMessage, message }) => {
           <Avatar src={selectedConversation.userProfilePic} w={7} h={7} />
           <Text
             maxWidth={"350px"}
-            bg={"#3a3a3a"}
-            color={"white"}
+            bg={otherMessageBg}
+            color={otherMessageTextColor}
             p={1}
             borderRadius={"md"}
           >
