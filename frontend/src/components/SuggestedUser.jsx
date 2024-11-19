@@ -4,7 +4,11 @@ import useFollowToggle from "../hooks/useFollowToggle";
 
 const SuggestedUser = ({ user }) => {
   const [following, handleFolloworUnfollow, updating] = useFollowToggle(user);
-
+  const truncateText = (text, maxLength = 10, truncateLength = 14) => {
+    return text.length > maxLength
+      ? `${text.substring(0, truncateLength)}...`
+      : text;
+  };
   return (
     <Flex gap={2} justifyContent={"space-between"} alignItems={"center"}>
       {/* left side */}
@@ -15,22 +19,12 @@ const SuggestedUser = ({ user }) => {
             {user.username}
           </Text>
           <Text color={"gray.light"} fontSize={"sm"}>
-            {user.name}
+            {truncateText(user.name)}
           </Text>
         </Box>
       </Flex>
       {/* right side */}
-      <Button
-        size={"sm"}
-        color={following ? "black" : "white"}
-        bg={following ? "white" : "blue.400"}
-        onClick={handleFolloworUnfollow}
-        isLoading={updating}
-        _hover={{
-          color: following ? "black" : "white",
-          opacity: ".8",
-        }}
-      >
+      <Button onClick={handleFolloworUnfollow} isLoading={updating} size={"sm"}>
         {following ? "Unfollow" : "Follow"}
       </Button>
     </Flex>

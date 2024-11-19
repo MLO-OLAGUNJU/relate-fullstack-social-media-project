@@ -230,46 +230,7 @@ const Post = ({ post, postedBy }) => {
               }}
               my={2}
             ></Box>
-            {/* <Box position={"relative"} w={"full"}>
-              {post.replies.length === 0 && (
-                <Text textAlign={"center"}>💤</Text>
-              )}
-              {post.replies[0] && (
-                <Avatar
-                  size={"xs"}
-                  name={post.replies[0].name}
-                  src={post.replies[0].userProfilePic}
-                  position={"absolute"}
-                  top={0}
-                  left={"15px"}
-                  padding={"2px"}
-                />
-              )}
 
-              {post.replies[1] && (
-                <Avatar
-                  size={"xs"}
-                  name={post.replies[1].name}
-                  src={post.replies[1].userProfilePic}
-                  position={"absolute"}
-                  bottom={0}
-                  right={"-5px"}
-                  padding={"2px"}
-                />
-              )}
-
-              {post.replies[2] && (
-                <Avatar
-                  size={"xs"}
-                  name={post.replies[2].name}
-                  src={post.replies[2].userProfilePic}
-                  position={"absolute"}
-                  bottom={0}
-                  left={"4px"}
-                  padding={"2px"}
-                />
-              )}
-            </Box> */}
             <PostReplyAvatars replies={post.replies} />
           </Flex>
 

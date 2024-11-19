@@ -39,7 +39,7 @@ const HomePage = () => {
   return (
     <>
       <Flex gap={20} alignItems={"flex-start"}>
-        <Box flex={70}>
+        <Box flex={60}>
           {loading && (
             <>
               <Flex justifyContent={"center"}>
@@ -59,7 +59,7 @@ const HomePage = () => {
           ))}
         </Box>
 
-        <Box flex={30}>
+        <Box flex={35} display={{ base: "none", md: "block" }}>
           <SuggestedUsers />
         </Box>
       </Flex>
