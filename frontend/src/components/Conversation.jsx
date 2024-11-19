@@ -54,8 +54,6 @@ const Conversation = ({ conversation, isOnline }) => {
 
   if (!user) return null;
 
-  console.log(lastMessage);
-
   return (
     <Flex
       gap={4}

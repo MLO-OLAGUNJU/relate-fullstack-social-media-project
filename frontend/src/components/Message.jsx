@@ -1,5 +1,13 @@
-import { Avatar, Box, Flex, Text, useColorModeValue } from "@chakra-ui/react";
-import React from "react";
+import {
+  Avatar,
+  Box,
+  Flex,
+  Image,
+  Skeleton,
+  Text,
+  useColorModeValue,
+} from "@chakra-ui/react";
+import React, { useState } from "react";
 import { IoCheckmarkOutline, IoCheckmarkDone } from "react-icons/io5";
 import { selectedConversationAttoms } from "../atoms/messagesAtom";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -13,6 +21,7 @@ const Message = ({ ownMessage, message }) => {
 
   const currentUser = useRecoilValue(userAtom);
   const { socket, onlineUsers } = useSocket();
+  const [imgLoaded, setImgLoaded] = useState(false);
 
   // Color configurations for different message types
   const ownMessageBg = useColorModeValue("blue.300", "blue.600");
@@ -47,18 +56,49 @@ const Message = ({ ownMessage, message }) => {
     <>
       {ownMessage ? (
         <Flex gap={2} alignSelf={"flex-end"}>
-          <Flex
-            maxWidth={"350px"}
-            bg={ownMessageBg}
-            p={1}
-            borderRadius={"md"}
-            color={ownMessageTextColor}
-          >
-            <Text>{message.text}</Text>
-            <Box alignSelf={"flex-end"} ml={1} fontWeight={"bold"}>
-              {getMessageStatus()}
-            </Box>
-          </Flex>
+          {message.text && (
+            <Flex
+              maxWidth={"350px"}
+              bg={ownMessageBg}
+              p={1}
+              borderRadius={"md"}
+              color={ownMessageTextColor}
+            >
+              <Text>{message.text}</Text>
+              <Box alignSelf={"flex-end"} ml={1} fontWeight={"bold"}>
+                {getMessageStatus()}
+              </Box>
+            </Flex>
+          )}
+          {message.img && !imgLoaded && (
+            <Flex mt={5} w={"200px"}>
+              <Image
+                src={message.img}
+                hidden
+                onLoad={() => setImgLoaded(true)}
+                alt="Message image"
+                borderRadius={4}
+              />
+              <Skeleton w={"200px"} h={"200px"} />
+            </Flex>
+          )}
+
+          {message.img && imgLoaded && (
+            <Flex mt={5} w={"200px"}>
+              <Image src={message.img} alt="Message image" borderRadius={4} />
+              <Box
+                alignSelf={"flex-end"}
+                ml={1}
+                color={message.seen ? "blue.400" : ""}
+                fontWeight={"bold"}
+              >
+                <Box alignSelf={"flex-end"} ml={1} fontWeight={"bold"}>
+                  {getMessageStatus()}
+                </Box>
+              </Box>
+            </Flex>
+          )}
+
           <Flex flexDirection="column" alignItems="center">
             <Avatar src={currentUser.profilePic} w={7} h={7} />
           </Flex>
@@ -66,15 +106,36 @@ const Message = ({ ownMessage, message }) => {
       ) : (
         <Flex gap={2}>
           <Avatar src={selectedConversation.userProfilePic} w={7} h={7} />
-          <Text
-            maxWidth={"350px"}
-            bg={otherMessageBg}
-            color={otherMessageTextColor}
-            p={1}
-            borderRadius={"md"}
-          >
-            {message.text}
-          </Text>
+          {message.text && (
+            <Text
+              maxWidth={"350px"}
+              bg={otherMessageBg}
+              color={otherMessageTextColor}
+              p={1}
+              borderRadius={"md"}
+            >
+              {message.text}
+            </Text>
+          )}
+
+          {message.img && !imgLoaded && (
+            <Flex mt={5} w={"200px"}>
+              <Image
+                src={message.img}
+                hidden
+                onLoad={() => setImgLoaded(true)}
+                alt="Message image"
+                borderRadius={4}
+              />
+              <Skeleton w={"200px"} h={"200px"} />
+            </Flex>
+          )}
+
+          {message.img && imgLoaded && (
+            <Flex mt={5} w={"200px"}>
+              <Image src={message.img} alt="Message image" borderRadius={4} />
+            </Flex>
+          )}
         </Flex>
       )}
     </>

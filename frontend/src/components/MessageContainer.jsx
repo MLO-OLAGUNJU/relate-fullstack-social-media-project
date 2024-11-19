@@ -5,7 +5,6 @@ import {
   Skeleton,
   SkeletonCircle,
   Text,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 import { RiVerifiedBadgeFill } from "react-icons/ri";

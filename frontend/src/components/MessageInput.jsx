@@ -1,20 +1,29 @@
 import {
-  Button,
+  Flex,
+  Image,
   Input,
   InputGroup,
   InputRightElement,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
   Spinner,
+  useDisclosure,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { IoIosSend } from "react-icons/io";
 import useShowToast from "../hooks/useShowToast";
-import userAtom from "../atoms/userAtom";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import {
   conversationAtom,
   selectedConversationAttoms,
 } from "../atoms/messagesAtom";
-import Conversation from "./Conversation";
+import { GoImage } from "react-icons/go";
+import { IoSendSharp } from "react-icons/io5";
+import usePreviewImg from "../hooks/usePreviewImg";
 
 const MessageInput = ({ setMessages }) => {
   const [messageText, setMessageText] = useState("");
@@ -22,13 +31,20 @@ const MessageInput = ({ setMessages }) => {
   const setConversations = useSetRecoilState(conversationAtom);
   const [loading, setLoading] = useState(false);
   const showToast = useShowToast();
-  const handleSubmitMessage = async (e) => {
-    e.preventDefault();
+  const imageRef = useRef(null);
+  const { onClose } = useDisclosure();
+  const { handleImageChange, imgUrl, setImgUrl } = usePreviewImg();
+  const [isSending, setIsSending] = useState(false);
 
-    if (!messageText) return;
-    setLoading(true);
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    if (!messageText && !imgUrl) return;
+    if (isSending) return;
+
+    setIsSending(true);
+
     try {
-      const res = await fetch(`api/messages`, {
+      const res = await fetch("/api/messages", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -36,20 +52,19 @@ const MessageInput = ({ setMessages }) => {
         body: JSON.stringify({
           message: messageText,
           recipientId: selectedConversation.userId,
+          img: imgUrl,
         }),
       });
-
       const data = await res.json();
       if (data.error) {
         showToast("Error", data.error, "error");
         return;
       }
-
       console.log(data);
-      setMessages((prevMessages) => [...prevMessages, data]);
+      setMessages((messages) => [...messages, data]);
 
-      setConversations((prevConvo) => {
-        const updatedConversations = prevConvo.map((conversation) => {
+      setConversations((prevConvs) => {
+        const updatedConversations = prevConvs.map((conversation) => {
           if (conversation._id === selectedConversation._id) {
             return {
               ...conversation,
@@ -63,36 +78,76 @@ const MessageInput = ({ setMessages }) => {
         });
         return updatedConversations;
       });
-
       setMessageText("");
+      setImgUrl("");
     } catch (error) {
-      showToast("Error", error.message), "error";
+      showToast("Error", error.message, "error");
     } finally {
-      setLoading(false);
+      setIsSending(false);
     }
   };
   return (
-    <form onSubmit={handleSubmitMessage}>
-      <InputGroup>
+    <Flex gap={2} alignItems={"center"}>
+      <Flex flex={5} cursor={"pointer"}>
+        <GoImage size={20} onClick={() => imageRef.current.click()} />
         <Input
-          w={"full"}
-          placeholder="Send a message"
-          onChange={(e) => setMessageText(e.target.value)}
-          value={messageText}
+          type={"file"}
+          hidden
+          ref={imageRef}
+          onChange={handleImageChange}
         />
-        <InputRightElement>
-          {loading ? (
-            <Spinner size={"sm"} />
-          ) : (
-            <IoIosSend
-              size={20}
-              className="cursor-pointer"
-              onClick={handleSubmitMessage}
-            />
-          )}
-        </InputRightElement>
-      </InputGroup>
-    </form>
+      </Flex>
+      <form onSubmit={handleSendMessage} style={{ flex: 95 }}>
+        <InputGroup>
+          <Input
+            w={"full"}
+            placeholder="Send a message"
+            onChange={(e) => setMessageText(e.target.value)}
+            value={messageText}
+          />
+          <InputRightElement>
+            {loading ? (
+              <Spinner size={"sm"} />
+            ) : (
+              <IoIosSend
+                size={20}
+                className="cursor-pointer"
+                onClick={handleSendMessage}
+              />
+            )}
+          </InputRightElement>
+        </InputGroup>
+      </form>
+      <Modal
+        isOpen={imgUrl}
+        onClose={() => {
+          onClose();
+          setImgUrl("");
+        }}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader></ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Flex mt={5} w={"full"}>
+              <Image src={imgUrl} />
+            </Flex>
+            <Flex justifyContent={"flex-end"} my={2}>
+              {!isSending ? (
+                <IoSendSharp
+                  size={24}
+                  cursor={"pointer"}
+                  onClick={handleSendMessage}
+                />
+              ) : (
+                <Spinner size={"sm"} />
+              )}
+            </Flex>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </Flex>
   );
 };
 
