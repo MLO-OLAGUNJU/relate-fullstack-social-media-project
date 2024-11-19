@@ -21,9 +21,7 @@ import userAtom from "../atoms/userAtom";
 import { useSocket } from "../context/SocketContext";
 
 const MessageContainer = () => {
-  const [selectedConversation, setSelectedConversation] = useRecoilState(
-    selectedConversationAttoms
-  );
+  const selectedConversation = useRecoilValue(selectedConversationAttoms);
   const messagesEndRef = useRef(null);
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
