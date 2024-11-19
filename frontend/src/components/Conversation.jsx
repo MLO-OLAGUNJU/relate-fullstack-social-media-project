@@ -17,7 +17,7 @@ import userAtom from "../atoms/userAtom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { selectedConversationAttoms } from "../atoms/messagesAtom";
 
-const Conversation = ({ conversation }) => {
+const Conversation = ({ conversation, isOnline }) => {
   const user = conversation.participants[0]; // Assuming we have a userAtom with user data
   const currentUser = useRecoilValue(userAtom);
   const lastMessage = conversation.lastMessage;
@@ -29,7 +29,7 @@ const Conversation = ({ conversation }) => {
 
     if (!lastMessage.seen) {
       // Message is sent but not seen
-      if (!user.isOnline) {
+      if (!isOnline) {
         // Recipient is offline - single check
         return <IoCheckmarkOutline size={16} className="text-gray-500" />;
       } else {
@@ -103,7 +103,7 @@ const Conversation = ({ conversation }) => {
           alt={user.username}
           src={user.profilePic}
         >
-          {user.isOnline && <AvatarBadge boxSize={"1em"} bg={"green.500"} />}
+          {isOnline && <AvatarBadge boxSize={"1em"} bg={"green.500"} />}
         </Avatar>
       </WrapItem>
       <Stack direction={"column"} fontSize={"sm"}>
