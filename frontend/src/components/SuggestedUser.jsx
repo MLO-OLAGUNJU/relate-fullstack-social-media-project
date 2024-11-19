@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import useFollowToggle from "../hooks/useFollowToggle";
 
 const SuggestedUser = ({ user }) => {
-  const { handleFollowUnfollow, following, updating } = useFollowToggle(user);
+  const [following, handleFolloworUnfollow, updating] = useFollowToggle(user);
 
   return (
     <Flex gap={2} justifyContent={"space-between"} alignItems={"center"}>
@@ -24,7 +24,7 @@ const SuggestedUser = ({ user }) => {
         size={"sm"}
         color={following ? "black" : "white"}
         bg={following ? "white" : "blue.400"}
-        onClick={handleFollowUnfollow}
+        onClick={handleFolloworUnfollow}
         isLoading={updating}
         _hover={{
           color: following ? "black" : "white",
