@@ -14,5 +14,6 @@ export const selectedConversationAttoms = atom({
     userProfilePic: "",
     isCEO: false,
     isVerified: false,
+    mock: false,
   },
 });

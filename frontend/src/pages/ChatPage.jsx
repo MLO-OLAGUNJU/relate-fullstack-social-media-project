@@ -105,7 +105,6 @@ const ChatPage = () => {
     setSearchText("");
     setLoadingSearch(true);
     try {
-      if (selectedConversation.mock) return;
       const res = await fetch(`api/users/profile/${searchText}`);
       const data = await res.json();
 

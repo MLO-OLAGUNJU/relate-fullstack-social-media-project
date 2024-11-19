@@ -74,6 +74,7 @@ const Conversation = ({ conversation }) => {
           username: user.username,
           isCEO: user.isCEO,
           isVerified: user.isVerified,
+          mock: conversation.mock,
         });
       }}
       bg={

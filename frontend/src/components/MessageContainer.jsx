@@ -7,7 +7,7 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
 import Message from "./Message";
 import MessageInput from "./MessageInput";
@@ -20,6 +20,8 @@ const MessageContainer = () => {
   const [selectedConversation, setSelectedConversation] = useRecoilState(
     selectedConversationAttoms
   );
+  const messagesEndRef = useRef(null);
+
   const currentUser = useRecoilValue(userAtom);
 
   const [loading, setLaodingMessages] = useState(true);
@@ -32,6 +34,8 @@ const MessageContainer = () => {
       setLaodingMessages(true);
       setMessages([]);
       try {
+        if (selectedConversation.mock) return;
+
         const res = await fetch(`api/messages/${selectedConversation.userId}`);
 
         const data = await res.json();
@@ -45,6 +49,13 @@ const MessageContainer = () => {
 
     getMessages();
   }, [showToast, selectedConversation.userId]);
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, loading]);
 
   return (
     <Flex
@@ -109,8 +120,10 @@ const MessageContainer = () => {
               message={message}
             />
           ))}
+        <div ref={messagesEndRef} />
       </Flex>
 
+      {/* Invisible div to scroll to */}
       <MessageInput setMessages={setMessages} />
     </Flex>
   );
