@@ -7,11 +7,11 @@ import cookieParser from "cookie-parser";
 import userRoutes from "./routes/userRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
 import messageRoute from "./routes/messageRoute.js";
+import { app, server } from "./socket/socket.js";
 
 dotenv.config();
 
 connectDB();
-const app = express();
 
 const PORT = process.env.PORT || 5000;
 
@@ -36,6 +36,6 @@ app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/messages", messageRoute);
 
-app.listen(PORT, () =>
+server.listen(PORT, () =>
   console.log(`Server has started running at http://localhost:${PORT}`)
 );
