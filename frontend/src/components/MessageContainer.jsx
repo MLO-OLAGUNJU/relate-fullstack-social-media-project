@@ -124,7 +124,6 @@ const MessageContainer = () => {
     scrollToBottom();
   }, [messages, loading]);
 
-  console.log(selectedConversation);
   return (
     <Flex
       flex={70}

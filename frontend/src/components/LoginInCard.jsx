@@ -55,7 +55,6 @@ export default function LoginInCard() {
       localStorage.setItem("user-relate", JSON.stringify(data));
       setUser(data);
     } catch (error) {
-      console.log(error);
       showToast("Error", error, "error");
     } finally {
       setUpdating(false);

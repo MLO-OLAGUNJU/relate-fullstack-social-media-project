@@ -79,7 +79,6 @@ const Post = ({ post, postedBy }) => {
           return;
         }
 
-        // console.log(data);
         setUser(data);
       } catch (error) {
         showToast("Error", error.message, "error");
