@@ -94,7 +94,7 @@ const Message = ({ ownMessage, message }) => {
               >
                 <Box alignSelf={"flex-end"} ml={1} fontWeight={"bold"}>
                   {getMessageStatus()}
-                </Box>
+                </Box>{" "}
               </Box>
             </Flex>
           )}

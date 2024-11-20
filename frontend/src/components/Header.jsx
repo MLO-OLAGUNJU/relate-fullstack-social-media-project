@@ -68,7 +68,10 @@ const Header = () => {
         position={"relative"}
         justifyContent={"space-between"}
         mt={6}
-        mb={12}
+        mb={{
+          base: 0,
+          md: 12,
+        }}
       >
         <Link to={"/"}>
           <Image

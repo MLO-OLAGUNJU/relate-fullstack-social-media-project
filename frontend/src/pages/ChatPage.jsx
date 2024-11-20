@@ -132,9 +132,9 @@ const ConversationItem = ({ conversation, isOnline, onSelectConversation }) => {
         <Text fontSize={"xs"} display={"flex"} alignItems={"center"} gap={1}>
           {getMessageStatus()}
           <span>
-            {lastMessage.text
-              ? truncateText(lastMessage.text)
-              : "sent an Image 🖼️"}
+            {lastMessage.text && truncateText(lastMessage.text)}
+            {conversation && !lastMessage.text && "sent an Image 🖼️"}
+            {!conversation && "Start a chat"}
           </span>
         </Text>
       </Stack>
@@ -276,7 +276,6 @@ const ChatPage = () => {
       setConversations((prevConvs) => [...prevConvs, mockConversation]);
     } catch (error) {
       showToast("Error", error.message, "error");
-      console.log(error);
     } finally {
       setLoadingSearch(false);
     }
@@ -326,6 +325,7 @@ const ChatPage = () => {
           sm: "400px",
           md: "full",
         }}
+        // height={"100vh"}
         mx="auto"
         justifyContent="space-between"
       >

@@ -59,7 +59,6 @@ export default function UpdateProfilePage() {
       setUser(data);
       localStorage.setItem("user-relate", JSON.stringify(data));
     } catch (error) {
-      console.log(error);
       showToast("Error", error.message, "error"); // Use error.message
     } finally {
       setUpdating(false);

@@ -27,7 +27,6 @@ export const socketContextProvider = ({ children }) => {
 
     return () => socket && socket.close();
   }, [currentUser?._id]);
-  console.log(onlineUsers, "Online users");
   return (
     <SocketContext.Provider value={{ socket, onlineUsers }}>
       {children}

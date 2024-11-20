@@ -20,9 +20,9 @@ function App() {
     <>
       <div>
         <Container maxW={"90%"}>
-          <div className={`${pathname === "/chat" ? "hidden" : ""}`}>
-            <Header />
-          </div>
+          {/* <div className={`${pathname === "/chat" ? "hidden" : ""}`}> */}
+          <Header />
+          {/* </div> */}
         </Container>
         <Box position={"relative"} w={"full"}>
           <Container

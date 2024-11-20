@@ -124,6 +124,7 @@ const MessageContainer = () => {
     scrollToBottom();
   }, [messages, loading]);
 
+  console.log(selectedConversation);
   return (
     <Flex
       flex={70}
@@ -144,7 +145,11 @@ const MessageContainer = () => {
           md: "flex",
         }}
       >
-        <Avatar src={selectedConversation.userProfilePic} size={"sm"} />
+        <Avatar
+          name={selectedConversation.username}
+          src={selectedConversation.userProfilePic}
+          size={"sm"}
+        />
         <Text fontWeight={"700"} display={"flex"} alignItems={"center"}>
           {selectedConversation.username}
           {selectedConversation.isVerified === true && (
@@ -169,7 +174,7 @@ const MessageContainer = () => {
         }}
         p={2}
         height={{
-          base: "85vh",
+          base: "79vh",
           md: "300px",
         }}
         overflowY={"auto"}
