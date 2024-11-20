@@ -4,7 +4,7 @@ import {
   getConversations,
   getMessages,
   sendMessage,
-} from "../controllers/MessageController.js";
+} from "../controllers/messageController.js";
 
 const router = express.Router();
 
