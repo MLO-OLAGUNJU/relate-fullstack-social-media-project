@@ -51,15 +51,6 @@ const Header = () => {
 
   return (
     <div className="your-navbar-class">
-      {/* {isOpen && (
-        <div className="fixed top-0 bottom-0 z-5 right-0 left-0 bg-white dark:bg-black bg-opacity-20"></div>
-      )} */}
-      {/* {user && (
-        <Link to={"/"}>
-          <AiFillHome size={24} />
-        </Link>
-      )} */}
-
       {isOpen && (
         <Box
           onClick={handleClick}

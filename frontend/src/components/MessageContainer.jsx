@@ -130,11 +130,20 @@ const MessageContainer = () => {
       //   bg={useColorModeValue("gray.600", "gray.dark")}
       borderRadius={"md"}
       flexDirection={"column"}
-      p={2}
+      p={{ base: 0, md: 2 }}
     >
       {/* Message Container */}
 
-      <Flex w={"full"} h={12} alignItems={"center"} gap={2}>
+      <Flex
+        w={"full"}
+        h={12}
+        alignItems={"center"}
+        gap={2}
+        display={{
+          base: "none",
+          md: "flex",
+        }}
+      >
         <Avatar src={selectedConversation.userProfilePic} size={"sm"} />
         <Text fontWeight={"700"} display={"flex"} alignItems={"center"}>
           {selectedConversation.username}
@@ -154,9 +163,15 @@ const MessageContainer = () => {
       <Flex
         flexDir={"column"}
         gap={4}
-        my={4}
+        my={{
+          base: 0,
+          md: 4,
+        }}
         p={2}
-        height={"300px"}
+        height={{
+          base: "85vh",
+          md: "300px",
+        }}
         overflowY={"auto"}
       >
         {loading &&

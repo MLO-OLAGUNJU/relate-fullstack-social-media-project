@@ -20,7 +20,9 @@ function App() {
     <>
       <div>
         <Container maxW={"90%"}>
-          <Header />
+          <div className={`${pathname === "/chat" ? "hidden" : ""}`}>
+            <Header />
+          </div>
         </Container>
         <Box position={"relative"} w={"full"}>
           <Container
@@ -66,7 +68,9 @@ function App() {
               />
             </Routes>
 
-            {user && <CreatePost />}
+            <div className={`${pathname === "/chat" ? "hidden" : ""}`}>
+              {user && <CreatePost />}
+            </div>
           </Container>
         </Box>
       </div>

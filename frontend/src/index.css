@@ -33,13 +33,6 @@
   background-color: #1e1e1e;
 }
 
-/* .app{
-  background-image: url(../public/photo-1464863979621-258859e62245.avif);
-  background-repeat: no-repeat;
-  background-size: cover;
-  
-} */
-
 ::-webkit-scrollbar {
   width: 7px;
 }

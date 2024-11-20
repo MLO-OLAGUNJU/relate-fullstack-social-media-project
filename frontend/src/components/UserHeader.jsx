@@ -78,10 +78,10 @@ const UserHeader = ({ user, activeTab, handleTabClick }) => {
                 <>relate.net</>
               </Link>
             </Text>
-            {user.isCEO === true && (
-              <h1 className="font-bold text-[#8fbd1a]">CEO & CTO of Relate</h1>
-            )}
           </Flex>
+          {user.isCEO === true && (
+            <h1 className="font-bold text-[#8fbd1a]">CEO & CTO of Relate</h1>
+          )}
         </Box>
         <Box>
           {user.profilePic && (
